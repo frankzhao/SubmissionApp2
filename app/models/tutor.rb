@@ -1,0 +1,2 @@
+class Tutor < User
+end
