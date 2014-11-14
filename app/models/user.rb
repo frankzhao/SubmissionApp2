@@ -5,6 +5,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :authentication_keys => [:uid]
 
+  has_and_belongs_to_many :courses
+  belongs_to :labgroup
+  has_many :submissions
+  has_many :comments
+  has_many :notifications
+  has_many :extensions
+
   validates :uid, :uniqueness => {:case_sensitive => false},
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
