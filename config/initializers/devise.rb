@@ -2,8 +2,9 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # Auth using ANU LDAP
-  config.warden do |manager| 
-     manager.default_strategies.unshift :ldap 
+  config.warden do |manager|
+    manager.strategies.add(:ldap, Devise::Strategies::Ldap)
+    #manager.default_strategies(scope: :user).unshift :ldap # Uncomment to use LDAP first
   end 
   
   # The secret key used by Devise. Devise uses this key to generate
