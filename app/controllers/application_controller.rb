@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   # Sign in and sign out paths
   def after_sign_in_path_for(resource)
     # go to course list
-    '/signedin.html'
+    '/courses'
   end
 
   def after_sign_out_path_for(resource)

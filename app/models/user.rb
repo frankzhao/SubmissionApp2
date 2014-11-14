@@ -15,7 +15,13 @@ class User < ActiveRecord::Base
   validates :uid, :uniqueness => {:case_sensitive => false},
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
-  #attr_accessor :uid
+  def is_admin?
+    self.type == "Admin"
+  end
+
+  def is_admin_or_convenor?
+    self.type == "Admin" or self.type == "Convenor"
+  end
 
   def email_required?
     false

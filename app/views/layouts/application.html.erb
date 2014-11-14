@@ -3,20 +3,28 @@
 <head>
   <title>Submissionapp2</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'bootstrap.min', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'jquery-1.11.1.min', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'bootstrap.min', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <% if notice %>
-  <p class="alert alert-info"><%= notice %></p>
+  <div>
+    <p class="alert alert-info" onclick="hide(this)"><%= notice %></p>
+  </div>
 <% end %>
 <% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
+  <div>
+    <p class="alert alert-danger" onclick="hide(this)"><%= alert %></p>
+  </div>
 <% end %>
+
+<div class="container">
 
 <%= yield %>
 
+</div>
 </body>
 </html>

@@ -1,2 +1,26 @@
-<h1>Courses#index</h1>
-<p>Find me in app/views/courses/index.html.erb</p>
+<div class="row">
+  <div class="col-md-12">
+    <h1>Your courses</h1>
+    <table class="table table-hover table-striped">
+      <% if @courses.length == 0 %>
+        <p>You don't have any courses.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <a href="/courses/new">Create one?</a>
+        <% end %>
+      <% else %>
+        <tr>
+          <th>Course Code</th>
+          <th>Name</th>
+          <th>Enrolments</th>
+        </tr>
+        <% @courses.each do |c| %>
+          <tr>
+            <td><%= c.code %></td>
+            <td><%= c.name %></td>
+            <td><%= c.enrolments %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <table>
+  </div>
+</div>
