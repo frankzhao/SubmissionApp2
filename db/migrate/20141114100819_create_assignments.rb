@@ -6,5 +6,8 @@ class CreateAssignments < ActiveRecord::Migration
       t.text :description
       t.timestamps
     end
+    
+    add_column :assignments, :course_id, :integer
+    add_index :assignments, :course_id
   end
 end
