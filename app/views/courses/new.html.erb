@@ -1,2 +1,48 @@
-<h1>Courses#new</h1>
-<p>Find me in app/views/courses/new.html.erb</p>
+<div class="row">
+  <div class="col-md-42">
+    <h1 class="page-header">Create a new course</h1>
+    <form method="POST" action="/courses/new" class="form-horizontal" role="form">
+        
+        <div class="row"><h3 class="col-md-4 col-md-offset-3">Course details</h3></div>
+        <label class="control-label col-md-4" for="course_code">Course code</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <input id="course_code" name="course_code" type="text" placeholder="COMPxxxx" class="form-control">
+        </div></div>
+
+        <label class="control-label col-md-4" for="name">Course name</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <input id="name" name="name" type="text" placeholder="Introduction to Computing" class="form-control">
+        </div></div>
+
+        <label class="control-label col-md-4" for="description">Description</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <textarea id="description" name="description" class="form-control" rows=8
+            placeholder="Optional"></textarea>
+        </div></div>
+        
+        <div class="row"><h3 class="col-md-4 col-md-offset-3">Enrolments</h3></div>
+        <label class="control-label col-md-4" for="students">Students</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <textarea id="students" name="students" class="form-control" rows=10 
+            placeholder="Paste newline seperated student IDs, or upload a CSV below. e.g: uxxxxxxx"></textarea>
+            <input id="csv_upload" name="csv_upload" type="file">
+        </div></div>
+        
+        <label class="control-label col-md-4" for="tutors">Tutors</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <textarea id="tutors" name="tutors" class="form-control" rows=10 
+            placeholder="Paste newline seperated tutor IDs. e.g: uxxxxxxx"></textarea>
+        </div></div>
+        
+        <label class="control-label col-md-4" for="convenors">Convenors</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <textarea id="convenors" name="convenors" class="form-control" rows=10 
+            placeholder="Paste newline seperated convenor IDs. If you are the only course convenor, leave this blank. e.g: uxxxxxxx"></textarea>
+        </div></div>
+        
+        <div class="input-group col-md-4 col-md-offset-4"><div class="controls">
+          <input type="submit" value="Create" class="btn btn-primary" style="float:right;">
+        </div></div>
+    </form>
+  </div>
+</div>

@@ -40,8 +40,9 @@ ActiveRecord::Schema.define(version: 20141114103845) do
   end
 
   create_table "courses", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "code",       null: false
+    t.string   "name",        null: false
+    t.string   "code",        null: false
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

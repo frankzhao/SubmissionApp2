@@ -1,8 +1,26 @@
 class CoursesController < ApplicationController
   def new
+    if not user_signed_in?
+      render '/public/403.html'
+    end
   end
 
   def create
+    course_code = params[:course_code]
+    course_name = params[:name]
+    description = params[:description]
+    students    = params[:students]
+    tutors      = params[:tutors]
+    convenors   = params[:convenors]
+
+    # Create the course
+    c = Course.create(
+      :code => course_code,
+      :name => course_name,
+      :description => description)
+
+    # Enrol staff and students
+
   end
 
   def edit

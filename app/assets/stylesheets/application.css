@@ -13,6 +13,23 @@
  *= require_tree .
  *= require_self
  */
+.footer {
+  height: 50px;
+  padding-top: 25px;
+}
+
+form label {
+  font-size: 14px !important;
+  padding: 0 0 0 10px;
+}
+
+form textarea {
+  font-size: 14px !important;
+}
+
+form .controls {
+  padding: 10px 10px;
+}
 
 .hidden {
   display: none;
