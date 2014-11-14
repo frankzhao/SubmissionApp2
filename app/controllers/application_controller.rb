@@ -7,6 +7,17 @@ class ApplicationController < ActionController::Base
   
   protected
 
+  # Sign in and sign out paths
+  def after_sign_in_path_for(resource)
+    # go to course list
+    '/signedin.html'
+  end
+
+  def after_sign_out_path_for(resource)
+    # go to sign in page
+    'devise/sessions#new'
+  end
+
   def configure_devise_params
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:uid, :password)}
   end
