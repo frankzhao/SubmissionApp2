@@ -1,16 +1,14 @@
 <div class="col-md-4 col-md-offset-4">
 <%- if not user_signed_in? %>
-  <%= link_to "Sign in", "/users/sign_in" %>
+  <%= link_to "Sign in", "/" %>
 <% end -%>
 
 <%- if user_signed_in? %>
-  <%= link_to "Sign out", "/users/sign_out" %>
+  <%= link_to "Log Out", destroy_user_session_path, :method => :delete %>
 <% end -%>
 
-|
-
 <%- if user_signed_in? %>
-  <%= link_to "Courses", "/courses" %>
+  | <%= link_to "Courses", "/courses" %>
 <% end -%>
 
 </div>

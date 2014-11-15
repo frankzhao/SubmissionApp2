@@ -1,0 +1,109 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav">&#9776;</button>
+    <a class="navbar-brand" href="/">SubmissionApp2</a>
+  </div>
+
+  <% if current_user %>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="nav navbar-nav">
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
+          <ul class="dropdown-menu scrollable-menu">
+            <li><a href="/courses">Course index</a></li>
+            <li class="divider"></li>
+            <% if current_user.is_admin? %>
+              <% Course.all.each do |course| %>
+              <li><%= link_to "/courses/" + course.id.to_s %></li>
+              <% end %>
+            <% else %>
+              <% current_user.courses.each do |course| %>
+                <li><%= link_to "/courses/" + course.id.to_s %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments<b class="caret"></b></a>
+          <% unless current_user.is_admin? %>          
+            <% if current_user.assignments.empty? %>
+              <ul class="dropdown-menu">
+              <li><a>You have no assignments.</a></li>
+              </ul>
+            <% else %>
+            <ul class="dropdown-menu scrollable-menu">
+              <% current_user.assignments.each do |assignment| %>
+                <li><%= link_to assignment.name, assignment %></li>
+              <% end %>
+            </ul>
+            <% end %>
+          <% end %>
+          
+          <% if current_user.is_admin? %>
+            <% Assignment.all.each do |a| %>
+            <li><%= link_to "/assignments/" + a.id.to_s %></li>
+            <% end %>
+          <% end %>
+        </li>
+
+        <% unless current_user.is_admin? %>
+          <% unless current_user.labgroups.empty? %>
+            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
+              <ul class="dropdown-menu scrollable-menu">
+                <% current_user.labgroups.each do |group| %>
+                  <li><%= link_to group.name, group %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        <% end %>
+        
+        <% if current_user.is_admin? %>
+          <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
+            <ul class="dropdown-menu scrollable-menu">
+              <% Labgroup.all.each do |group| %>
+                <li><%= link_to group.name, group %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+          
+
+<!-- Add peer review here -->
+        
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <% if current_user.is_admin? %>
+          <li><a>You're an admin.</a></li>
+        <% end %>
+
+          <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <!-- <span class="glyphicon glyphicon-exclamation-sign"></span> -->
+            Notifications
+            <span class="badge">7</span>
+            <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu scrollable-menu">
+                <li class="notification">
+                  Example notification
+                </li>
+
+            </ul>
+          </li>
+
+
+        <li>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <%=current_user.firstname.to_s + " " + current_user.surname.to_s %><b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/<%= current_user.id %>">Profile</a></li>
+            <li class="divider"></li>
+            <li><%= link_to "Log Out", destroy_user_session_path, :method => :delete %></li>
+
+          </ul>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</nav>

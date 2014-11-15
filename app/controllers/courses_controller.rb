@@ -24,7 +24,7 @@ class CoursesController < ApplicationController
       c.convenors << current_user
     end
 
-    if students.length > 0
+    if not students.empty?
       students.each do |s|
         # Remove spaces
         s.gsub!(/\s+/, "")
@@ -44,7 +44,7 @@ class CoursesController < ApplicationController
       end
     end
 
-    if tutors.length > 0
+    if not tutors.empty?
       tutors.each do |t|
         # Remove spaces
         t.gsub!(/\s+/, "")
@@ -64,7 +64,7 @@ class CoursesController < ApplicationController
       end
     end
 
-    if convenors.length > 0
+    if not convenors.empty?
       convenors.each do |conv|
         # Remove spaces
         s.gsub!(/\s+/, "")
@@ -92,6 +92,10 @@ class CoursesController < ApplicationController
   end
 
   def show
+    @course = Course.find_by_id(params[:id])
+    if not @course
+      redirect_to "/404.html"
+    end
   end
 
   def index

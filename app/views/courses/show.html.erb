@@ -1,2 +1,53 @@
-<h1>Courses#show</h1>
-<p>Find me in app/views/courses/show.html.erb</p>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header"><%= @course.code %>: <%= @course.name %></h1>
+    <p><%= @course.description %></p>
+
+    <h3>Assignments</h3>
+    <table class="table table-hover table-striped">
+      <% if @course.assignments.length == 0 %>
+        <p>There are currently no assignments for this course.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <a href="/assignments/<%= @course.id %>/new">Create assignment</a>
+        <% end %>
+      <% else %>
+        <tr>
+          <th>Assignment</th>
+          <th>Deadline (dd/mm/yyyy)</th>
+          <th>Submissions</th>
+        </tr>
+        <% @course.assignments.each do |a| %>
+          <tr>
+           <td><%= a.name %></td>
+           <td><%= a.due_date.strftime("%d/%m/%Y %I:%M%p") %></td>
+           <td><%= a.submissions.length %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+
+    <h3>Enrolments</h3>
+    <table class="table table-hover table-striped">
+      <% if @course.students.length == 0 %>
+        <p>No students are enrolled in this course.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <a href="/courses/<%= @course.id %>/edit">Enrol students</a>
+        <% end %>
+      <% else %>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+
+        <% @course.students.each do |s| %>
+          <tr>
+           <td><%= s.uid %></td>
+           <td><%= s.firstname + " " + s.surname %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+
+  </div>
+</div>
+

@@ -13,8 +13,17 @@
  *= require_tree .
  *= require_self
  */
+body {
+  padding-top: 50px; /* Offset navbar */
+}
+
+.navbar {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .footer {
-  background-color: #eee;
+  background-color: #FBFBFB;
   height: 100px;
   padding: 5px 5px 25px 5px;
   margin: 40px 0 0 0;

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   post "courses/new" => "courses#create"
   get "courses/create"
   get "courses/edit"
-  get "courses/show"
+  get "courses/:id" => "courses#show"
   get "courses" => "courses#index"
   get "courses/destroy"
   get "groups/new"
