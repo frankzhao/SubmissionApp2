@@ -14,8 +14,10 @@
  *= require_self
  */
 .footer {
-  height: 50px;
-  padding-top: 25px;
+  background-color: #eee;
+  height: 100px;
+  padding: 5px 5px 25px 5px;
+  margin: 40px 0 0 0;
 }
 
 form label {
