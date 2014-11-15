@@ -5,19 +5,37 @@
       <% if @courses.length == 0 %>
         <p>You don't have any courses.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/courses/new">Create one?</a>
+          <a href="/courses/new">Create one</a>
         <% end %>
       <% else %>
         <tr>
           <th>Course Code</th>
           <th>Name</th>
           <th>Enrolments</th>
+          <th>Convenors</th>
+          <th>Labs</th>
+          <th>Assignments</th>
         </tr>
         <% @courses.each do |c| %>
           <tr>
             <td><%= c.code %></td>
             <td><%= c.name %></td>
-            <td><%= c.enrolments %></td>
+            <td><%= c.students.length %></td>
+            <td>
+              <% c.convenors.each do |convenor| %>
+                <%= convenor.firstname + " " + convenor.surname %><br />
+              <% end %>
+            </td>
+            <td>
+              <% c.labgroups.each do |lab| %>
+                <%= lab.name %><br />
+              <% end %>
+            </td>
+            <td>
+              <% c.assignments.each do |a| %>
+                <%= a.name %><br />
+              <% end %>
+            </td>
           </tr>
         <% end %>
       <% end %>

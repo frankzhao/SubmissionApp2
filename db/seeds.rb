@@ -6,4 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-admin = Admin.create(:name => "admin", :password => "admin", :uid => "u0000000")
+admin = Admin.create(:firstname => "admin", :password => "admin", :uid => "u0000000")
+convenor = Convenor.create(:firstname => "A", :surname => "Convenor", :password => "pass", :uid => "u0000001")
+student = Student.create(:firstname => "Thomas", :surname => "Jenkins", :password => "pass", :uid => "u0000002")

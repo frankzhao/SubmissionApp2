@@ -1,8 +1,10 @@
 <div class="row">
   <div class="col-md-42">
     <h1 class="page-header">Create a new course</h1>
-    <form method="POST" action="/courses/new" class="form-horizontal" role="form">
-        
+    <form method="post" action="/courses/new" class="form-horizontal" role="form" class="new_course" id="new_course">
+
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+
         <div class="row"><h3 class="col-md-4 col-md-offset-3">Course details</h3></div>
         <label class="control-label col-md-4" for="course_code">Course code</label>
         <div class="input-group col-md-4"><div class="controls">

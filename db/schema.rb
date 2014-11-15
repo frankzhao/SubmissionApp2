@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114103845) do
+ActiveRecord::Schema.define(version: 20141114214100) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -30,9 +30,10 @@ ActiveRecord::Schema.define(version: 20141114103845) do
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id"
 
   create_table "comments", force: true do |t|
-    t.text     "text",                        null: false
+    t.text     "text",                                    null: false
     t.string   "mark"
     t.binary   "attachment", limit: 10485760
+    t.integer  "parent_id",                   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -48,10 +49,15 @@ ActiveRecord::Schema.define(version: 20141114103845) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
-  add_index "courses", ["user_id"], name: "index_courses_on_user_id"
+  create_table "courses_users", id: false, force: true do |t|
+    t.integer "course_id"
+    t.integer "user_id"
+  end
+
+  add_index "courses_users", ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
+  add_index "courses_users", ["user_id"], name: "index_courses_users_on_user_id"
 
   create_table "extensions", force: true do |t|
     t.datetime "created_at"
@@ -62,7 +68,10 @@ ActiveRecord::Schema.define(version: 20141114103845) do
     t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id"
   end
+
+  add_index "labgroups", ["course_id"], name: "index_labgroups_on_course_id"
 
   create_table "notifications", force: true do |t|
     t.text     "text"
@@ -108,7 +117,8 @@ ActiveRecord::Schema.define(version: 20141114103845) do
     t.datetime "updated_at"
     t.integer  "course_id"
     t.string   "type"
-    t.string   "name"
+    t.string   "firstname"
+    t.string   "surname"
     t.boolean  "has_logged_in_once",     default: false
   end
 

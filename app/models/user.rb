@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     self.type == "Admin"
   end
 
+  def is_convenor?
+    self.type == "Convenor"
+  end
+
   def is_admin_or_convenor?
     self.type == "Admin" or self.type == "Convenor"
   end

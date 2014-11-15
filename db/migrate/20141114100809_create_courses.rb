@@ -7,8 +7,8 @@ class CreateCourses < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_column :courses, :user_id, :integer
-    add_index :courses, :user_id
+    #add_column :courses, :user_id, :integer
+    #add_index :courses, :user_id
     
   end
 end

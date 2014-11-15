@@ -10,16 +10,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<% if notice %>
-  <div>
-    <p class="alert alert-info" onclick="hide(this)"><%= notice %></p>
-  </div>
-<% end %>
-<% if alert %>
-  <div>
-    <p class="alert alert-danger" onclick="hide(this)"><%= alert %></p>
-  </div>
-<% end %>
+<%= flash_errors %>
 
 <div class="container">
 
