@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "admin/index"
   get "ldap/:uid" => 'ldap#query'
   get "comments/new"
   get "comments/create"

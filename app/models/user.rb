@@ -20,6 +20,11 @@ class User < ActiveRecord::Base
   end
 
   # == Helper methods ==
+
+  def full_name
+    self.firstname + " " + self.surname
+  end
+
   def is_admin?
     self.type == "Admin"
   end

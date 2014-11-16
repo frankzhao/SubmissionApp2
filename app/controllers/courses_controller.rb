@@ -25,6 +25,7 @@ class CoursesController < ApplicationController
     end
 
     if not students.empty?
+      counter = 0
       students.each do |s|
         # Remove spaces
         s.gsub!(/\s+/, "")
@@ -37,14 +38,17 @@ class CoursesController < ApplicationController
           if ldap_user
             s = Student.create(:uid => s, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.students << s
+            counter += 1
           else
             flash_message :error, "The student <#{s}> could not be found on the LDAP server."
           end
         end
       end
+      flash_message success, "Sucessfully enrolled #{counter} students."
     end
 
     if not tutors.empty?
+      counter = 0
       tutors.each do |t|
         # Remove spaces
         t.gsub!(/\s+/, "")
@@ -57,14 +61,17 @@ class CoursesController < ApplicationController
           if ldap_user
             t = Tutor.create(:uid => t, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.tutor << t
+            counter += 1
           else
             flash_message :error, "The tutor <#{t}> could not be found on the LDAP server."
           end
         end
       end
+      flash_message success, "Sucessfully enrolled #{counter} tutors."
     end
 
     if not convenors.empty?
+      counter = 0
       convenors.each do |conv|
         # Remove spaces
         s.gsub!(/\s+/, "")
@@ -77,11 +84,13 @@ class CoursesController < ApplicationController
           if ldap_user
             conv = Convenor.create(:uid => conv, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.convenors << conv
+            counter += 1
           else
             flash_message :error, "The convenor <#{conv}> could not be found on the LDAP server."
           end
         end
       end
+      flash_message success, "Sucessfully enrolled #{counter} students."
     end
 
     redirect_to '/courses'
@@ -94,7 +103,7 @@ class CoursesController < ApplicationController
   def show
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
-    else @course
+    else
       flash_message :error, "Could not find a course with ID=" + params[:id].to_s
       redirect_to "/"
     end
