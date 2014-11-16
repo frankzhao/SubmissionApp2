@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-9">
     <h1 class="page-header"><%= @course.code %>: <%= @course.name %></h1>
     <p><%= @course.description %></p>
 
@@ -8,7 +8,7 @@
       <% if @course.assignments.length == 0 %>
         <p>There are currently no assignments for this course.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/assignments/<%= @course.id %>/new">Create assignment</a>
+          <a href="/assignments/new/<%= @course.id %>">Create assignment</a>
         <% end %>
       <% else %>
         <tr>
@@ -18,10 +18,10 @@
         </tr>
         <% @course.assignments.each do |a| %>
           <tr>
-           <td><%= a.name %></td>
+            <td><a href="/assignments/<%= a.id.to_s %>"><%= a.name %></a></td>
            <td><%= a.due_date.strftime("%d/%m/%Y %I:%M%p") %></td>
            <td><%= a.submissions.length %></td>
-          </tr>
+         </tr>
         <% end %>
       <% end %>
     </table>
@@ -49,5 +49,6 @@
     </table>
 
   </div>
+  <%= render 'sidebar_show' %>
 </div>
 

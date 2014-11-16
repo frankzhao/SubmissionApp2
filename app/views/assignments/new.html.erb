@@ -1,2 +1,38 @@
-<h1>Assignments#new</h1>
-<p>Find me in app/views/assignments/new.html.erb</p>
+<div class="row">
+  <div class="col-md-42">
+    <h1 class="page-header">New assignment for <%= @course.code %></h1>
+    <form method="post" action="/assignments/new" class="form-horizontal" role="form" class="new_assignment" id="new_assignment">
+
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+      <input name="course_id" type="hidden" value="<%= @course.id %>" />
+
+        <div class="row"><h3 class="col-md-4 col-md-offset-3">Assignment details</h3></div>
+        <label class="control-label col-md-4" for="assignment_name">Assignment name</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <input id="assignment_name" name="assignment_name" type="text" placeholder="Assignment 1" class="form-control">
+        </div></div>
+
+        <label class="control-label col-md-4" for="date_due">Date_due</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <input id="date_due" name="date_due" type="text" placeholder="dd/mm/yyyy hh:mm" class="form-control">
+        </div></div>
+
+        <label class="control-label col-md-4" for="type">Submission type</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <select id="type" name="type" required class="form-control">
+            <option value="zip">zip archive</option>
+            <option value="plaintext">plaintext</option>
+          </select>
+        </div></div>
+
+        <label class="control-label col-md-4" for="text">Submission instructions</label>
+        <div class="input-group col-md-4"><div class="controls">
+          <textarea id="text" name="text" class="form-control" rows=8></textarea>
+        </div></div>
+
+        <div class="input-group col-md-4 col-md-offset-4"><div class="controls">
+          <input type="submit" value="Create" class="btn btn-primary" style="float:right;">
+        </div></div>
+    </form>
+  </div>
+</div>

@@ -41,6 +41,9 @@ gem 'unicorn-rails'
 # Devise for authentication
 gem 'devise'
 
+# SSL
+gem 'rack-ssl'
+
 # LDAP
 gem 'net-ldap'
 

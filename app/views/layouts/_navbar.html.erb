@@ -24,7 +24,7 @@
         </li>
 
         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments<b class="caret"></b></a>
-          <% unless current_user.is_admin? %>          
+          <% unless current_user.is_admin? %>
             <% if current_user.assignments.empty? %>
               <ul class="dropdown-menu">
               <li><a>You have no assignments.</a></li>
@@ -39,9 +39,11 @@
           <% end %>
           
           <% if current_user.is_admin? %>
-            <% Assignment.all.each do |a| %>
-            <li><%= link_to "/assignments/" + a.id.to_s %></li>
-            <% end %>
+            <ul class="dropdown-menu scrollable-menu">
+              <% Assignment.all.each do |a| %>
+                <li><%= link_to a.name, "/assignments/" + a.id.to_s %></li>
+              <% end %>
+            </ul>
           <% end %>
         </li>
 

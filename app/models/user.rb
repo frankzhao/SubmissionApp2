@@ -15,6 +15,11 @@ class User < ActiveRecord::Base
   validates :uid, :uniqueness => {:case_sensitive => false},
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
+  def submissions_for_assignment(a)
+    self.submissions.select { |s| s.user == self}
+  end
+
+  # == Helper methods ==
   def is_admin?
     self.type == "Admin"
   end
@@ -25,6 +30,10 @@ class User < ActiveRecord::Base
 
   def is_admin_or_convenor?
     self.type == "Admin" or self.type == "Convenor"
+  end
+
+  def is_staff?
+    self.is_admin_or_convenor? or self.type == "Tutor"
   end
 
   def email_required?

@@ -92,9 +92,11 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find_by_id(params[:id])
-    if not @course
-      redirect_to "/404.html"
+    if params[:id] && Course.find_by_id(params[:id])
+      @course = Course.find_by_id(params[:id])
+    else @course
+      flash_message :error, "Could not find a course with ID=" + params[:id].to_s
+      redirect_to "/"
     end
   end
 

@@ -29,7 +29,7 @@ body {
 }
 
 .sidebar {
-  margin-top: 21.5px; /* Offset page heading padding */
+  margin-top: 42px; /* Offset page heading padding */
   padding-left: 20px;
 }
 
@@ -83,6 +83,14 @@ form textarea {
 
 form .controls {
   padding: 10px 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic
 }
 
 .hidden {

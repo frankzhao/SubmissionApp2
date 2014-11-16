@@ -1,0 +1,12 @@
+<div class="col-md-3 sidebar">
+  <ul class="nav sidenav" id="sidebar">
+    <li><h4>Actions</h4></li>
+    <hr>
+    <% if current_user.is_admin_or_convenor? %>
+      <li class="sidebar-item"><a href="#">Edit assignment</a></li>
+      <li class="sidebar-item"><a href="#">Delete assignment</a></li>
+    <% else %>
+      <li class="sidebar-item"><a href="#">Add submission</a></li>
+    <% end %>
+  </ul>
+</div>

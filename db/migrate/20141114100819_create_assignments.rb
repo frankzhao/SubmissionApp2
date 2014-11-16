@@ -4,6 +4,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.string :name, :null => false
       t.datetime :due_date
       t.text :description
+      t.string :kind, :null => false
       t.timestamps
     end
     
