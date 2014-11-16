@@ -22,11 +22,54 @@ body {
   padding-right: 20px;
 }
 
+.scrollable-menu {
+  height: auto;
+  max-height: 400px;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  margin-top: 21.5px; /* Offset page heading padding */
+  padding-left: 20px;
+}
+
+.sidenav li h4 {
+  padding-left: 15px
+}
+
+.sidenav li {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+li.sidebar-item :hover {
+  border-left: 1px solid #008cba;
+  padding-left: 14px;
+}
+
+.sidenav a {
+  color: #086a87;
+  font-size: 14px;
+}
+
+ul hr {
+  margin-bottom: 0;
+}
+
 .footer {
-  background-color: #FBFBFB;
-  height: 100px;
-  padding: 5px 5px 25px 5px;
-  margin: 40px 0 0 0;
+  margin-bottom: 18px;
+}
+
+.footer a {
+  margin-right: 15px;
+  font-size: 12px !important;
+  color: #446e9b;
+}
+
+.footer a:hover {
+  color: #2fa0bb;
+  text-decoration: none;
 }
 
 form label {

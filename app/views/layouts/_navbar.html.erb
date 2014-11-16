@@ -13,11 +13,11 @@
             <li class="divider"></li>
             <% if current_user.is_admin? %>
               <% Course.all.each do |course| %>
-              <li><%= link_to "/courses/" + course.id.to_s %></li>
+              <li><%= link_to  course.code, "/courses/" + course.id.to_s %></li>
               <% end %>
             <% else %>
               <% current_user.courses.each do |course| %>
-                <li><%= link_to "/courses/" + course.id.to_s %></li>
+                <li><%= link_to course.code, "/courses/" + course.id.to_s %></li>
               <% end %>
             <% end %>
           </ul>
@@ -86,7 +86,7 @@
             </a>
             <ul class="dropdown-menu scrollable-menu">
                 <li class="notification">
-                  Example notification
+                  <a>Example notification</a>
                 </li>
 
             </ul>
