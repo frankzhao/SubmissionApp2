@@ -44,7 +44,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message success, "Sucessfully enrolled #{counter} students."
+      flash_message :success, "Sucessfully enrolled #{counter} students."
     end
 
     if not tutors.empty?
@@ -67,7 +67,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message success, "Sucessfully enrolled #{counter} tutors."
+      flash_message :success, "Sucessfully enrolled #{counter} tutors."
     end
 
     if not convenors.empty?
@@ -90,7 +90,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message success, "Sucessfully enrolled #{counter} students."
+      flash_message :success, "Sucessfully enrolled #{counter} students."
     end
 
     redirect_to '/courses'

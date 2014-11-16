@@ -13,27 +13,27 @@
           <th>Name</th>
           <th>Enrolments</th>
           <th>Convenors</th>
-          <th>Labs</th>
+          <th>Groups</th>
           <th>Assignments</th>
         </tr>
         <% @courses.each do |c| %>
           <tr>
-            <td><a href="<%= c.url %>"><%= c.code %></td>
-            <td><%= c.name %></td>
-            <td><%= c.students.length %></td>
+            <td><%= link_to c.code, c.url%></td>
+            <td><%= link_to c.name, c.url %></td>
+            <td><%= link_to c.students.length, "/courses/#{c.id.to_s}#enrolments" %></td>
             <td>
               <% c.convenors.each do |convenor| %>
-                <%= convenor.firstname + " " + convenor.surname %><br />
+                <%=  link_to convenor.full_name, '/users/'+convenor.id.to_s %><br />
               <% end %>
             </td>
             <td>
               <% c.labgroups.each do |lab| %>
-                <%= lab.name %><br />
+                <%= link_to lab.name, '/labgroups'+lab.id.to_s %><br />
               <% end %>
             </td>
             <td>
               <% c.assignments.each do |a| %>
-                <%= a.name %><br />
+                <%= link_to a.name, '/assignments/'+a.id.to_s %><br />
               <% end %>
             </td>
           </tr>

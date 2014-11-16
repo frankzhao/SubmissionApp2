@@ -1,4 +1,6 @@
 class AssignmentsController < ApplicationController
+  before_filter :require_logged_in
+
   def new
     if params[:course_id] && Course.find_by_id(params[:course_id])
       @course = Course.find_by_id(params[:course_id])
@@ -17,6 +19,15 @@ class AssignmentsController < ApplicationController
     type = params[:type]
     text = params[:text]
 
+    if course && assignment && Course.find_by_id(course)
+    assignment = Assignment.create(:name => name, :due_date => date_due,
+                                   :description => text, :kind => type)
+      # Add assignment to the course
+      Course.find_by_id(course).assignments << assignment
+    else
+      flash_message :error, "Could not find course with ID=" + course.to_s
+    end
+
     # Parse due date
     if date_due
       begin
@@ -24,19 +35,6 @@ class AssignmentsController < ApplicationController
       rescue ArgumentError
         flash_message :error, "Incorrect format for due date."
       end
-    end
-
-    if name
-      assignment = Assignment.create(:name => name, :due_date => date_due,
-                                     :description => text, :kind => type)
-    else
-    end
-
-    if course && assignment && Course.find_by_id(course)
-      # Add assignment to the course
-      Course.find_by_id(course).assignments << assignment
-    else
-      flash_message :error, "Could not find course with ID=" + course.to_s
     end
 
     redirect_to '/courses/' + course.to_s

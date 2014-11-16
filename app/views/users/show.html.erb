@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-md-9">
+    <h1 class="page-header"><%= @user.full_name %>
+    <span class="uid_heading">(<%= @user.uid %>)</span></h1>
+
+    <h3>Your courses</h3>
+    <table class="table table-hover table-striped">
+      <% if @user.courses.empty? %>
+        <p>You don't have any courses.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <a href="/courses/new">Create one</a>
+        <% end %>
+      <% else %>
+        <tr>
+          <th>Course Code</th>
+          <th>Name</th>
+          <th>Convenors</th>
+          <th>Assignments</th>
+        </tr>
+        <% @user.courses.each do |c| %>
+          <tr>
+            <td><a href="<%= c.url %>"><%= c.code %></td>
+            <td><%= c.name %></td>
+            <td>
+              <% c.convenors.each do |convenor| %>
+                <%= convenor.firstname + " " + convenor.surname %><br />
+              <% end %>
+            </td>
+            <td>
+              <% c.labgroups.each do |lab| %>
+                <%= lab.name %><br />
+              <% end %>
+            </td>
+            <td>
+              <% c.assignments.each do |a| %>
+                <%= a.name %><br />
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    
+    <h3>Your groups</h3>
+    <table class="table table-hover table-striped">
+      <% if @user.labgroups.empty? %>
+        <p>You don't have any groups.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <a href="/courses/new">Create one</a>
+        <% end %>
+      <% else %>
+        <tr>
+          <th>Group</th>
+          <th>Course</th>
+          <% if current_user.is_staff? %><th>Enrolments</th><% end %>
+        </tr>
+        <% @user.labgroups.each do |g| %>
+          <tr>
+            <td><a href="/groups/<%= g.id.to_s %>"><%= g.name %></td>
+            <td><%= g.course.name %></td>
+            <% if current_user.is_staff? %><td><%= g.users.length %></td><% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+
+  </div>
+  <%= render 'sidebar_show' %>
+</div>
+

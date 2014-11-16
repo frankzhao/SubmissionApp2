@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get "groups/show"
   get "groups" => "groups#index"
   get "groups/destroy"
+  get "users/:id" => "users#show"
 
   devise_for :users
   devise_scope :user do

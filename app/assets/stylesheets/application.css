@@ -93,6 +93,11 @@ form .controls {
   font-style: italic
 }
 
+.uid_heading {
+  font-size: 18px;
+  color: #888;
+}
+
 .hidden {
   display: none;
 }

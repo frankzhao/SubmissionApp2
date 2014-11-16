@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :authentication_keys => [:uid]
 
   has_and_belongs_to_many :courses
-  belongs_to :labgroup
+  has_and_belongs_to_many :labgroups
   has_many :submissions
   has_many :comments
   has_many :notifications
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   # == Helper methods ==
 
   def full_name
-    self.firstname + " " + self.surname
+    self.firstname.to_s + " " + self.surname.to_s
   end
 
   def is_admin?
