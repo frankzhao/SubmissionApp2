@@ -26,9 +26,11 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
+    t.integer  "user_id"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id"
+  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id"
 
   create_table "comments", force: true do |t|
     t.text     "text",                                    null: false
@@ -128,9 +130,12 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.string   "type"
     t.string   "firstname"
     t.string   "surname"
+    t.string   "full_name"
     t.boolean  "has_logged_in_once",     default: false
+    t.integer  "assignment_id"
   end
 
+  add_index "users", ["assignment_id"], name: "index_users_on_assignment_id"
   add_index "users", ["course_id"], name: "index_users_on_course_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["uid"], name: "index_users_on_uid", unique: true

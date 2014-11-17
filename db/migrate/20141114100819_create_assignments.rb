@@ -10,5 +10,7 @@ class CreateAssignments < ActiveRecord::Migration
     
     add_column :assignments, :course_id, :integer
     add_index :assignments, :course_id
+    add_column :assignments, :user_id, :integer
+    add_index :assignments, :user_id
   end
 end

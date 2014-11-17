@@ -85,6 +85,10 @@ form .controls {
   padding: 10px 10px;
 }
 
+.field_with_errors {
+  background-color: red;
+}
+
 .bold {
   font-weight: bold;
 }
