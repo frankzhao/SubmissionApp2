@@ -8,7 +8,7 @@
       <% if @user.courses.empty? %>
         <p>You don't have any courses.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/courses/new">Create one</a>
+          <%= link_to 'Create one', new_course_path %>
         <% end %>
       <% else %>
         <tr>
@@ -46,7 +46,7 @@
       <% if @user.labgroups.empty? %>
         <p>You don't have any groups.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/courses/new">Create one</a>
+         <%= link_to 'Create one', new_group_path %>
         <% end %>
       <% else %>
         <tr>

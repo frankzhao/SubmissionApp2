@@ -1,8 +1,7 @@
 <div class="row">
   <div class="col-md-42">
     <h1 class="page-header">New assignment for <%= @course.code %></h1>
-    <form method="post" action="/assignments/new" class="form-horizontal" role="form" class="new_assignment" id="new_assignment">
-
+    <%= form_for @assignment, :html => {:class => "form-horizontal"} do |f| %>
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
       <input name="course_id" type="hidden" value="<%= @course.id %>" />
 
@@ -33,6 +32,6 @@
         <div class="input-group col-md-4 col-md-offset-4"><div class="controls">
           <input type="submit" value="Create" class="btn btn-primary" style="float:right;">
         </div></div>
-    </form>
+        <% end %>
   </div>
 </div>

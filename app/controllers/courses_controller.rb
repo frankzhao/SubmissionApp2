@@ -2,6 +2,7 @@ class CoursesController < ApplicationController
   before_filter :require_logged_in, :except => [:index]
 
   def new
+    @course = Course.new
   end
 
   def create
@@ -32,6 +33,7 @@ class CoursesController < ApplicationController
 
         if Student.find_by_uid(s)
           c.students << Student.find_by_uid(s)
+          counter += 1
         else
           # Look up student details
           ldap_user = AnuLdap.find_by_uni_id(s)
@@ -55,6 +57,7 @@ class CoursesController < ApplicationController
 
         if Tutor.find_by_uid(t)
           c.tutors << Tutor.find_by_uid(t)
+          counter += 1
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(t)
@@ -78,6 +81,7 @@ class CoursesController < ApplicationController
 
         if Convenor.find_by_uid(conv)
           c.convenors << Convenor.find_by_uid(conv)
+          counter += 1
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(conv)

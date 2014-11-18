@@ -5,7 +5,7 @@
       <% if @courses.empty? %>
         <p>You don't have any courses.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/courses/new">Create one</a>
+          <%= link_to 'Create one', new_course_path %>
         <% end %>
       <% else %>
         <tr>
@@ -18,22 +18,22 @@
         </tr>
         <% @courses.each do |c| %>
           <tr>
-            <td><%= link_to c.code, c.url%></td>
-            <td><%= link_to c.name, c.url %></td>
-            <td><%= link_to c.students.length, "/courses/#{c.id.to_s}#enrolments" %></td>
+            <td><%= link_to c.code, course_path(c)%></td>
+            <td><%= link_to c.name, course_path(c)%></td>
+            <td><%= link_to c.students.length, course_path(c) + '#enrolments' %></td>
             <td>
               <% c.convenors.each do |convenor| %>
-                <%=  link_to convenor.full_name, '/users/'+convenor.id.to_s %><br />
+                <%=  link_to convenor.full_name, user_path(convenor) %><br />
               <% end %>
             </td>
             <td>
               <% c.labgroups.each do |lab| %>
-                <%= link_to lab.name, '/labgroups'+lab.id.to_s %><br />
+                <%= link_to lab.name, group_path(lab) %><br />
               <% end %>
             </td>
             <td>
               <% c.assignments.each do |a| %>
-                <%= link_to a.name, '/assignments/'+a.id.to_s %><br />
+                <%= link_to a.name, assignment_path(a) %><br />
               <% end %>
             </td>
           </tr>

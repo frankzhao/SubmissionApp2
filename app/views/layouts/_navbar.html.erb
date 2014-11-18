@@ -9,15 +9,15 @@
       <ul class="nav navbar-nav">
         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
           <ul class="dropdown-menu scrollable-menu">
-            <li><a href="/courses">Course index</a></li>
+            <li><%= link_to 'Course index', courses_url %></li>
             <li class="divider"></li>
             <% if current_user.is_admin? %>
               <% Course.all.each do |course| %>
-              <li><%= link_to  course.code, "/courses/" + course.id.to_s %></li>
+              <li><%= link_to course.code, course_path(course)%></li>
               <% end %>
             <% else %>
               <% current_user.courses.each do |course| %>
-                <li><%= link_to course.code, "/courses/" + course.id.to_s %></li>
+                <li><%= link_to course.code, course_path(course)%></li>
               <% end %>
             <% end %>
           </ul>
@@ -32,7 +32,7 @@
             <% else %>
             <ul class="dropdown-menu scrollable-menu">
               <% current_user.assignments.each do |assignment| %>
-                <li><%= link_to assignment.name, assignment %></li>
+                <li><%= link_to assignment.name, assignment_path(assignment) %></li>
               <% end %>
             </ul>
             <% end %>
@@ -41,7 +41,7 @@
           <% if current_user.is_admin? %>
             <ul class="dropdown-menu scrollable-menu">
               <% Assignment.all.each do |a| %>
-                <li><%= link_to a.name, "/assignments/" + a.id.to_s %></li>
+                <li><%= link_to a.name, assignment_path(a) %></li>
               <% end %>
             </ul>
           <% end %>
@@ -52,7 +52,7 @@
             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
               <ul class="dropdown-menu scrollable-menu">
                 <% current_user.labgroups.each do |group| %>
-                  <li><%= link_to group.name, group %></li>
+                  <li><%= link_to group.name, group_path(group) %></li>
                 <% end %>
               </ul>
             </li>
@@ -63,7 +63,7 @@
           <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
             <ul class="dropdown-menu scrollable-menu">
               <% Labgroup.all.each do |group| %>
-                <li><%= link_to group.name, group %></li>
+                <li><%= link_to group.name, group_path(group) %></li>
               <% end %>
             </ul>
           </li>
@@ -88,7 +88,7 @@
             </a>
             <ul class="dropdown-menu scrollable-menu">
                 <li class="notification">
-                  <a>Example notification</a>
+                  <a href="/">Example notification</a>
                 </li>
 
             </ul>
@@ -99,7 +99,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <%=current_user.firstname.to_s + " " + current_user.surname.to_s %><b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/users/<%= current_user.id %>">Profile</a></li>
+            <li><%= link_to 'Profile', user_path(current_user) %></li>
             <li class="divider"></li>
             <li><%= link_to "Log Out", destroy_user_session_path, :method => :delete %></li>
 

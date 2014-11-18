@@ -2,24 +2,23 @@ class AssignmentsController < ApplicationController
   before_filter :require_logged_in
 
   def new
+    @assignment = Assignment.new
     if params[:course_id] && Course.find_by_id(params[:course_id])
       @course = Course.find_by_id(params[:course_id])
     else
       flash_message :error, "The course with ID=" + params[:course_id].to_s + " was not found."
-      redirect_to '/courses'
+      redirect_to courses_url
     end
   end
 
   def create
-  logmsg params.to_s
-
     course = params[:course_id]
     name = params[:assignment_name]
     date_due = params[:date_due]
     type = params[:type]
     text = params[:text]
 
-    if course && assignment && Course.find_by_id(course)
+    if course && Course.find_by_id(course)
     assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type)
       # Add assignment to the course
@@ -37,7 +36,7 @@ class AssignmentsController < ApplicationController
       end
     end
 
-    redirect_to '/courses/' + course.to_s
+    redirect_to course_path(course)
   end
 
   def edit

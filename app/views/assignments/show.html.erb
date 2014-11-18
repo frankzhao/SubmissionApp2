@@ -3,7 +3,7 @@
     <h1 class="page-header"><%= @assignment.name %></h1>
     <p class="bold">Submission Instructions</p>
     <p class="italic">Assignment for <%= link_to @course.code + ": " + @course.name,
-      "/courses/" + @course.id.to_s %></p>
+      course_path(@course.id)%></p>
     <p>Due at <%= @assignment.due_date.strftime('%d/%m/%Y %I:%M%p') %></p>
     <p><%= @assignment.description %></p>
 

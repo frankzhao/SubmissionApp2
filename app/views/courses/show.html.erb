@@ -31,7 +31,7 @@
       <% if @course.students.length == 0 %>
         <p>No students are enrolled in this course.</p>
         <% if current_user.is_admin_or_convenor? %>
-          <a href="/courses/<%= @course.id %>/edit">Enrol students</a>
+          <%= link_to 'Enrol students', edit_course_path(@course.id)%>
         <% end %>
       <% else %>
         <tr>

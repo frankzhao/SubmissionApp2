@@ -6,8 +6,4 @@ class Course < ActiveRecord::Base
   has_many :convenors
   has_many :students
 
-  def url
-    '/courses/' + self.id.to_s
-  end
-
 end
