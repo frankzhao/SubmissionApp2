@@ -41,8 +41,8 @@
 
         <% @course.students.each do |s| %>
           <tr>
-           <td><%= s.uid %></td>
-           <td><%= s.firstname + " " + s.surname %></td>
+           <td><%= link_to s.uid, user_path(s) %></td>
+           <td><%= link_to s.firstname + " " + s.surname, user_path(s) %></td>
           </tr>
         <% end %>
       <% end %>

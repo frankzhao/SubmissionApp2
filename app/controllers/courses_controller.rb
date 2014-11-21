@@ -86,6 +86,7 @@ class CoursesController < ApplicationController
 
         if Student.find_by_uid(s)
           c.students << Student.find_by_uid(s)
+          Student.find_by_uid(s).courses << c
           counter += 1
         else
           # Look up student details
@@ -93,6 +94,7 @@ class CoursesController < ApplicationController
           if ldap_user
             s = Student.create(:uid => s, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.students << s
+            s.courses << c
             counter += 1
           else
             flash_message :error, "The student <#{s}> could not be found on the LDAP server."
@@ -110,6 +112,7 @@ class CoursesController < ApplicationController
 
         if Tutor.find_by_uid(t)
           c.tutors << Tutor.find_by_uid(t)
+          Tutor.find_by_uid(t).courses << c
           counter += 1
         else
           # Look up user details
@@ -117,6 +120,7 @@ class CoursesController < ApplicationController
           if ldap_user
             t = Tutor.create(:uid => t, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.tutor << t
+            t.courses << c
             counter += 1
           else
             flash_message :error, "The tutor <#{t}> could not be found on the LDAP server."
@@ -134,6 +138,7 @@ class CoursesController < ApplicationController
 
         if Convenor.find_by_uid(conv)
           c.convenors << Convenor.find_by_uid(conv)
+          Convenor.find_by_uid(s).courses << c
           counter += 1
         else
           # Look up user details
@@ -141,6 +146,7 @@ class CoursesController < ApplicationController
           if ldap_user
             conv = Convenor.create(:uid => conv, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
             c.convenors << conv
+            conv.courses << c
             counter += 1
           else
             flash_message :error, "The convenor <#{conv}> could not be found on the LDAP server."

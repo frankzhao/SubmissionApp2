@@ -1,2 +1,34 @@
-<h1>Assignments#index</h1>
-<p>Find me in app/views/assignments/index.html.erb</p>
+<div class="row">
+  <div class="col-md-9">
+    <h1 class="page-header">Your assignments</h1>
+    <table class="table table-hover table-striped">
+      <% if @assignments.empty? %>
+        <p>You don't have any assignments.</p>
+      <% else %>
+        <tr>
+          <th>Course Code</th>
+          <th>Assignment</th>
+          <th>Date Due</th>
+          <th>Your Submissions</th>
+        </tr>
+        <% @assignments.each do |a| %>
+          <tr>
+            <td><%= link_to a.course.code, course_path(a)%></td>
+            <td><%= link_to a.name, assignment_path(a)%></td>
+            <td><%= a.due_date.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td>
+              <% if current_user.submissions_for(a).empty? %>
+                No submissions found.<br><%= link_to "Add submission", new_submission_path %>
+              <% else %>
+                <% current_user.submissions_for(a).each do |s| %>
+                  <%= link_to s.id + " " + s.timestamp.strftime('%d/%m/%Y %I:%M%p'), submission_path(s) %><br />
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+  <%= render 'sidebar' %>
+</div>

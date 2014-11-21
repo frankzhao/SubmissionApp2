@@ -15,15 +15,16 @@
           <th>Course Code</th>
           <th>Name</th>
           <th>Convenors</th>
+          <th>Lab Groups</th>
           <th>Assignments</th>
         </tr>
         <% @user.courses.each do |c| %>
           <tr>
-            <td><a href="<%= c.url %>"><%= c.code %></td>
-            <td><%= c.name %></td>
+            <td><%= link_to c.code, course_path(c) %></td>
+            <td><%= link_to c.name, course_path(c) %></td>
             <td>
               <% c.convenors.each do |convenor| %>
-                <%= convenor.firstname + " " + convenor.surname %><br />
+                <%= link_to convenor.firstname + " " + convenor.surname, user_path(convenor) %><br />
               <% end %>
             </td>
             <td>
@@ -33,7 +34,7 @@
             </td>
             <td>
               <% c.assignments.each do |a| %>
-                <%= a.name %><br />
+                <%= link_to a.name, assignment_path(a) %><br />
               <% end %>
             </td>
           </tr>

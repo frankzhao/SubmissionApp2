@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   validates :uid, :uniqueness => {:case_sensitive => false},
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
-  def submissions_for_assignment(a)
+  def submissions_for(a)
     self.submissions.select { |s| s.user == self}
   end
 

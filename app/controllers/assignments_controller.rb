@@ -22,7 +22,11 @@ class AssignmentsController < ApplicationController
     assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type)
       # Add assignment to the course
-      Course.find_by_id(course).assignments << assignment
+      Course.find(course).assignments << assignment
+      # Distribute assignment to users in the course
+      for u in Course.users
+        u.assignments << assignment
+      end
     else
       flash_message :error, "Could not find course with ID=" + course.to_s
     end
@@ -46,7 +50,7 @@ class AssignmentsController < ApplicationController
     if params[:id] && Assignment.find_by_id(params[:id])
       @assignment = Assignment.find_by_id(params[:id])
       @course = @assignment.course
-      @submissions = current_user.submissions_for_assignment(@assignment)
+      @submissions = current_user.submissions_for(@assignment)
     else
       flash_message :error, "Could not find assignment with ID=" + params[:id]
       redirect_to '/'
@@ -54,6 +58,11 @@ class AssignmentsController < ApplicationController
   end
 
   def index
+    if current_user.is_admin?
+      @assignments = Assignment.all
+    else
+      @assignments = current_user.assignments
+    end
   end
 
   def destroy

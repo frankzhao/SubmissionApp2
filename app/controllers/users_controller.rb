@@ -10,5 +10,9 @@ class UsersController < ApplicationController
     else
       flash_message :error, "Could not find user with ID=" + params[:id]
     end
+
+    if current_user.is_admin?
+      current_user.courses = Course.all
+    end
   end
 end
