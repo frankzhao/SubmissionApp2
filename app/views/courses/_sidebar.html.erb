@@ -3,9 +3,9 @@
     <li><h4>Actions</h4></li>
     <hr>
     <% if current_user.is_admin_or_convenor? %>
-      <li class="sidebar-item"><%= link_to 'New course', new_course_path %></li>
+      <li class="sidebar-item"><a href="/courses/new"><span class="glyphicon glyphicon-plus"></span>New course</a></li>
     <% end %>
-    <li class="sidebar-item"><%= link_to 'View Assignments', assignments_url %></li>
-    <li class="sidebar-item"><%= link_to 'Profile', user_path(current_user) %></li>
+    <li class="sidebar-item"><a href="/assignments"><span class="glyphicon glyphicon-tasks"></span>View Assignments</a></li>
+    <li class="sidebar-item"><a href="<%= user_path(current_user) %>"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
   </ul>
 </div>
