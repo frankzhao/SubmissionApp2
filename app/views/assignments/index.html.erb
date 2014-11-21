@@ -18,10 +18,11 @@
             <td><%= a.due_date.strftime('%d/%m/%Y %I:%M%p') %></td>
             <td>
               <% if current_user.submissions_for(a).empty? %>
-                No submissions found.<br><%= link_to "Add submission", new_submission_path %>
+                <span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">No submissions found.</span><br><%= link_to "Add submission", new_submission_path %>
               <% else %>
                 <% current_user.submissions_for(a).each do |s| %>
-                  <%= link_to s.id + " " + s.timestamp.strftime('%d/%m/%Y %I:%M%p'), submission_path(s) %><br />
+                  <span class="glyphicon glyphicon-ok good"></span>
+                  <%= link_to s.id + " " + s.timestamp.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
                 <% end %>
               <% end %>
             </td>

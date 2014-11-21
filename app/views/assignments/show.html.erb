@@ -4,13 +4,13 @@
     <p class="bold">Submission Instructions</p>
     <p class="italic">Assignment for <%= link_to @course.code + ": " + @course.name,
       course_path(@course.id)%></p>
-    <p>Due at <%= @assignment.due_date.strftime('%d/%m/%Y %I:%M%p') %></p>
+      <p><span class="glyphicon glyphicon-time"></span>Due at <%= @assignment.due_date.strftime('%d/%m/%Y %I:%M%p') %></p>
     <p><%= @assignment.description %></p>
 
     <h3>Your submissions</h3>
     <table class="table table-hover table-striped">
       <% if @submissions.empty? %>
-        <p>You currently have no submissions for this assignment.</p>
+        <p><span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">You currently have no submissions for this assignment.</span></p>
         <a href="/submissions/<%= @assignment.id.to_s %>/new">New submission</a>
       <% else %>
         <tr>
@@ -22,7 +22,7 @@
           <tr>
             <td><%= s.user.full_name %></td>
             <td><%= s.user.uid %></td>
-            <td><%= s.timestamp.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><span class="glyphicon glyphicon-ok good"><%= s.timestamp.strftime('%d/%m/%Y %I:%M%p') %></span></td>
           </tr>
         <% end %>
       <% end %>

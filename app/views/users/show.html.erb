@@ -57,9 +57,40 @@
         </tr>
         <% @user.labgroups.each do |g| %>
           <tr>
-            <td><a href="/groups/<%= g.id.to_s %>"><%= g.name %></td>
-            <td><%= g.course.name %></td>
+            <td><%= link_to g.name, labgroup_path(g)%></td>
+            <td><%= link_to g.course.name, course_path(g.course) %></td>
             <% if current_user.is_staff? %><td><%= g.users.length %></td><% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    
+    <h3>Your Assignments</h3>
+    <table class="table table-hover table-striped">
+      <% if current_user.assignments.empty? %>
+        <p>You don't have any assignments.</p>
+      <% else %>
+        <tr>
+          <th>Course Code</th>
+          <th>Assignment</th>
+          <th>Date Due</th>
+          <th>Your Submissions</th>
+        </tr>
+        <% current_user.assignments.each do |a| %>
+          <tr>
+            <td><%= link_to a.course.code, course_path(a)%></td>
+            <td><%= link_to a.name, assignment_path(a)%></td>
+            <td><%= a.due_date.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td>
+              <% if current_user.submissions_for(a).empty? %>
+                <span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">No submissions found.</span><br><%= link_to "Add submission", new_submission_path %>
+              <% else %>
+                <% current_user.submissions_for(a).each do |s| %>
+                <span class="glyphicon glyphicon-ok good"></span>
+                  <%= link_to s.id + " " + s.timestamp.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
+                <% end %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       <% end %>
