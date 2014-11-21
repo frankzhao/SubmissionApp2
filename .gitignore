@@ -50,3 +50,6 @@ bower.json
 
 /* Ignore SSL keys */
 ssl/**
+
+/* Ignore bundler packages */
+vendor/cache/**
