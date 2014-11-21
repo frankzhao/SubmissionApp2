@@ -8,7 +8,6 @@ Bundler.require(*Rails.groups)
 
 module Submissionapp2
   class Application < Rails::Application
-    config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
