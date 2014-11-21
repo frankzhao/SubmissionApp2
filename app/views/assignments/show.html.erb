@@ -11,7 +11,7 @@
     <table class="table table-hover table-striped">
       <% if @submissions.empty? %>
         <p>You currently have no submissions for this assignment.</p>
-        <a href="/submissions/new/<%= @assignment.id.to_s %>">New submission</a>
+        <a href="/submissions/<%= @assignment.id.to_s %>/new">New submission</a>
       <% else %>
         <tr>
           <th>Submitted by</th>

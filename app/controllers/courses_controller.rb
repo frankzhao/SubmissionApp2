@@ -1,6 +1,8 @@
 class CoursesController < ApplicationController
   before_filter :require_logged_in, :except => [:index]
 
+  respond_to :html
+
   def new
     @course = Course.new
   end
@@ -20,11 +22,62 @@ class CoursesController < ApplicationController
       :name => course_name,
       :description => description)
 
-    # Enrol staff and students
-    if current_user.is_convenor?
-      c.convenors << current_user
-    end
+    enroll_users(c, students, tutors, convenors)
 
+    redirect_to '/courses'
+
+  end
+
+  def edit
+    @course = Course.find(params[:id])
+    respond_with @course
+  end
+
+  def update
+    @course = Course.find_by_id(params[:id])
+    @course.update_attributes(
+      :code => params[:code],
+      :name => params[:name],
+      :description => params[:description]
+    )
+    enroll_users(@course,
+      params[:students].split(/\n/).reject(&:empty?),
+      params[:tutors].split(/\n/).reject(&:empty?),
+      params[:convenors].split(/\n/).reject(&:empty?)
+    )
+    respond_with @course
+  end
+
+  def show
+    if params[:id] && Course.find_by_id(params[:id])
+      @course = Course.find_by_id(params[:id])
+    else
+      flash_message :error, "Could not find a course with ID=" + params[:id].to_s
+      redirect_to "/"
+    end
+  end
+
+  def index
+    if current_user
+      if current_user.is_admin?
+        @courses = Course.all
+      else
+        @courses = current_user.courses
+      end
+    else
+      redirect_to "/"
+    end
+  end
+
+  def destroy
+    @course = Course.find(params[:id])
+    @course.destroy
+    respond_with @course
+  end
+  
+  private
+  
+  def enroll_users(c, students, tutors, convenors)
     if not students.empty?
       counter = 0
       students.each do |s|
@@ -96,35 +149,6 @@ class CoursesController < ApplicationController
       end
       flash_message :success, "Sucessfully enrolled #{counter} students."
     end
-
-    redirect_to '/courses'
-
   end
 
-  def edit
-  end
-
-  def show
-    if params[:id] && Course.find_by_id(params[:id])
-      @course = Course.find_by_id(params[:id])
-    else
-      flash_message :error, "Could not find a course with ID=" + params[:id].to_s
-      redirect_to "/"
-    end
-  end
-
-  def index
-    if current_user
-      if current_user.is_admin?
-        @courses = Course.all
-      else
-        @courses = current_user.courses
-      end
-    else
-      redirect_to "/"
-    end
-  end
-
-  def destroy
-  end
 end
