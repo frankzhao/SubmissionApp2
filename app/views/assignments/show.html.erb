@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-md-9">
-    <h1 class="page-header"><%= @assignment.name %></h1>
+  <div class="col-md-9" id="content">
+    <h1 class="page-header"><%= @assignment.name %><div class="menu-icon-container hidden"><span class="glyphicon glyphicon-tasks menu-icon"></span></div></h1>
     <p class="bold">Submission Instructions</p>
     <p class="italic">Assignment for <%= link_to @course.code + ": " + @course.name,
       course_path(@course.id)%></p>
