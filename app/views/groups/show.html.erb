@@ -1,2 +1,23 @@
-<h1>Groups#show</h1>
-<p>Find me in app/views/groups/show.html.erb</p>
+<div class="row">
+  <div class="col-md-9" id="content">
+    <h1 class="page-header"><%= @group.course.code + ": " + @group.name %><div class="menu-icon-container hidden"><span class="glyphicon glyphicon-tasks menu-icon"></div></h1>
+    <h3>Enrolments</h3>
+    <table class="table table-hover table-striped">
+      <% if @group.students.empty? %>
+        <p>No students are currently enrolled in this group.</p>
+      <% else %>
+        <tr>
+          <th>Name</th>
+          <th>Student ID</th>
+        </tr>
+        <% @group.students.each do |s| %>
+          <tr>
+            <td><%= link_to s.full_name, user_path(s)%></td>
+            <td><%= link_to s.uid, user_path(s)%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+  <%= render 'sidebar_show' %>
+</div>

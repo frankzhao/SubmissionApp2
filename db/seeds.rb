@@ -8,7 +8,7 @@ assignment = Assignment.create(name: "Test assignment", due_date: "2421-02-11 14
                      description: "Submission instructions here", kind: "plaintext")
 group = Group.create(name: "Tuesday 9-11")
 
-# Enrollments
+# Enrolments
 c.students << student
 c.convenors << convenor
 c.assignments << assignment
