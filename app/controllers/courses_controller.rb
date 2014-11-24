@@ -8,7 +8,6 @@ class CoursesController < ApplicationController
   end
 
   def create
-
     course_code = params[:course_code]
     course_name = params[:name]
     description = params[:description]
@@ -25,7 +24,6 @@ class CoursesController < ApplicationController
     enroll_users(c, students, tutors, convenors)
 
     redirect_to '/courses'
-
   end
 
   def edit
@@ -72,6 +70,11 @@ class CoursesController < ApplicationController
   def destroy
     @course = Course.find(params[:id])
     @course.destroy
+    respond_with @course
+  end
+  
+  def groups
+    @course = Course.find(params[:id])
     respond_with @course
   end
   

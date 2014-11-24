@@ -67,22 +67,22 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.datetime "updated_at"
   end
 
-  create_table "labgroups", force: true do |t|
+  create_table "groups", force: true do |t|
     t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
   end
 
-  add_index "labgroups", ["course_id"], name: "index_labgroups_on_course_id"
+  add_index "groups", ["course_id"], name: "index_groups_on_course_id"
 
-  create_table "labgroups_users", id: false, force: true do |t|
-    t.integer "labgroup_id"
+  create_table "groups_users", id: false, force: true do |t|
+    t.integer "group_id"
     t.integer "user_id"
   end
 
-  add_index "labgroups_users", ["labgroup_id", "user_id"], name: "index_labgroups_users_on_labgroup_id_and_user_id"
-  add_index "labgroups_users", ["user_id"], name: "index_labgroups_users_on_user_id"
+  add_index "groups_users", ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
+  add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id"
 
   create_table "notifications", force: true do |t|
     t.text     "text"

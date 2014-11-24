@@ -4,11 +4,12 @@ Rails.application.routes.draw do
   resources :comments
   resources :submissions
   resources :assignments
-  get "assignments/new/:course_id" => "assignments#new"
   resources :courses
   resources :groups
 
   get "users/:id", :to => "users#show", :as => "user"
+  get "assignments/new/:course_id" => "assignments#new"
+  get "courses/:id/groups" => "courses#groups"
 
   devise_for :users
   devise_scope :user do

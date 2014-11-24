@@ -1,0 +1,55 @@
+%h1.page-header Groups
+%p.italic
+  Groups for
+  %a{href: course_path(@course)}
+    = @course.code + ": " + @course.name
+
+- if current_user.is_admin?
+  - if Group.all.empty?
+    There are no groups.
+  - else
+    - for group in Group.all
+      .panel-group{id: "accordion"}
+        .panel.panel-default{id: group.id}
+          .panel-heading
+            %h4.panel-title
+            %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+            group.name
+          .panel-collapse.collapse.in{id: "group" + group.id.to_s}
+            .panel-body
+              - if group.users.select{|u| u.type == "Student"}.empty?
+                This group currently has no students.
+              - else
+                %table
+                  %tr
+                    %th Name
+                    %th Student ID
+                  - for student in group.users.select{|u| u.type == "Student"}
+                    %tr
+                      %td student.full_name
+                      %td student.uid
+
+- elsif @course.groups.empty?
+  %p This course currently has no groups.
+- else
+  - for group in @course.groups
+    .panel-group{id: "accordion"}
+      .panel.panel-default{id: group.id}
+        .panel-heading
+          %h4.panel-title
+          %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+          group.name
+        .panel-collapse.collapse.in{id: "group" + group.id.to_s}
+          .panel-body
+            - if group.select{|u| u.type == "Student"}.empty?
+              This group currently has no students.
+            - else
+              %table
+                %tr
+                  %th Name
+                  %th Student ID
+                - for student in group.users.select{|u| u.type == "Student"}
+                  %tr
+                    %td student.full_name
+                    %td student.uid
+          

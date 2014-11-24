@@ -4,6 +4,10 @@
 //= require turbolinks
 //= require_tree .
 
+function hide (e) {
+  $(e).addClass("hidden");
+}
+
 ready = function () {
   /* Hide sidebar */
   $(".sidebar .menu-icon-container").click(
@@ -14,7 +18,7 @@ ready = function () {
       $(this).addClass("hidden")
     }
   );
-  
+
   /* Show sidebar */
   $("#content .menu-icon-container").click(
     function () {

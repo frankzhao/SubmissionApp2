@@ -37,6 +37,9 @@ gem 'thin'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# Slim templates
+gem 'haml-rails'
+
 # Devise for authentication
 gem 'devise'
 

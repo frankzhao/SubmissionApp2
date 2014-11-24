@@ -6,6 +6,7 @@ c = Course.create(code: "COMP1100", name: "Introduction to Programming and Algor
              description: "A truly great course")
 assignment = Assignment.create(name: "Test assignment", due_date: "2421-02-11 14:00:00",
                      description: "Submission instructions here", kind: "plaintext")
+group = Group.create(name: "Tuesday 9-11")
 
 # Enrollments
 c.students << student
@@ -15,3 +16,6 @@ student.courses << c
 for u in c.users
   u.assignments << assignment
 end
+
+group.students << student
+c.groups << group
