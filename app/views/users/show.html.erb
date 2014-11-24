@@ -29,7 +29,7 @@
             </td>
             <td>
               <% c.groups.each do |g| %>
-                <%= g.name %><br />
+                <%= link_to g.name, group_path(g) %><br />
               <% end %>
             </td>
             <td>
@@ -44,11 +44,21 @@
     
     <h3>Your groups</h3>
     <table class="table table-hover table-striped">
-      <% if @user.groups.empty? %>
-        <p>You don't have any groups.</p>
-        <% if current_user.is_admin_or_convenor? %>
-         <%= link_to 'Create one', new_group_path %>
+      <% if current_user.is_convenor? && !current_user.courses.empty? %>
+        <tr>
+          <th>Course Code</th>
+          <th>Group Name</th>
+        </tr>
+        <% for c in current_user.courses %>
+          <% for group in c.groups %>
+            <tr>
+              <td><%= link_to c.code, course_path(c) %>
+              <td><%= link_to group.name, group_path(group) %></td>
+            </tr>
+          <% end %>
         <% end %>
+      <% elsif @user.groups.empty? %>
+        <p>You don't have any groups.</p>
       <% else %>
         <tr>
           <th>Group</th>

@@ -5,12 +5,9 @@ class CreateAssignments < ActiveRecord::Migration
       t.datetime :due_date
       t.text :description
       t.string :kind, :null => false
+      t.belongs_to :course
+      t.belongs_to :user
       t.timestamps
     end
-    
-    add_column :assignments, :course_id, :integer
-    add_index :assignments, :course_id
-    add_column :assignments, :user_id, :integer
-    add_index :assignments, :user_id
   end
 end

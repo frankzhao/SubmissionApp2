@@ -20,7 +20,7 @@
           <tr>
             <td><a href="/assignments/<%= a.id.to_s %>"><%= a.name %></a></td>
            <td><%= a.due_date.strftime("%d/%m/%Y %I:%M%p") %></td>
-           <td><%= a.submissions.length %></td>
+           <td><%= a.submissions.length.to_s + " of " + @course.users.length.to_s %></td>
          </tr>
         <% end %>
       <% end %>
@@ -37,12 +37,20 @@
         <tr>
           <th>ID</th>
           <th>Name</th>
+          <th>Group</th>
         </tr>
 
         <% @course.students.each do |s| %>
           <tr>
            <td><%= link_to s.uid, user_path(s) %></td>
            <td><%= link_to s.firstname + " " + s.surname, user_path(s) %></td>
+           <td>
+             <% if s.groups.select{|g| g.course == @course}.empty? %>
+              None
+            <% else %>
+              <% group = s.groups.select{|g| g.course == @course}.first %>
+              <%= link_to group.name, group_path(group) %>
+            <% end %>
           </tr>
         <% end %>
       <% end %>

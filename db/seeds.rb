@@ -17,5 +17,8 @@ for u in c.users
   u.assignments << assignment
 end
 
+convenor.courses << c
+student.groups << group
 group.students << student
 c.groups << group
+group.course = c

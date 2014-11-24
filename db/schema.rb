@@ -23,14 +23,11 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.datetime "due_date"
     t.text     "description"
     t.string   "kind",        null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "course_id"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "assignments", ["course_id"], name: "index_assignments_on_course_id"
-  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id"
 
   create_table "comments", force: true do |t|
     t.text     "text",                                    null: false
@@ -69,12 +66,10 @@ ActiveRecord::Schema.define(version: 20141116082449) do
 
   create_table "groups", force: true do |t|
     t.string   "name",       null: false
+    t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id"
   end
-
-  add_index "groups", ["course_id"], name: "index_groups_on_course_id"
 
   create_table "groups_users", id: false, force: true do |t|
     t.integer "group_id"
@@ -99,14 +94,11 @@ ActiveRecord::Schema.define(version: 20141116082449) do
   create_table "submissions", force: true do |t|
     t.text     "type"
     t.integer  "submitted_by_user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "assignment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id"
-  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id"
 
   create_table "tutors", force: true do |t|
     t.datetime "created_at"
@@ -124,9 +116,10 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "group_id"
+    t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id"
     t.string   "type"
     t.string   "firstname"
     t.string   "surname"
@@ -136,7 +129,6 @@ ActiveRecord::Schema.define(version: 20141116082449) do
   end
 
   add_index "users", ["assignment_id"], name: "index_users_on_assignment_id"
-  add_index "users", ["course_id"], name: "index_users_on_course_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["uid"], name: "index_users_on_uid", unique: true
 
