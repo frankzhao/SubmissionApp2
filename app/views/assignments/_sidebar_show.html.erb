@@ -3,7 +3,7 @@
     <li><h4>Actions<div class="menu-icon-container"><span class="glyphicon glyphicon-tasks menu-icon"></span></div></h4></li>
     <hr>
     <% if current_user.is_admin_or_convenor? %>
-           <li class="sidebar-item"><a href="/assignments/<%= @assignment.id %>/edit">
+      <li class="sidebar-item"><a href="/assignments/<%= @assignment.id %>/edit">
       <span class="glyphicon glyphicon-pencil"></span>Edit Assignment</a></li>
       <li class="sidebar-item">
       <a data-confirm="Are you sure you wish to delete <%= @assignment.name %>?" data-method="delete" href="assignments/<%= @assignment.id %>" rel="nofollow"><span class="glyphicon glyphicon-trash"></span>

@@ -3,11 +3,17 @@
     <li><h4>Actions<div class="menu-icon-container"><span class="glyphicon glyphicon-tasks menu-icon"></span></div></h4></li>
     <hr>
     <% if current_user.is_admin_or_convenor? %>
-      <li class="sidebar-item"><%= link_to "Edit course", edit_course_path(@course)  %></li>
-      <li class="sidebar-item"><%= link_to "Edit enrolments", edit_course_path(@course) + "#enrolments" %></li>
-      <li class="sidebar-item"><a href="/assignments/new/<%= @course.id %>" %>Create assignment</a></li>
-      <li class="sidebar-item"><%= link_to "Delete course", course_path(@course), method: :delete,
-        data: { confirm: "Are you sure you wish to delete " + @course.code + " " + @course.name + "?"}%></li>
+      <li class="sidebar-item"><a href="/courses/<%= @course.id %>/edit">
+        <span class="glyphicon glyphicon-pencil"></span>Edit course</a></li>
+      <li class="sidebar-item"><a href="/courses/<%= @course.id %>/edit#enrolments">
+        <span class="glyphicon glyphicon-pencil"></span>Edit enrolments</a></li>
+      <li class="sidebar-item"><a href="/assignments/new/<%= @course.id %>" %>
+        <span class="glyphicon glyphicon-plus"></span>Create assignment</a></li>
+      <li class="sidebar-item">
+        <%= link_to course_path(@course), method: :delete,
+        data: { confirm: "Are you sure you wish to delete " + @course.code + " " + @course.name + "?"} do %>
+          <span class="glyphicon glyphicon-trash"></span>Delete course
+          <% end %></li>
     <% else %>
       <li class="sidebar-item"><a>Nothing to see here.</a></li>
     <% end %>
