@@ -175,3 +175,12 @@ form .controls {
 .good {
  color: green;
 }
+
+.menu-icon-container {
+  float: right;
+  cursor: pointer;
+  .menu-icon { font-size: 14px; }
+  .glyphicon {
+    color: #008cba;
+  }
+}
