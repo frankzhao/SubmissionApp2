@@ -27,8 +27,8 @@
               <% end %>
             </td>
             <td>
-              <% c.labgroups.each do |lab| %>
-                <%= link_to lab.name, group_path(lab) %><br />
+              <% c.groups.each do |g| %>
+                <%= link_to g.name, group_path(g) %><br />
               <% end %>
             </td>
             <td>

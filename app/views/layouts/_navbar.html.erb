@@ -48,10 +48,10 @@
         </li>
 
         <% unless current_user.is_admin? %>
-          <% unless current_user.labgroups.empty? %>
+          <% unless current_user.groups.empty? %>
             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
               <ul class="dropdown-menu scrollable-menu">
-                <% current_user.labgroups.each do |group| %>
+                <% current_user.groups.each do |group| %>
                   <li><%= link_to group.name, group_path(group) %></li>
                 <% end %>
               </ul>
@@ -62,7 +62,7 @@
         <% if current_user.is_admin? %>
           <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
             <ul class="dropdown-menu scrollable-menu">
-              <% Labgroup.all.each do |group| %>
+              <% Group.all.each do |group| %>
                 <li><%= link_to group.name, group_path(group) %></li>
               <% end %>
             </ul>

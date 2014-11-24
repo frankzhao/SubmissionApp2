@@ -15,7 +15,7 @@
           <th>Course Code</th>
           <th>Name</th>
           <th>Convenors</th>
-          <th>Lab Groups</th>
+          <th>Groups</th>
           <th>Assignments</th>
         </tr>
         <% @user.courses.each do |c| %>
@@ -28,8 +28,8 @@
               <% end %>
             </td>
             <td>
-              <% c.labgroups.each do |lab| %>
-                <%= lab.name %><br />
+              <% c.groups.each do |g| %>
+                <%= g.name %><br />
               <% end %>
             </td>
             <td>
@@ -44,7 +44,7 @@
     
     <h3>Your groups</h3>
     <table class="table table-hover table-striped">
-      <% if @user.labgroups.empty? %>
+      <% if @user.groups.empty? %>
         <p>You don't have any groups.</p>
         <% if current_user.is_admin_or_convenor? %>
          <%= link_to 'Create one', new_group_path %>
@@ -55,9 +55,9 @@
           <th>Course</th>
           <% if current_user.is_staff? %><th>Enrolments</th><% end %>
         </tr>
-        <% @user.labgroups.each do |g| %>
+        <% @user.groups.each do |g| %>
           <tr>
-            <td><%= link_to g.name, labgroup_path(g)%></td>
+            <td><%= link_to g.name, group_path(g)%></td>
             <td><%= link_to g.course.name, course_path(g.course) %></td>
             <% if current_user.is_staff? %><td><%= g.users.length %></td><% end %>
           </tr>
