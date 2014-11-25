@@ -13,21 +13,23 @@
         .panel.panel-default{id: group.id}
           .panel-heading
             %h4.panel-title
-            %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
-            group.name
+              %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+                #{group.name}
           .panel-collapse.collapse.in{id: "group" + group.id.to_s}
             .panel-body
               - if group.users.select{|u| u.type == "Student"}.empty?
                 This group currently has no students.
               - else
-                %table
+                %table.table.table-hover.table-striped
                   %tr
                     %th Name
                     %th Student ID
                   - for student in group.users.select{|u| u.type == "Student"}
                     %tr
-                      %td student.full_name
-                      %td student.uid
+                      %td
+                        = link_to student.full_name, user_path(student)
+                      %td
+                        = link_to student.uid, user_path(student)
 
 - elsif @course.groups.empty?
   %p This course currently has no groups.
@@ -37,19 +39,21 @@
       .panel.panel-default{id: group.id}
         .panel-heading
           %h4.panel-title
-          %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
-          group.name
+            %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+              #{group.name}
         .panel-collapse.collapse.in{id: "group" + group.id.to_s}
           .panel-body
             - if group.select{|u| u.type == "Student"}.empty?
               This group currently has no students.
             - else
-              %table
+              %table.table.table-hover.table-striped
                 %tr
                   %th Name
                   %th Student ID
                 - for student in group.users.select{|u| u.type == "Student"}
                   %tr
-                    %td student.full_name
-                    %td student.uid
+                    %td
+                      = link_to student.full_name, user_path(student)
+                    %td
+                      = link_to student.uid, user_path(student)
           
