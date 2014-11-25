@@ -30,9 +30,9 @@ body {
   -moz-box-sizing: border-box;
 }
 
-li.sidebar-item :hover {
+li.sidebar-item:hover {
   border-left: 1px solid #008cba;
-  padding-left: 14px;
+  margin-left: -1px;
 }
 
 .sidenav a {
