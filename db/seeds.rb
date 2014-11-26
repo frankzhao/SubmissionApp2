@@ -22,3 +22,6 @@ student.groups << group
 group.students << student
 c.groups << group
 group.course = c
+
+Notification.create_and_distribute("Something is wrong", "http://google.com", [student])
+Notification.create_and_distribute("You Failed, go here instead", "http://canberra.edu.au", [student])
