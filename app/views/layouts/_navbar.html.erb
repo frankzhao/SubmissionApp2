@@ -98,14 +98,10 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <!-- <span class="glyphicon glyphicon-exclamation-sign"></span> -->
             Notifications
-            <span class="badge">7</span>
+            <span class="badge" id="notification-badge"></span>
             <b class="caret"></b>
             </a>
-            <ul class="dropdown-menu scrollable-menu">
-                <li class="notification">
-                  <a href="/">Example notification</a>
-                </li>
-
+            <ul class="dropdown-menu scrollable-menu" id="notification-list">
             </ul>
           </li>
 
@@ -117,7 +113,6 @@
             <li><%= link_to 'Profile', user_path(current_user) %></li>
             <li class="divider"></li>
             <li><%= link_to "Log Out", destroy_user_session_path, :method => :delete %></li>
-
           </ul>
         </li>
       </ul>

@@ -15,6 +15,6 @@ class Notification < ActiveRecord::Base
   end
 
   def dismiss!
-  	self.seen = true
+  	self.destroy
   end
 end

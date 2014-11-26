@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :courses
   resources :groups
 
+  get "users/notifications" => "notifications#list"
+  delete "users/notifications" => "notifications#dismiss"
+
   get "users/:id", :to => "users#show", :as => "user"
   get "assignments/new/:course_id" => "assignments#new"
   get "courses/:id/groups" => "courses#groups"

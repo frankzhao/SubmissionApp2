@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20141116082449) do
   create_table "notifications", force: true do |t|
     t.text     "text"
     t.string   "link"
-    t.boolean  "seen",       default: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -1,4 +1,5 @@
 class GroupsController < ApplicationController
+  before_filter :require_logged_in
   def new
   end
 
