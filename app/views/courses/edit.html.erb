@@ -35,7 +35,7 @@
         <div class="input-group "><div class="controls">
           <textarea id="students" name="students" class="form-control" rows=10 cols=50
             placeholder="Paste newline seperated student IDs, or upload a CSV below. e.g: uxxxxxxx"><%= @course.students_to_csv %></textarea>
-            <input id="csv_upload" name="csv_upload" type="file">
+          <%= f.file_field :csv %>
         </div></div>
 
         <label class="control-label " for="tutors">Tutors</label>
