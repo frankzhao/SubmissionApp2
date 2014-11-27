@@ -49,6 +49,7 @@ class CoursesController < ApplicationController
   def show
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
+      @groups = @course.groups
     else
       flash_message :error, "Could not find a course with ID=" + params[:id].to_s
       redirect_to "/"
@@ -87,15 +88,15 @@ class CoursesController < ApplicationController
         # Remove spaces
         s.gsub!(/\s+/, "")
 
-        if Student.find_by_uid(s)
+        if !Student.find_by_uid(s).nil?
           c.students << Student.find_by_uid(s)
           Student.find_by_uid(s).courses << c
           counter += 1
         else
           # Look up student details
           ldap_user = AnuLdap.find_by_uni_id(s)
-          if ldap_user
-            s = Student.create(:uid => s, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
+          if !ldap_user.nil?
+            s = Student.create(:uid => s, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.students << s
             s.courses << c
             counter += 1
@@ -113,15 +114,15 @@ class CoursesController < ApplicationController
         # Remove spaces
         t.gsub!(/\s+/, "")
 
-        if Tutor.find_by_uid(t)
+        if !Tutor.find_by_uid(t).nil?
           c.tutors << Tutor.find_by_uid(t)
           Tutor.find_by_uid(t).courses << c
           counter += 1
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(t)
-          if ldap_user
-            t = Tutor.create(:uid => t, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
+          if !ldap_user.nil?
+            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.tutor << t
             t.courses << c
             counter += 1
@@ -137,17 +138,17 @@ class CoursesController < ApplicationController
       counter = 0
       convenors.each do |conv|
         # Remove spaces
-        s.gsub!(/\s+/, "")
+        conv.gsub!(/\s+/, "")
 
-        if Convenor.find_by_uid(conv)
+        if !Convenor.find_by_uid(conv).nil?
           c.convenors << Convenor.find_by_uid(conv)
-          Convenor.find_by_uid(s).courses << c
+          Convenor.find_by_uid(conv).courses << c
           counter += 1
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(conv)
-          if ldap_user
-            conv = Convenor.create(:uid => conv, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
+          if !ldap_user.nil?
+            conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.convenors << conv
             conv.courses << c
             counter += 1

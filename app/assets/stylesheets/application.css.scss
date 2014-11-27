@@ -95,6 +95,10 @@ form .controls {
 
 .alert {
   cursor: pointer;
+  margin: 0 0 2px 0 !important;
+  p {
+    margin-bottom: 0 !important;
+  }
 }
 
 /* Add some more aliases to bootstrap styles for devise */

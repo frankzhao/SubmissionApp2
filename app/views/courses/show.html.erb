@@ -28,7 +28,7 @@
 
     <h3 id="enrolments">Enrolments</h3>
     <table class="table table-hover table-striped">
-      <% if @course.students.length == 0 %>
+      <% if @course.students.nil?%>
         <p>No students are enrolled in this course.</p>
         <% if current_user.is_admin_or_convenor? %>
           <%= link_to 'Enrol students', edit_course_path(@course.id)%>
@@ -51,10 +51,45 @@
               <% group = s.groups.select{|g| g.course == @course}.first %>
               <%= link_to group.name, group_path(group) %>
             <% end %>
-          </tr>
+          </td>
+        </tr>
         <% end %>
       <% end %>
     </table>
+
+    <h3 id="groups">Groups</h3>
+      <% if @groups.empty?%>
+        <p>This course currently has no groups.</p>
+        <% if current_user.is_admin_or_convenor? %>
+          <%= link_to 'Create one', new_group_path %>
+        <% end %>
+      <% else %>
+        <% for group in @groups %>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title"><%= link_to group.name, group_path(group) %></h4>
+            </div>
+            <div class="panel-body">
+            <table class="table table-hover table-striped">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Enrolments</th>
+              </tr>
+              <% for u in group.users %>
+                <tr>
+                 <td><%= link_to u.uid, user_path(u) %></td>
+                 <td><%= link_to u.firstname + " " + u.surname, user_path(u) %></td>
+                 <td><%= u.type %></td>
+                 <td><%= group.users.length %></td>
+                </tr>
+              <% end %>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
 
   </div>
   <%= render 'sidebar_show' %>

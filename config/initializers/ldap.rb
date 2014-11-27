@@ -22,10 +22,8 @@ module Devise
 
               # Create and update first time users
               if not User.find_by_uid(ldap_user[:uni_id])
-                u = User.create(:uid => ldap_user[:uni_id],
-                  :firstname => ldap_user[:given_name],
-                  :surname => ldap_user[:surname],
-                  :full_name => ldap_user[:full_name])
+                fail()
+                return
               else
                 u = User.find_by_uid(ldap_user[:uni_id])
                 if !u.has_logged_in_once

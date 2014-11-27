@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get "users/:id", :to => "users#show", :as => "user"
   get "assignments/new/:course_id" => "assignments#new"
   get "courses/:id/groups" => "courses#groups"
+  get "courses/:id/groups/new" => "groups#new"
+  post "courses/:id/groups" => "groups#create"
 
   devise_for :users
   devise_scope :user do

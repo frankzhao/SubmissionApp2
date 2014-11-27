@@ -1,6 +1,6 @@
 function NotificationSetup()
 {
-	setInterval(NotificationUpdate, 6000);
+	setInterval(NotificationUpdate, 60000);
 	NotificationUpdate();
 }
 

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   has_many :extensions
   has_many :assignments
 
-  validates :uid, :uniqueness => {:case_sensitive => false},
+  validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
   def submissions_for(a)
@@ -57,6 +57,11 @@ class User < ActiveRecord::Base
     else
       where(conditions.first)
     end
+  end
+
+  def password_required?
+    # override blank password limitaiton
+    false
   end
 
 end
