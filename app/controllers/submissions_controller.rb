@@ -14,6 +14,13 @@ class SubmissionsController < ApplicationController
   end
 
   def create
+    @submission = Submission.new(kind: "plaintext", plaintext: params[:plaintext])
+    current_user.submissions << @submission
+    @submission.user = current_user
+    @assignment = Assignment.find(params[:assignment_id])
+    @assignment.submissions << @submission
+    @submission.assignment = @assignment
+    redirect_to assignment_path(@assignment)
   end
 
   def edit

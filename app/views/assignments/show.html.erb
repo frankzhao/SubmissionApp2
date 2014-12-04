@@ -19,12 +19,14 @@
           <th>Submitted by</th>
           <th>Uni ID</th>
           <th>Date submitted</th>
+          <th></th>
         </tr>
         <% @submissions.each do |s| %>
           <tr>
-            <td><%= s.user.full_name %></td>
-            <td><%= s.user.uid %></td>
-            <td><span class="glyphicon glyphicon-ok"><%= s.timestamp.strftime('%d/%m/%Y %I:%M%p') %></span></td>
+            <td><%= link_to s.user.full_name, user_path(s.user) %></td>
+            <td><%= link_to s.user.uid, user_path(s.user) %></td>
+            <td><span class="glyphicon glyphicon-ok good"></span><%= s.created_at.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><%= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary" %></td>
           </tr>
         <% end %>
       <% end %>
@@ -40,12 +42,14 @@
           <th>Submitted by</th>
           <th>Uni ID</th>
           <th>Date submitted</th>
+          <th></th>
         </tr>
         <% @submissions.each do |s| %>
           <tr>
-            <td><%= s.user.full_name %></td>
-            <td><%= s.user.uid %></td>
-           <td><%= s.timestamp.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><%= link_to s.user.full_name, user_path(s.user) %></td>
+            <td><%= link_to s.user.uid, user_path(s.user) %></td>
+             <td><%= s.created_at.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><%= link_to "View Submission", submission_path(s) %></td>
           </tr>
         <% end %>
       <% end %>
