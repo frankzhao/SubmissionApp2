@@ -28,3 +28,4 @@ Notification.create_and_distribute("You Failed, go here instead", "http://canber
 
 Notification.create_and_distribute("ADMIN STUFFFFFF", nil, [admin])
 Notification.create_and_distribute("Website has been hacked", nil, [admin])
+

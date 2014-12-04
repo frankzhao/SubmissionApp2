@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20141116082449) do
     t.text     "plaintext"
     t.integer  "user_id"
     t.integer  "assignment_id"
+    t.text     "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

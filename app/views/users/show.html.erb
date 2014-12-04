@@ -49,7 +49,7 @@
           <th>Course Code</th>
           <th>Group Name</th>
         </tr>
-        <% for c in current_user.courses %>
+        <% for c in @user.courses %>
           <% for group in c.groups %>
             <tr>
               <td><%= link_to c.code, course_path(c) %>
@@ -77,7 +77,7 @@
     
     <h3>Your Assignments</h3>
     <table class="table table-hover table-striped">
-      <% if current_user.assignments.empty? %>
+      <% if @user.assignments.empty? %>
         <p>You don't have any assignments.</p>
       <% else %>
         <tr>
@@ -86,18 +86,18 @@
           <th>Date Due</th>
           <th>Your Submissions</th>
         </tr>
-        <% current_user.assignments.each do |a| %>
+        <% @user.assignments.each do |a| %>
           <tr>
             <td><%= link_to a.course.code, course_path(a)%></td>
             <td><%= link_to a.name, assignment_path(a)%></td>
             <td><%= a.due_date.strftime('%d/%m/%Y %I:%M%p') %></td>
             <td>
-              <% if current_user.submissions_for(a).empty? %>
-                <span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">No submissions found.</span><br><%= link_to "Add submission", new_submission_path %>
+              <% if @user.submissions_for(a).empty? %>
+                <span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">No submissions found.</span><br><%= link_to "Add submission", "/submissions/#{a.id}/new" %>
               <% else %>
-                <% current_user.submissions_for(a).each do |s| %>
+                <% @user.submissions_for(a).each do |s| %>
                 <span class="glyphicon glyphicon-ok good"></span>
-                  <%= link_to s.id + " " + s.timestamp.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
+                  <%= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
                 <% end %>
               <% end %>
             </td>
