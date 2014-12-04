@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20141116082449) do
   create_table "submissions", force: true do |t|
     t.text     "type"
     t.integer  "submitted_by_user_id"
+    t.text     "plaintext"
     t.integer  "user_id"
     t.integer  "assignment_id"
     t.datetime "created_at"

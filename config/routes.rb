@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"
   post "courses/:id/groups" => "groups#create"
+  get "submissions/:assignment_id/new" => "submissions#new"
 
   devise_for :users
   devise_scope :user do

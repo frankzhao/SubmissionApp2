@@ -3,6 +3,7 @@ class CreateSubmissions < ActiveRecord::Migration
     create_table :submissions do |t|
       t.text :type
       t.integer :submitted_by_user_id
+      t.text :plaintext
       t.belongs_to :user
       t.belongs_to :assignment
       t.timestamps
