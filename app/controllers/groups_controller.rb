@@ -10,7 +10,6 @@ class GroupsController < ApplicationController
 
     for s in students
       s = s.split(',')
-      logmsg s.to_s
       enroll_users(course, s[0].lstrip.rstrip, s[1].lstrip.rstrip, "student")
     end
 
