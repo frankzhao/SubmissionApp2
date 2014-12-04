@@ -25,7 +25,12 @@
           <tr>
             <td><%= link_to s.user.full_name, user_path(s.user) %></td>
             <td><%= link_to s.user.uid, user_path(s.user) %></td>
-            <td><span class="glyphicon glyphicon-ok good"></span><%= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %></td>
+            <td>
+              <span class="glyphicon glyphicon-ok good"></span><%= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %>
+            <% if s.created_at > @assignment.due_date %>
+              <span class="label label-danger">Late</a>
+            <% end %>
+          </td>
             <td><%= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary" %></td>
           </tr>
         <% end %>
@@ -48,7 +53,11 @@
           <tr>
             <td><%= link_to s.user.full_name, user_path(s.user) %></td>
             <td><%= link_to s.user.uid, user_path(s.user) %></td>
-             <td><%= s.created_at.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><%= s.created_at.strftime('%d/%m/%Y %I:%M%p') %>
+            <% if s.created_at > @assignment.due_date %>
+              <span class="label label-danger">Late</a>
+            <% end %>
+            </td>
             <td><%= link_to "View Submission", submission_path(s) %></td>
           </tr>
         <% end %>

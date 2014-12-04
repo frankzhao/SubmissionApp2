@@ -17,7 +17,11 @@ class User < ActiveRecord::Base
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
   def submissions_for(a)
-    self.submissions.select { |s| s.user == self}
+    self.submissions.select { |s| s.user == self and s.assignment == a}
+  end
+
+  def recent_submission_for(a)
+    self.submissions.select { |s| s.user == self and s.assignment == a}.last
   end
 
   # == Helper methods ==

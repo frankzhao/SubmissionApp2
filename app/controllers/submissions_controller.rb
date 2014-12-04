@@ -5,6 +5,7 @@ class SubmissionsController < ApplicationController
   def new
     @submission = Submission.new
     @assignment = Assignment.find(params[:assignment_id])
+    @most_recent_submission = current_user.recent_submission_for(@assignment)
     @course = @assignment.course
     if @assignment.kind == "plaintext"
       render 'new_plaintext'
