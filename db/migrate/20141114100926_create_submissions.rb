@@ -6,6 +6,7 @@ class CreateSubmissions < ActiveRecord::Migration
       t.text :plaintext
       t.belongs_to :user
       t.belongs_to :assignment
+      t.text :status
       t.timestamps
     end
   end

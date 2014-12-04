@@ -39,7 +39,7 @@
               <% else %>
                 <% current_user.submissions_for(a).each do |s| %>
                   <span class="glyphicon glyphicon-ok good"></span>
-                  <%= link_to s.id + " " + s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
+                  <%= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good" %><br />
                 <% end %>
               <% end %>
             </td>
