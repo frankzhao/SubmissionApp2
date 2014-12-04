@@ -1,0 +1,10 @@
+.row
+  .col-md-12
+    %h1.page-header
+      = "New submission for " + @assignment.name + " (#{@course.code})"
+    = form_for @submission, :html => {:class => 'form-horizontal'} do |f|
+      %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
+      <p>Paste your code below, then click submit.</p>
+      %textarea{name: "plaintext", class: "form-control plaintext-textarea", placeholder: "You should put the text of your project into here. This is not a file upload field.", style: "height: 400px;"}
+        = @submission.plaintext if @submission
+      %button{type: "submit", class: "btn btn-primary", style: "float: right; margin-top: 1em;"} Submit

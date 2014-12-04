@@ -67,7 +67,7 @@
         <% for group in @groups %>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title"><%= link_to group.name, group_path(group) %></h4>
+              <h4 class="panel-title"><%= link_to group.name, group_path(group) %><%= " (#{group.users.length} enrolled)" %></h4>
             </div>
             <div class="panel-body">
             <table class="table table-hover table-striped">
@@ -75,14 +75,12 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Role</th>
-                <th>Enrolments</th>
               </tr>
               <% for u in group.users %>
                 <tr>
                  <td><%= link_to u.uid, user_path(u) %></td>
                  <td><%= link_to u.firstname + " " + u.surname, user_path(u) %></td>
                  <td><%= u.type %></td>
-                 <td><%= group.users.length %></td>
                 </tr>
               <% end %>
               </table>
