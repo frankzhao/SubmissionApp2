@@ -31,12 +31,6 @@ gem 'spring',        group: :development
 # Use thin as the app server
 gem 'thin'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
 # Slim templates
 gem 'haml-rails'
 
@@ -48,6 +42,9 @@ gem 'rack-ssl'
 
 # LDAP
 gem 'net-ldap'
+
+# Mem session store
+gem 'activerecord-session_store'
 
 group :development do
   gem 'better_errors'

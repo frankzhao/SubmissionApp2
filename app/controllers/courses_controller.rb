@@ -11,9 +11,14 @@ class CoursesController < ApplicationController
     course_code = params[:course_code]
     course_name = params[:name]
     description = params[:description]
-    students    = params[:students].split(/\n/).reject(&:empty?)
-    tutors      = params[:tutors].split(/\n/).reject(&:empty?)
-    convenors   = params[:convenors].split(/\n/).reject(&:empty?)
+    students    = params[:students].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+    tutors      = params[:tutors].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+    convenors   = params[:convenors].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+
+  if current_user.is_convenor?
+    convenors << current_user.uid
+  end
+
 
     # Create the course
     c = Course.create(
@@ -38,6 +43,7 @@ class CoursesController < ApplicationController
       :name => params[:name],
       :description => params[:description]
     )
+
     enroll_users(@course,
       params[:students].split(/\n/).reject(&:empty?),
       params[:tutors].split(/\n/).reject(&:empty?),
@@ -157,7 +163,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message :success, "Sucessfully enrolled #{counter} students."
+      flash_message :success, "Sucessfully enrolled #{counter} convenors."
     end
   end
 
