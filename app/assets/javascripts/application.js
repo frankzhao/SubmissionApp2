@@ -2,11 +2,10 @@
 //= require bootstrap.min
 //= require jquery_ujs
 //= require prettify/prettify
-//= require turbolinks
 //= require_tree .
 
 function hide (e) {
-  $(e).fadeOut();
+  $(e).fadeOut(200);
 }
 
 ready = function () {
