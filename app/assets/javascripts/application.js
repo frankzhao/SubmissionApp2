@@ -6,7 +6,7 @@
 //= require_tree .
 
 function hide (e) {
-  $(e).addClass("hidden");
+  $(e).fadeOut();
 }
 
 ready = function () {

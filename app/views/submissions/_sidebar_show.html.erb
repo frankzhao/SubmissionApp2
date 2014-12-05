@@ -5,10 +5,10 @@
     <% if current_user.is_admin_or_convenor? %>
       <li class="sidebar-item"><a href="/groups/edit">
         <span class="glyphicon glyphicon-pencil"></span>Edit group</a></li>
-      <li class="sidebar-item"><a href="/groups/edit#enrolments">
-        <span class="glyphicon glyphicon-pencil"></span>Edit enrolments</a></li>
     <% else %>
     <% end %>
+    <li class="sidebar-item"><a href="/submissions/<%= @assignment.id %>/new">
+      <span class="glyphicon glyphicon-plus"></span>New submission</a></li>
       <li class="sidebar-item">
         <%= link_to submission_path(@submission), method: :delete,
         data: { confirm: "are you sure you wish to delete this submission?"} do %>
