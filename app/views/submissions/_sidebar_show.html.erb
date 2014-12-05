@@ -1,0 +1,18 @@
+<div class="col-md-3 sidebar">
+  <ul class="nav sidenav" id="sidebar">
+    <li><h4>Actions<div class="menu-icon-container"><span class="glyphicon glyphicon-tasks menu-icon"></span></div></h4></li>
+    <hr>
+    <% if current_user.is_admin_or_convenor? %>
+      <li class="sidebar-item"><a href="/groups/edit">
+        <span class="glyphicon glyphicon-pencil"></span>Edit group</a></li>
+      <li class="sidebar-item"><a href="/groups/edit#enrolments">
+        <span class="glyphicon glyphicon-pencil"></span>Edit enrolments</a></li>
+    <% else %>
+    <% end %>
+      <li class="sidebar-item">
+        <%= link_to submission_path(@submission), method: :delete,
+        data: { confirm: "are you sure you wish to delete this submission?"} do %>
+          <span class="glyphicon glyphicon-trash"></span>Delete submission
+          <% end %></li>
+  </ul>
+</div>

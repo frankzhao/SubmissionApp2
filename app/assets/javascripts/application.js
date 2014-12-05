@@ -1,6 +1,7 @@
 //= require jquery
 //= require bootstrap.min
 //= require jquery_ujs
+//= require prettify/prettify
 //= require turbolinks
 //= require_tree .
 
@@ -9,6 +10,7 @@ function hide (e) {
 }
 
 ready = function () {
+  prettyPrint();
   /* Hide sidebar */
   $(".sidebar .menu-icon-container").click(
     function () {

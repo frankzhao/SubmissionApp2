@@ -1,0 +1,11 @@
+.row
+  .col-md-9#content
+    %h1.page-header
+      = "Submission for " + @assignment.name
+    %p.italic
+      = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+    %pre.prettyprint.linenums.lang-hs
+      = @submission.plaintext
+
+  = render 'sidebar_show'
+
