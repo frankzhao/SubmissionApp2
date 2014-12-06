@@ -11,9 +11,9 @@ class CoursesController < ApplicationController
     course_code = params[:course_code]
     course_name = params[:name]
     description = params[:description]
-    students    = params[:students].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
-    tutors      = params[:tutors].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
-    convenors   = params[:convenors].gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+    students    = sanitize_uids(params[:students])
+    tutors      = sanitize_uids(params[:tutors])
+    convenors   = sanitize_uids(params[:convenors])
 
   if current_user.is_convenor?
     convenors << current_user.uid
@@ -43,11 +43,13 @@ class CoursesController < ApplicationController
       :name => params[:name],
       :description => params[:description]
     )
+    
+    students = sanitize_uids(params[:students])
+    tutors = sanitize_uids(params[:tutors])
+    convenors = sanitize_uids(params[:convenors])
 
     enroll_users(@course,
-      params[:students].split(/\n/).reject(&:empty?),
-      params[:tutors].split(/\n/).reject(&:empty?),
-      params[:convenors].split(/\n/).reject(&:empty?)
+      students, tutors, convenors
     )
     respond_with @course
   end
@@ -165,6 +167,10 @@ class CoursesController < ApplicationController
       end
       flash_message :success, "Sucessfully enrolled #{counter} convenors."
     end
+  end
+  
+  def sanitize_uids(str)
+    str.gsub(/\r/, '').gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
   end
 
 end

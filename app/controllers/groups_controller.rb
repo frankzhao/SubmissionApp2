@@ -1,5 +1,8 @@
 class GroupsController < ApplicationController
   before_filter :require_logged_in
+
+  respond_to :html
+
   def new
   end
 
@@ -17,6 +20,8 @@ class GroupsController < ApplicationController
       t = t.split(',')
       enroll_users(course, t[0].lstrip.rstrip, t[1].lstrip.rstrip, "tutor")
     end
+
+    redirect_to course_path(course)
   end
 
   def edit
@@ -30,6 +35,9 @@ class GroupsController < ApplicationController
   end
 
   def destroy
+    @group = Group.find(params[:id])
+    @group.destroy
+    redirect_to course_path(@group.course)
   end
 
   private
