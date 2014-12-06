@@ -2,6 +2,7 @@
 //= require bootstrap.min
 //= require jquery_ujs
 //= require prettify/prettify
+//= require turbolinks
 //= require_tree .
 
 function hide (e) {

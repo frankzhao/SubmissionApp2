@@ -43,7 +43,7 @@ function NotificationDismiss(e)
 	var id = parseInt(e.id);
 
 	$.ajax({
-		url: "/user/notifications",
+		url: "/users/notifications",
 		type: "DELETE",
 		data: {
 			"id" : id,
