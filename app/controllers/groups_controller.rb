@@ -8,8 +8,25 @@ class GroupsController < ApplicationController
 
   def create
     course = params[:course_id]
-    students = params[:students].split(/\n/).reject(&:empty?)
-    tutors = params[:tutors].split(/\n/).reject(&:empty?)
+    students = sanitize_uids(params[:students])
+    tutors = sanitize_uids(params[:tutors])
+    
+    # Clean up empty CSV rows
+    out = Array.new
+    for s in students
+      if (s =~ /\A,+\Z/).nil?
+        out << s
+      end
+    end
+    students = out
+    
+    out = Array.new
+    for t in tutors
+      if (t =~ /\A,+\Z/).nil?
+        out << t
+      end
+    end
+    tutors = out
 
     for s in students
       s = s.split(',')
@@ -90,4 +107,9 @@ class GroupsController < ApplicationController
       end
     end
   end
+  
+  def sanitize_uids(str)
+    str.gsub(/\r/, '').gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+  end
+  
 end

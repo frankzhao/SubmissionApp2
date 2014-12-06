@@ -20,7 +20,7 @@
           <tr>
             <td><a href="/assignments/<%= a.id.to_s %>"><%= a.name %></a></td>
            <td><%= a.due_date.strftime("%d/%m/%Y %I:%M%p") %></td>
-           <td><%= a.submissions.length.to_s + " of " + @course.users.length.to_s %></td>
+           <td><%= a.submissions.length.to_s + " of " + @course.students.length.to_s %></td>
          </tr>
         <% end %>
       <% end %>

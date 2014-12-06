@@ -97,9 +97,12 @@ class CoursesController < ApplicationController
         s.gsub!(/\s+/, "")
 
         if !Student.find_by_uid(s).nil?
-          c.students << Student.find_by_uid(s)
-          Student.find_by_uid(s).courses << c
-          counter += 1
+          s = Student.find_by_uid(s)
+          if !c.students.include?(s)
+            c.students << Student.find_by_uid(s)
+            Student.find_by_uid(s).courses << c
+            counter += 1
+          end
         else
           # Look up student details
           ldap_user = AnuLdap.find_by_uni_id(s)
@@ -123,9 +126,12 @@ class CoursesController < ApplicationController
         t.gsub!(/\s+/, "")
 
         if !Tutor.find_by_uid(t).nil?
-          c.tutors << Tutor.find_by_uid(t)
-          Tutor.find_by_uid(t).courses << c
-          counter += 1
+          t = Tutor.find_by_uid(t)
+          if !c.tutors.include?(t)
+            c.tutors << t
+            t.courses << c
+            counter += 1
+          end
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(t)
@@ -149,9 +155,12 @@ class CoursesController < ApplicationController
         conv.gsub!(/\s+/, "")
 
         if !Convenor.find_by_uid(conv).nil?
-          c.convenors << Convenor.find_by_uid(conv)
-          Convenor.find_by_uid(conv).courses << c
-          counter += 1
+          conv = Convenor.find_by_uid(conv)
+          if !c.convenors.include?(conv)
+            c.convenors << conv
+            conv.courses << c
+            counter += 1
+          end
         else
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(conv)
