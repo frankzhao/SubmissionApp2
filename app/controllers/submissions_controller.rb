@@ -15,12 +15,37 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    @submission = Submission.new(kind: "plaintext", plaintext: params[:plaintext])
+    @assignment = Assignment.find(params[:assignment_id])
+    if @assignment.kind == 'plaintext'
+      @submission = Submission.new(kind: "plaintext", plaintext: params[:plaintext])
+    elsif @assignment.kind = 'zipfile'
+      @submission = Submission.new(kind: "zipfile")
+    end
+    
     current_user.submissions << @submission
     @submission.user = current_user
-    @assignment = Assignment.find(params[:assignment_id])
     @assignment.submissions << @submission
     @submission.assignment = @assignment
+    
+    # Write files to disk
+    path = @submission.submission_path
+    system "mkdir -p #{path}"
+    if @assignment.kind == 'plaintext'
+      file_path = @submission.plaintext_path
+      
+      File.open(file_path, 'wb') do |file|
+        file.write(params[:plaintext])
+      end
+      
+    elsif @assignment.kind == 'zipfile'
+      uploaded_zip = params[:submission][:zipfile]
+      zip_path = @submission.zipfile_path
+      
+      File.open(zip_path, 'wb') do |file|
+        file.write(uploaded_zip.read)
+      end
+    end
+    
     redirect_to assignment_path(@assignment)
   end
 

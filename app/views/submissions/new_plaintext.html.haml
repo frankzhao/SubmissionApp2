@@ -7,7 +7,8 @@
     = form_for @submission, :html => {:class => 'form-horizontal'} do |f|
       %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
       %input{name: "assignment_id", type: "hidden", value: @assignment.id}
-      <p>Paste your code below, then click submit.</p>
+      %p
+        Paste your code below, then click submit.
       %textarea{name: "plaintext", class: "form-control plaintext-textarea", placeholder: "You should put the text of your project into here. This is not a file upload field.", style: "height: 400px;"}
         = @most_recent_submission.plaintext if @most_recent_submission
       %button{type: "submit", class: "btn btn-primary", style: "float: right; margin-top: 1em;"} Submit

@@ -53,3 +53,6 @@ ssl/**
 
 /* Ignore bundler packages */
 vendor/cache/**
+
+/* Ignore uploaded submissions */
+public/uploads/**
