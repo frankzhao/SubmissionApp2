@@ -1,0 +1,30 @@
+.row
+  .col-md-12
+    %h1.page-header
+      Edit #{@assignment.name} for #{@course.code}
+    = form_for @assignment, :html => {:class => "form-horizontal"} do |f|
+      %input{:name => "authenticity_token", :type => "hidden", :value => form_authenticity_token}/
+      .col-md-12
+        %input{:name => "course_id", :type => "hidden", :value => @course.id}/
+        .row
+          %h3 Assignment details
+        %label.control-label{:for => "assignment_name"} Assignment name
+        .input-group
+          .controls
+            %input#assignment_name.form-control{:name => "assignment_name", :value => @assignment.name, :size => "57", :type => "text"}/
+        %label.control-label{:for => "date_due"} Date Due
+        .input-group
+          .controls
+            %input#date_due.form-control{:name => "date_due", :value => @assignment.due_date.strftime('%d/%m/%Y %H:%M'), :size => "57", :type => "text"}/
+        %label.control-label{:for => "type"} Submission type
+        .input-group{:style => "width: 40%"}
+          .controls
+            = f.select :kind, ["zip", "plaintext"], {}, :class => "form-control"
+        %label.control-label{:for => "text"} Submission instructions
+        .input-group
+          .controls
+            %textarea#text.form-control{:cols => "50", :name => "text", :rows => "8"}
+              = @assignment.description
+        .input-group
+          .controls
+            %input.btn.btn-primary{:style => "float:right;", :type => "submit", :value => "Save"}/

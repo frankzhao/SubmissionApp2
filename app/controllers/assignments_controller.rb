@@ -19,12 +19,13 @@ class AssignmentsController < ApplicationController
     text = params[:text]
 
     if course && Course.find_by_id(course)
-    assignment = Assignment.create(:name => name, :due_date => date_due,
+      c = Course.find_by_id(course)
+      assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type)
       # Add assignment to the course
       Course.find(course).assignments << assignment
       # Distribute assignment to users in the course
-      for u in Course.users
+      for u in c.users
         u.assignments << assignment
       end
     else
@@ -44,6 +45,20 @@ class AssignmentsController < ApplicationController
   end
 
   def edit
+    @assignment = Assignment.find(params[:id])
+    @course = @assignment.course
+  end
+  
+  def update
+    @assignment = Assignment.find(params[:id])
+    @assignment.update_attributes(
+      :name => params[:assignment_name],
+      :due_date => DateTime.strptime(params[:date_due], '%d/%m/%Y %H:%M'),
+      :kind => params[:assignment][:kind],
+      :description => params[:text]
+    )
+    
+    redirect_to assignment_path(@assignment)
   end
 
   def show
@@ -66,5 +81,9 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
+    @assignment = Assignment.find(params[:id])
+    @assignment.destroy
+    
+    redirect_to '/courses'
   end
 end
