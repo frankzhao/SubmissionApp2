@@ -76,20 +76,22 @@ class GroupsController < ApplicationController
       if (group.course == c) && type == "student"
         s = Student.find_by_uid(uid)
         if s && c.students.include?(s)
-          group.students << Student.find_by_uid(uid)
-          Student.find_by_uid(uid).groups << group
-          counter += 1
-          Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [s])
+          if !group.students.include?(s)
+            group.students << Student.find_by_uid(uid)
+            Student.find_by_uid(uid).groups << group
+            counter += 1
+            Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [s])
+          end
         else
           flash_message :error, "The #{type} <#{uid}> is not enrolled in #{c.code}."
         end
       elsif type == "tutor"
         t = Tutor.find_by_uid(uid)
-        if t
+        if t && !group.tutors.include?(t)
           group.tutor = t
           t.groups << group
           counter += 1
-        else
+        elsif t.nil?
           # Look up tutor details
           ldap_user = AnuLdap.find_by_uni_id(t)
           if ldap_user

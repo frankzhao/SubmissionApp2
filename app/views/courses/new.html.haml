@@ -1,0 +1,37 @@
+.row
+  %h1.page-header Create a new course
+  %p Create the course and batch enroll users by pasting newline seperated university IDs in the appropriate fields below. After course creation, you will be able to enroll users in groups.
+  = form_for @course, :html => {:class => "form-horizontal"} do |f|
+    %input{:name => "authenticity_token", :type => "hidden", :value => form_authenticity_token}/
+    .col-md-6
+      %h3 Course details
+      %label.control-label{:for => "course_code"} Course code
+      .input-group
+        .controls
+          %input#course_code.form-control{:name => "course_code", :placeholder => "COMPxxxx", :type => "text"}/
+      %label.control-label{:for => "name"} Course name
+      .input-group
+        .controls
+          %input#name.form-control{:name => "name", :placeholder => "Introduction to Computing", :type => "text"}/
+      %label.control-label{:for => "description"} Description
+      .input-group
+        .controls
+          %textarea#description.form-control{:name => "description", :placeholder => "Optional", :rows => "15"}
+      .input-group
+        .controls
+          =f.submit "Create", :class => "btn btn-primary", :style => "float:left;", :type => "submit", data: {disable_with: "Processing..."}
+    .col-md-6
+      %h3 Enrolments
+      %label.control-label{:for => "students"} Students
+      .input-group
+        .controls
+          %textarea#students.form-control{:name => "students", :placeholder => "Paste newline seperated student IDs, or upload a CSV below. e.g: uxxxxxxx", :rows => "8"}
+          %input#csv_upload{:name => "csv_upload", :type => "file"}
+      %label.control-label{:for => "tutors"} Tutors
+      .input-group
+        .controls
+          %textarea#tutors.form-control{:name => "tutors", :placeholder => "Paste newline seperated tutor IDs. e.g: uxxxxxxx", :rows => "8"}
+      %label.control-label{:for => "convenors"} Convenors
+      .input-group
+        .controls
+          %textarea#convenors.form-control{:name => "convenors", :placeholder => "Paste newline seperated convenor IDs. If you are the only course convenor, leave this blank. e.g: uxxxxxxx", :rows => "3"}
