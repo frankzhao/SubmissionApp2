@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   get "admin/index"
-  get "ldap/:uid" => 'ldap#query'
   resources :comments
   resources :submissions
   resources :assignments
