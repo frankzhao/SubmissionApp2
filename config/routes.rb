@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   post "courses/:id/groups" => "groups#create"
   
   get "submissions/:assignment_id/new" => "submissions#new"
+  
+  get "/admin" => "admin#index"
+  post "/admin" => "admin#form"
 
   devise_for :users
   devise_scope :user do

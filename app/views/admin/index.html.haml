@@ -1,0 +1,25 @@
+%h3 Convenors
+= form_for :convenor, url: "/admin", :html => {:class => "form-horizontal"} do |f|
+  .input
+    Add convenor by Uni ID :
+    = f.text_field :uid 
+    = f.submit "Add convenor", class: "btn btn-sm btn-default"
+
+%table.table.table-hover.table-striped
+  %tr
+    %th ID
+    %th Name
+  - for convenor in Convenor.all
+    %tr
+      %td 
+        = convenor.uid
+      %td
+        = convenor.full_name
+%h3 Log
+
+= link_to 'Stop', 'javascript:void("stop")', id: :stop, class: "btn btn-default"
+= link_to 'Start', 'javascript:void("start")', id: :start, class: "btn btn-default", :style => 'display:none'
+%br
+%hr
+%pre#logs
+  = @lines.join("\n")
