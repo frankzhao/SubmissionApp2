@@ -49,10 +49,13 @@ config/secrets.yml
 bower.json
 
 /* Ignore SSL keys */
-ssl/**
+ssl
 
 /* Ignore bundler packages */
-vendor/cache/**
+vendor/cache
 
 /* Ignore uploaded submissions */
-public/uploads/**
+public/uploads
+
+/* Ignore Libraries */
+Library

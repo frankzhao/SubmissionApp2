@@ -3,6 +3,8 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   has_many :comments
   
+  include CompileHaskell
+  
   def zipfile_path
     file_path + ".zip"
   end
@@ -28,5 +30,9 @@ class Submission < ActiveRecord::Base
       sanitize_str(assignment.name) + "_" +
       sanitize_str(id) + "_" +
       sanitize_str(timestamp)
+  end
+  
+  def compile_haskell
+    run(self, self.assignment.tests)
   end
 end

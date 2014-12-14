@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20141205095150) do
     t.string   "name",        null: false
     t.datetime "due_date"
     t.text     "description"
+    t.text     "tests"
     t.string   "kind",        null: false
     t.integer  "course_id"
     t.integer  "user_id"

@@ -20,7 +20,7 @@ ready = ->
   $.get "/assignments/data/" + assignment_id, (data) ->
     labels = []
     values = []
-  
+    
     for k of data.data
       labels.push(k)
       values.push(data.data[k])
@@ -28,7 +28,10 @@ ready = ->
     dates = []
     for l in labels
       date = Date.parseExact(l, 'yyyMMdd HH')
-      dates.push(date.getHours() + ":00")
+      dates.push(date.getDate() + "/" + date.getMonth() + " " + date.getHours() + ":00")
+    
+    console.log(dates)
+    console.log(values)
   
     chartdata =
       labels: dates

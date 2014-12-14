@@ -12,9 +12,11 @@
       %span.glyphicon.glyphicon-time>
       Due at #{@assignment.due_date.strftime('%d/%m/%Y %I:%M%p')}
     %p= @assignment.description
-    - if !@assignment.submissions.empty?
-      %h3 Submissions by hour
-      %canvas#chart{width: "800", height: "400"}
+    
+    - if !@assignment.submissions.empty? && current_user.is_staff?
+      - if @assignment.submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
+        %h3 Submissions by hour
+        %canvas#chart{width: "800", height: "400"}
     
     %h3 Your submissions
     %table.table.table-hover.table-striped
