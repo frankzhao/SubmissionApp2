@@ -7,6 +7,13 @@ class SubmissionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @most_recent_submission = current_user.recent_submission_for(@assignment)
     @course = @assignment.course
+    
+    unless current_user.relationship_to @course
+      flash_message :error, "You must be enrolled in the course to create a new submission."
+      redirect_to '/'
+      return
+    end
+    
     if @assignment.kind == "plaintext"
       render 'new_plaintext'
     elsif @assignment.kind = "zip"

@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
 
   validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
+    
+  include UserAssignmentRelations
 
   def submissions_for(a)
     self.submissions.select { |s| s.user == self and s.assignment == a}

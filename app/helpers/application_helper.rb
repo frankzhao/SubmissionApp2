@@ -7,6 +7,13 @@ module ApplicationHelper
       redirect_to '/'
     end
   end
+  
+  def require_convenor_or_admin
+    unless current_user.is_admin_or_convenor?
+      flash[:errors] = ["You have to be a convener or admin to see that."]
+      redirect_to courses_url
+    end
+  end
 
   # Multiple flash messages
   def flash_message(type, text)

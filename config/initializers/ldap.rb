@@ -1,3 +1,4 @@
+require 'anu-ldap'
 module Devise
   module Strategies
     class Ldap < Base
@@ -13,6 +14,12 @@ module Devise
           return
         else
           # Use LDAP
+          if not AnuLdap.find_by_uni_id("u5180967")
+            flash = ActionDispatch::Flash::FlashHash.new
+            flash[:error] = "Could not reach ANU LDAP."
+            fail!()
+            return
+          end
           if params[:user] && params[:user][:uid]
             uid = params[:user][:uid]
             pass = params[:user][:password]

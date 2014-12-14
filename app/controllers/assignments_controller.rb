@@ -1,5 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
+  before_filter :require_convenor_or_admin, :only => [:new, :create, :destroy, :edit]
 
   def new
     @assignment = Assignment.new
@@ -85,5 +86,11 @@ class AssignmentsController < ApplicationController
     @assignment.destroy
     
     redirect_to '/courses'
+  end
+  
+  def data
+    assignment = Assignment.find(params[:id])
+    data = assignment.submissions.group("strftime('%Y%m%d %H', created_at)").count
+    render :json => {data: data}
   end
 end
