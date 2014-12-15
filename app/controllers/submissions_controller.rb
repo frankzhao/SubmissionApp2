@@ -46,7 +46,6 @@ class SubmissionsController < ApplicationController
       
       # Run tests
       out = @submission.compile_haskell()
-      === BReAKPOINT ===
       
     elsif @assignment.kind == 'zipfile'
       uploaded_zip = params[:submission][:zipfile]

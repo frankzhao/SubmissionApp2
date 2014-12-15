@@ -9,12 +9,17 @@
   %tr
     %th ID
     %th Name
+    %th Courses
   - for convenor in Convenor.all
     %tr
       %td 
         = convenor.uid
       %td
         = convenor.full_name
+      %td
+        - for c in convenor.courses
+          = link_to c.name, course_path(c)
+          %br
 %h3 Log
 
 = link_to 'Stop', 'javascript:void("stop")', id: :stop, class: "btn btn-default"
