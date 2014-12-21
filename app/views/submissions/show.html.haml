@@ -16,8 +16,9 @@
     %p.italic
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
-    %pre.prettyprint.linenums.lang-hs
-      = @submission.plaintext
+    - if @assignment.kind == "plaintext"
+      %pre.prettyprint.linenums.lang-hs
+        = @submission.plaintext
     
     %h3 Results
     .results

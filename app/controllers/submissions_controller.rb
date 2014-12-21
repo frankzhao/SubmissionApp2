@@ -79,4 +79,14 @@ class SubmissionsController < ApplicationController
     @submission.update_attributes(finalised: true)
     redirect_to submission_path(@submission)
   end
+  
+  def download
+    @submission = Submission.find(params[:id])
+    if @submission.assignment.kind == "zip"
+      send_file @submission.zipfile_path, :type=>"application/zip", :x_sendfile=>true
+    else
+      send_file @submission.plaintext_path, :type=>"application/plaintext", :x_sendfile=>true
+    end
+  end
+  
 end
