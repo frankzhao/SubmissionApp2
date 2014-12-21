@@ -6,15 +6,16 @@
 @import "bootstrap.min.css";
 @import "submissions.css.scss";
 @import "admin.css.scss";
+@import "assignments.css.scss";
 @import "prettify/prettify.css";
 
 body {
   padding-top: 50px; /* Offset navbar */
 }
 
-td, th {
-  vertical-align: middle !important;
-}
+//td, th {
+//  vertical-align: middle !important;
+//}
 
 .navbar {
   padding-left: 20px;

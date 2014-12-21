@@ -95,4 +95,15 @@ class AssignmentsController < ApplicationController
     data = assignment.submissions.group("strftime('%Y%m%d %H', created_at)").count
     render :json => {data: data}
   end
+  
+  # Assignment group views
+  def groups
+    @assignment = Assignment.find(params[:assignment_id])
+    @group = Group.find(params[:group_id])
+    @submissions = @assignment.submissions.select{
+      |s| s.user.type == "Student" && @group.students.include?(s.user)
+    }
+    
+    render 'group_assignment'
+  end
 end

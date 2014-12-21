@@ -16,7 +16,18 @@
     - if !@assignment.submissions.empty? && current_user.is_staff?
       - if @assignment.submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
         %h3 Submissions by hour
-        %canvas#chart{width: "800", height: "400"}
+        %canvas#chart{width: "800", height: "250"}
+      
+      %h3 Submissions by group
+      %table.table.table-hover.table-striped
+        %tr
+          %th Group
+          %th Finalised submissions
+        %tr
+          - for group in @course.groups
+            %td= link_to group.name, group_assignment_path(group, @assignment)
+            %td
+              = link_to "#{@assignment.submissions.select{|s| (s.finalised && s.user.type == "Student") && group.students.include?(s.user)}.length} out of #{group.students.length}", group_assignment_path(group, @assignment)
     
     %h3 Your submissions
     %table.table.table-hover.table-striped
@@ -63,7 +74,7 @@
             %th Uni ID
             %th Date submitted
             %th
-          - @submissions.each do |s|
+          - @assignment.submissions.each do |s|
             %tr
               %td= link_to s.user.full_name, user_path(s.user)
               %td= link_to s.user.uid, user_path(s.user)

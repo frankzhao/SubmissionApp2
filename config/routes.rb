@@ -9,8 +9,10 @@ Rails.application.routes.draw do
   get "users/notifications" => "notifications#list"
   delete "users/notifications" => "notifications#dismiss"
   get "users/:id", :to => "users#show", :as => "user"
+  
   get "assignments/new/:course_id" => "assignments#new"
   get "assignments/data/:id" => "assignments#data"
+  get "assignments/:assignment_id/group/:group_id" => "assignments#groups"
   
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"

@@ -16,6 +16,10 @@
           %span.glyphicon.glyphicon-check
           Finalise submission
     %li.sidebar-item
+      = link_to assignment_path(@submission.assignment) do
+        %span.glyphicon.glyphicon-file
+        View assignment
+    %li.sidebar-item
       = link_to submission_path(@submission), method: :delete, |
         data: { confirm: "are you sure you wish to delete this submission?"} do |
         %span.glyphicon.glyphicon-trash

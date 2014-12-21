@@ -1,0 +1,38 @@
+.row
+  #content.col-md-9
+    %h1.page-header
+      = @group.course.code + ": " + @group.name
+      .menu-icon-container.hidden
+        %span.glyphicon.glyphicon-tasks.menu-icon
+    
+    %p Viewing submissions for "#{@assignment.name}" from group "#{@group.name}"
+    
+    %h3 Submissions
+    %table.table.table-hover.table-striped
+      - if @group.students.empty?
+        %p No students are currently enrolled in this group.
+      - else
+        %tr
+          %th Name
+          %th Student ID
+          %th Submissions
+          %th Comment
+        - @group.students.each do |s|
+          %tr
+            %td= link_to s.full_name, user_path(s)
+            %td= link_to s.uid, user_path(s)
+            %td
+              - user_submission = @submissions.select{ |x| x.user == s}.last
+              - if user_submission.finalised
+                = link_to submission_path(user_submission), class: "good" do
+                  %span.glyphicon.glyphicon-thumbs-up
+                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+              - else
+                = link_to submission_path(user_submission) do
+                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+            %td
+              .comment
+                %textarea.form-control{placeholder: "Comment"}
+                %input#file-upload{:name => "file_upload", :type => "file"}
+                %input.btn.btn-xs.btn-primary{type: "submit", value: "Add comment"}
+  = render 'sidebar_show'

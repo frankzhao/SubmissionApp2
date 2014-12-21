@@ -21,6 +21,18 @@ module ApplicationHelper
       redirect_to '/'
     end
   end
+  
+  def require_owner(resource)
+    unless resource.user == current_user
+      flash[:errors] = ["You don't have permission to access that."]
+      redirect_to '/'
+    end
+  end
+  
+  # Group assignment views
+  def group_assignment_path(group, assignment)
+    "/assignments/#{assignment.id}/group/#{group.id}"
+  end
 
   # Multiple flash messages
   def flash_message(type, text)
