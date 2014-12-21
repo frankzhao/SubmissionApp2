@@ -1,6 +1,7 @@
 module CompileHaskell
   def run(submission, tests)
     comments = ""
+    score = 0
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
     # write file
     folder = "#{Rails.root}/tmp/compilations"
@@ -26,9 +27,15 @@ module CompileHaskell
       for test in tests
         command = "timeout 3 ghc -i.:#{libraries}" + " -XSafe #{folder}/#{hash}.hs 2>&1 -e " +
                   "\"#{test.gsub('"','\"')}\""
-        ghc_result = `command`
-        comment += test + ": " + ghc_result
+        ghc_result = `#{command}`
+        comments += test + ": " + ghc_result
+        
+        # Score
+        if ghc_result == "True"
+          score += 1
+        end
       end
+      comments += "Your submission passed #{score}/#{tests.length} tests.\n"
     end
     
     # clean up files
@@ -36,7 +43,5 @@ module CompileHaskell
     `rm #{folder}/#{hash}.hi`
     `rm #{folder}/#{hash}.hs`
     `rm #{folder}/#{hash}`
-    
-    jfjfjf
   end
 end

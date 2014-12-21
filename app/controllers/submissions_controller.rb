@@ -45,7 +45,7 @@ class SubmissionsController < ApplicationController
       end
       
       # Run tests
-      out = @submission.compile_haskell()
+      out = @submission.compile_haskell
       
     elsif @assignment.kind == 'zipfile'
       uploaded_zip = params[:submission][:zipfile]

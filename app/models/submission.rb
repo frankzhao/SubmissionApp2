@@ -33,6 +33,7 @@ class Submission < ActiveRecord::Base
   end
   
   def compile_haskell
-    run(self, self.assignment.tests)
+    tests = self.assignment.tests.split("\n")
+    run(self, tests)
   end
 end

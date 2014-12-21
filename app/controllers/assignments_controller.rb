@@ -18,11 +18,12 @@ class AssignmentsController < ApplicationController
     date_due = params[:date_due]
     type = params[:type]
     text = params[:text]
+    tests = params[:tests]
 
     if course && Course.find_by_id(course)
       c = Course.find_by_id(course)
       assignment = Assignment.create(:name => name, :due_date => date_due,
-                                   :description => text, :kind => type)
+                                   :description => text, :kind => type, :tests => tests)
       # Add assignment to the course
       Course.find(course).assignments << assignment
       # Distribute assignment to users in the course
@@ -56,7 +57,8 @@ class AssignmentsController < ApplicationController
       :name => params[:assignment_name],
       :due_date => DateTime.strptime(params[:date_due], '%d/%m/%Y %H:%M'),
       :kind => params[:assignment][:kind],
-      :description => params[:text]
+      :description => params[:text],
+      :tests => params[:tests]
     )
     
     redirect_to assignment_path(@assignment)

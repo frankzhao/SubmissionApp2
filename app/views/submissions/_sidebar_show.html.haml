@@ -10,10 +10,11 @@
       %a{:href => "/submissions/#{@assignment.id}/new"}
         %span.glyphicon.glyphicon-plus
         New submission
-    %li.sidebar-item
-      %a{:href => "/submissions/#{@submission.id}/finalise"}
-        %span.glyphicon.glyphicon-check
-        Finalise submission
+    - if !@submission.finalised
+      %li.sidebar-item
+        %a{:href => "/submissions/#{@submission.id}/finalise"}
+          %span.glyphicon.glyphicon-check
+          Finalise submission
     %li.sidebar-item
       = link_to submission_path(@submission), method: :delete, |
         data: { confirm: "are you sure you wish to delete this submission?"} do |

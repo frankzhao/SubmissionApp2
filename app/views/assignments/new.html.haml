@@ -1,0 +1,36 @@
+.row
+  .col-md-12
+    %h1.page-header
+      New assignment for #{@course.code}
+    = form_for @assignment, :html => {:class => "form-horizontal"} do |f|
+      %input{:name => "authenticity_token", :type => "hidden", :value => form_authenticity_token}
+      .col-md-12
+        %input{:name => "course_id", :type => "hidden", :value => @course.id}
+        .row
+          .col-md-8.col-md-offset-2
+            %h3 Assignment details
+            %label.control-label{:for => "assignment_name"} Assignment name
+            .input-group
+              .controls
+                %input#assignment_name.form-control{:name => "assignment_name", :placeholder => "Assignment 1", :type => "text"}
+            %label.control-label{:for => "date_due"} Date_due
+            .input-group
+              .controls
+                %input#date_due.form-control{:name => "date_due", :placeholder => "dd/mm/yyyy hh:mm", :type => "text"}
+            %label.control-label{:for => "type"} Submission type
+            .input-group
+              .controls
+                %select#type.form-control{:name => "type", :required => ""}
+                  %option{:value => "zip"} zip archive
+                  %option{:value => "plaintext"} plaintext
+            %label.control-label{:for => "text"} Submission instructions
+            .input-group
+              .controls
+                %textarea#text.form-control{:name => "text", :rows => "8"}
+            %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
+            .input-group
+              .controls
+                %textarea#text.form-control{:name => "tests", :rows => "8"}
+            .input-group
+              .controls
+                %input.btn.btn-primary{:style => "float:right;", :type => "submit", :value => "Create"}

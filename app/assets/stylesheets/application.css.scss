@@ -12,6 +12,10 @@ body {
   padding-top: 50px; /* Offset navbar */
 }
 
+td, th {
+  vertical-align: middle !important;
+}
+
 .navbar {
   padding-left: 20px;
   padding-right: 20px;
