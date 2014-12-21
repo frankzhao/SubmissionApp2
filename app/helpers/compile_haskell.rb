@@ -8,7 +8,7 @@ module CompileHaskell
     libraries = "#{Rails.root}/Library"
     
     `mkdir -p #{folder}`
-    File.open("#{folder}/#{hash}.hs","w") { |f| f.write(submission.plaintext + "\nmain = undefined\n") }
+    File.open("#{folder}/#{hash}.hs","w") { |f| f.write(submission.plaintext.gsub("\r\n","\n").gsub("\r","\n") + "\nmain = undefined\n") }
     
     # check compilation, include files in /Library
     command = "ghc -XSafe #{folder}/#{hash}.hs -i.:#{libraries} 2>&1"
