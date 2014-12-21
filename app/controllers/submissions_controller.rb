@@ -59,9 +59,6 @@ class SubmissionsController < ApplicationController
     redirect_to assignment_path(@assignment)
   end
 
-  def edit
-  end
-
   def show
     @submission = Submission.find(params[:id])
     @assignment = @submission.assignment

@@ -65,3 +65,63 @@
                     Late
               %td= link_to "View Submission", submission_path(s)
   = render 'sidebar_show'
+
+-# Chart
+- if current_user.is_admin_or_convenor? && (params[:action] == "show" && params[:controller] == "assignments")
+  :javascript
+    var ready;
+
+    ready = function() {
+      var assignment_id, ctx, options;
+      ctx = $("#chart").get(0).getContext("2d");
+      options = {
+        scaleShowGridLines: true,
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleGridLineWidth: 1,
+        bezierCurve: true,
+        bezierCurveTension: 0.4,
+        pointDot: true,
+        pointDotRadius: 4,
+        pointDotStrokeWidth: 1,
+        pointHitDetectionRadius: 20,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: true
+      };
+      assignment_id = $("#assignment-name").attr("assignment-id");
+      return $.get("/assignments/data/" + assignment_id, function(data) {
+        var chart, chartdata, date, dates, k, l, labels, values, _i, _len;
+        labels = [];
+        values = [];
+        for (k in data.data) {
+          labels.push(k);
+          values.push(data.data[k]);
+        }
+        dates = [];
+        for (_i = 0, _len = labels.length; _i < _len; _i++) {
+          l = labels[_i];
+          date = Date.parseExact(l, 'yyyMMdd HH');
+          dates.push(date.getDate() + "/" + date.getMonth() + " " + date.getHours() + ":00");
+        }
+        chartdata = {
+          labels: dates,
+          datasets: [
+            {
+              label: "Submissions by hour",
+              fillColor: "rgba(151,187,205,0.2)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(151,187,205,1)",
+              data: values
+            }
+          ]
+        };
+        chart = new Chart(ctx).Line(chartdata, options);
+      });
+    };
+
+    $(document).ready(ready);
+
+    $(document).on('page:load', ready);
