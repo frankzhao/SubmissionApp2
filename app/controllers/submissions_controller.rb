@@ -56,7 +56,7 @@ class SubmissionsController < ApplicationController
       end
     end
     
-    redirect_to assignment_path(@assignment)
+    redirect_to submission_path(@submission)
   end
 
   def show

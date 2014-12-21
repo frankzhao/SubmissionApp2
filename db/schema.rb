@@ -31,10 +31,11 @@ ActiveRecord::Schema.define(version: 20141221040124) do
   end
 
   create_table "comments", force: true do |t|
-    t.text     "text",                                    null: false
+    t.integer  "submission_id"
+    t.text     "text",                                       null: false
     t.string   "mark"
-    t.binary   "attachment", limit: 10485760
-    t.integer  "parent_id",                   default: 0
+    t.binary   "attachment",    limit: 10485760
+    t.integer  "parent_id",                      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

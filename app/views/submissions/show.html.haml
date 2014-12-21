@@ -25,6 +25,9 @@
           = simple_format @submission.test_result.result
       - else
         %p Your submission is being processed. Check back later to see your results.
+    
+    - if !@submission.comments.empty?
+      %h3 Comments
 
   = render 'sidebar_show'
 

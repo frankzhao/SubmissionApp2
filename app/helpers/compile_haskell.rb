@@ -32,7 +32,7 @@ module CompileHaskell
         comments += "<li>" + test + ": " + ghc_result + "</li>"
         
         # Score
-        if ghc_result == "True"
+        if ghc_result.strip == "True"
           score += 1
         end
       end
@@ -40,7 +40,7 @@ module CompileHaskell
       comments += "Your submission passed #{score}/#{tests.length} tests.\n"
       
       if score == tests.length
-        comments += "<span class=\"glyphicon glyphicon-star good\"><span class=\"good\">All tests passed. Well done!</span>"
+        comments += "<span class=\"glyphicon glyphicon-star good\"></span><span class=\"good\">All tests passed. Well done!</span>"
       else
         comments += "</span><span class=\"warn\">Your submission did not pass all test cases. Please try again.</span>"
       end
