@@ -43,8 +43,12 @@ gem 'rack-ssl'
 # LDAP
 gem 'net-ldap'
 
-# Mem session store
+# Memory session store
 gem 'activerecord-session_store'
+
+# Asynchronous jobs
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 group :development do
   gem 'better_errors'

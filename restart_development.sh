@@ -1,3 +1,5 @@
 bundle exec thin stop
-bundle exec thin start --ssl --ssl-key-file ssl/development.key --ssl-cert-file ssl/development.crt -d
+bin/delayed_job stop
+bundle exec thin start -d
+bin/delayed_job start
 tail -f log/development.log

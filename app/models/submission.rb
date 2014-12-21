@@ -40,4 +40,5 @@ class Submission < ActiveRecord::Base
 
     run(self, tests)
   end
+  handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
 end
