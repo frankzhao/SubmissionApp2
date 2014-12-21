@@ -17,6 +17,14 @@
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p')
     %pre.prettyprint.linenums.lang-hs
       = @submission.plaintext
+    
+    %h3 Results
+    .results
+      - if @submission.test_result
+        %p
+          = simple_format @submission.test_result.result
+      - else
+        %p Your submission is being processed. Check back later to see your results.
 
   = render 'sidebar_show'
 

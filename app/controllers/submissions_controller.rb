@@ -68,6 +68,9 @@ class SubmissionsController < ApplicationController
   end
 
   def destroy
+    @submission = Submission.find(params[:id])
+    @submission.destroy
+    redirect_to assignment_path(@submission.assignment)
   end
   
   def finalise
