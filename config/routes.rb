@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post "courses/:id/groups" => "groups#create"
   
   get "submissions/:assignment_id/new" => "submissions#new"
+  get "submissions/:id/finalise" => "submissions#finalise"
   
   get "/admin" => "admin#index"
   post "/admin" => "admin#form"

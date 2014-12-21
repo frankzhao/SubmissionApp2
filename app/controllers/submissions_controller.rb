@@ -69,4 +69,10 @@ class SubmissionsController < ApplicationController
 
   def destroy
   end
+  
+  def finalise
+    @submission = Submission.find(params[:id])
+    @submission.update_attributes(finalised: true)
+    redirect_to submission_path(@submission)
+  end
 end

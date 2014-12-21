@@ -4,6 +4,15 @@
       = "Submission for " + @assignment.name
       .menu-icon-container.hidden
         %span.glyphicon.glyphicon-tasks.menu-icon
+    %p
+      - if @submission.finalised
+        .alert.alert-success{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-check
+          This submission has been finalised.
+      - else
+        .alert.alert-warning{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-warning-sign
+          This submission is not finalised.
     %p.italic
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p')
     %pre.prettyprint.linenums.lang-hs

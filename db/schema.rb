@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20141205095150) do
     t.integer  "user_id"
     t.integer  "assignment_id"
     t.text     "status"
+    t.boolean  "finalised",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

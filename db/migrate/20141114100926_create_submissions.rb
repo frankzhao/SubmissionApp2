@@ -7,6 +7,7 @@ class CreateSubmissions < ActiveRecord::Migration
       t.belongs_to :user
       t.belongs_to :assignment
       t.text :status
+      t.boolean :finalised, default: false
       t.timestamps
     end
   end

@@ -22,7 +22,7 @@ module CompileHaskell
     end
     
     # run tests
-    if result
+    if result && !tests.nil?
       for test in tests
         command = "timeout 3 ghc -i.:#{libraries}" + " -XSafe #{folder}/#{hash}.hs 2>&1 -e " +
                   "\"#{test.gsub('"','\"')}\""
