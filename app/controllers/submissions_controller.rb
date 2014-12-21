@@ -62,6 +62,7 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @assignment = @submission.assignment
+    @comment = Comment.new
   end
 
   def index

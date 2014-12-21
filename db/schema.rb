@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20141221045856) do
 
   create_table "comments", force: true do |t|
     t.integer  "submission_id"
+    t.integer  "user_id"
     t.text     "text",                                       null: false
     t.string   "mark"
     t.binary   "attachment",    limit: 10485760
