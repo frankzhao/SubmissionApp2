@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   before_filter :configure_permitted_paramaters, if: :devise_controller?
   
+  def after_sign_in_path_for(resource)
+    "/courses"
+  end
+  
   protected
 
   def configure_devise_params
