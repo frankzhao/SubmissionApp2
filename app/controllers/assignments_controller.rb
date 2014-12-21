@@ -26,7 +26,9 @@ class AssignmentsController < ApplicationController
                                    :description => text, :kind => type, :tests => tests)
       # Add assignment to the course
       Course.find(course).assignments << assignment
-      # Distribute assignment to users in the course
+      
+      # Distribute and notify assignment to users in the course
+      notification = Notification.create_and_distribute("New assignment: " + assignment.name, assignment_path(assignment), c.users)
       for u in c.users
         u.assignments << assignment
       end
