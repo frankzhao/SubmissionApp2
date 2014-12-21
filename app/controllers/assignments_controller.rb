@@ -103,6 +103,7 @@ class AssignmentsController < ApplicationController
     @submissions = @assignment.submissions.select{
       |s| s.user.type == "Student" && @group.students.include?(s.user)
     }
+    @comment = Comment.new
     
     render 'group_assignment'
   end

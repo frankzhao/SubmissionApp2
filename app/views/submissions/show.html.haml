@@ -14,7 +14,8 @@
           %span.glyphicon.glyphicon-warning-sign
           This submission is not finalised.
     %p.italic
-      = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+      = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
+      = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
     %pre.prettyprint.linenums.lang-hs
       = @submission.plaintext
     

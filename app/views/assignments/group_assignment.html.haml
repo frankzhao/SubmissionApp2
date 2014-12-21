@@ -23,16 +23,20 @@
             %td= link_to s.uid, user_path(s)
             %td
               - user_submission = @submissions.select{ |x| x.user == s}.last
-              - if user_submission.finalised
+              - if user_submission && user_submission.finalised
                 = link_to submission_path(user_submission), class: "good" do
                   %span.glyphicon.glyphicon-thumbs-up
                   = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
-              - else
+              - elsif user_submission
                 = link_to submission_path(user_submission) do
                   = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
             %td
-              .comment
-                %textarea.form-control{placeholder: "Comment"}
-                %input#file-upload{:name => "file_upload", :type => "file"}
-                %input.btn.btn-xs.btn-primary{type: "submit", value: "Add comment"}
+              - if user_submission
+                .comment-form
+                  = form_for @comment do |f|
+                    = f.text_field :submission_id, value: user_submission.id, class: "hidden"
+                    = f.text_field :user_id, value: current_user.id, class: "hidden"
+                    = f.text_area :text, placeholder: "Comment", class: "form-control"
+                    = f.file_field :attachment
+                    = f.submit "Add comment", class: "btn btn-xs btn-primary"
   = render 'sidebar_show'
