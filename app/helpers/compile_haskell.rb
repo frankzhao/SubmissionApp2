@@ -49,9 +49,6 @@ module CompileHaskell
     testresult = TestResult.create(submission_id: submission.id, result: comments)
     
     # clean up files
-    `rm #{folder}/#{hash}.o 2>/dev/null`
-    `rm #{folder}/#{hash}.hi 2>/dev/null`
-    `rm #{folder}/#{hash}.hs 2>/dev/null`
-    `rm #{folder}/#{hash} 2>/dev/null`
+    `rm #{folder}/#{hash}* 2>/dev/null`
   end
 end

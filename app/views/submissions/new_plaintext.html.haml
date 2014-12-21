@@ -10,5 +10,5 @@
       %p
         Paste your code below, then click submit.
       %textarea{name: "plaintext", class: "form-control plaintext-textarea", placeholder: "You should put the text of your project into here. This is not a file upload field.", style: "height: 400px;"}
-        = @most_recent_submission.plaintext if @most_recent_submission
+        = @most_recent_submission.plaintext.gsub("\n", '') if @most_recent_submission
       %button{type: "submit", class: "btn btn-primary", style: "float: right; margin-top: 1em;"} Submit

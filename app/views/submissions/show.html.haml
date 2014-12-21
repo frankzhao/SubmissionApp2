@@ -18,7 +18,7 @@
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
     - if @assignment.kind == "plaintext"
       %pre.prettyprint.linenums.lang-hs
-        = @submission.plaintext
+        = @submission.plaintext.gsub("\n", '')
     
     %h3 Results
     .results
