@@ -23,7 +23,6 @@ class AdminController < ApplicationController
     ldap_user = AnuLdap.find_by_uni_id(uid)
     if !ldap_user.nil?
       conv = Convenor.create(:uid => uid, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
-      fjfjfs
     else
       flash_message :error, "The convenor <#{uid}> could not be found on the LDAP server."
     end
