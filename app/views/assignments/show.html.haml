@@ -54,14 +54,14 @@
                   = s.created_at.strftime('%d/%m/%Y %I:%M%p')
                 - if s.created_at > @assignment.due_date
                   %span.label.label-danger
-                    Late
+                    Your submission is late. Unless you have been granted an exception your assignment may not be marked.
               - else
                 = link_to submission_path(s) do
                   %span.glyphicon.glyphicon-ok
                   = s.created_at.strftime('%d/%m/%Y %I:%M%p')
                 - if s.created_at > @assignment.due_date
                   %span.label.label-danger
-                    Late
+                    Your submission is late. Unless you have been granted an exception your assignment may not be marked.
             %td= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary"
     - if current_user.is_staff?
       %h3 All submissions
@@ -82,7 +82,7 @@
                 = s.created_at.strftime('%d/%m/%Y %I:%M%p')
                 - if s.created_at > @assignment.due_date
                   %span.label.label-danger
-                    Late
+                    Your submission is late. Unless you have been granted an exception your assignment may not be marked.
               %td= link_to "View Submission", submission_path(s)
   = render 'sidebar_show'
 

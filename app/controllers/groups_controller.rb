@@ -30,11 +30,19 @@ class GroupsController < ApplicationController
 
     for s in students
       s = s.split(',')
+      if s.length == 1
+        flash_message :error, "A group was not specified for the student #{s}"
+        redirect_to "/courses/#{params[:course_id]}/groups/new"
+      end
       enroll_users(course, s[0].lstrip.rstrip, s[1].lstrip.rstrip, "student")
     end
 
     for t in tutors
       t = t.split(',')
+      if t.length == 1
+        flash_message :error, "A group was not specified for the tutor #{t}"
+        redirect_to "/courses/#{params[:course_id]}/groups/new"
+      end
       enroll_users(course, t[0].lstrip.rstrip, t[1].lstrip.rstrip, "tutor")
     end
 

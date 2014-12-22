@@ -4,4 +4,5 @@ class Assignment < ActiveRecord::Base
   has_many :users
 
   validates :name, presence: true
+  validates :due_date, presence: true
 end
