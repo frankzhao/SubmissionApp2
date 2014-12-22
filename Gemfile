@@ -50,6 +50,9 @@ gem 'activerecord-session_store'
 gem 'delayed_job_active_record'
 gem 'daemons'
 
+# Date NLP
+gem 'chronic'
+
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"

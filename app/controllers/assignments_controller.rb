@@ -37,12 +37,10 @@ class AssignmentsController < ApplicationController
     end
 
     # Parse due date
-    if date_due
-      begin
-        date_due = DateTime.strptime(date_due, '%d/%m/%Y %H:%M')
-      rescue ArgumentError
-        flash_message :error, "Incorrect format for due date."
-      end
+    date_due = Chronic.parse(date_due)
+    if !date_due
+      flash_message :error, "Incorrect format for due date."
+      redirect_to "/assignments/new/#{c.id}"
     end
 
     redirect_to course_path(course)
