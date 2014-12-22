@@ -22,6 +22,14 @@ class AssignmentsController < ApplicationController
 
     if course && Course.find_by_id(course)
       c = Course.find_by_id(course)
+
+          # Parse due date
+      date_due = Chronic.parse(date_due)
+      if !date_due
+        flash_message :error, "Incorrect format for due date."
+        redirect_to "/assignments/new/#{c.id}"
+      end
+
       assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type, :tests => tests)
       # Add assignment to the course
@@ -36,13 +44,6 @@ class AssignmentsController < ApplicationController
       flash_message :error, "Could not find course with ID=" + course.to_s
     end
 
-    # Parse due date
-    date_due = Chronic.parse(date_due)
-    if !date_due
-      flash_message :error, "Incorrect format for due date."
-      redirect_to "/assignments/new/#{c.id}"
-    end
-
     redirect_to course_path(course)
   end
 
@@ -53,9 +54,14 @@ class AssignmentsController < ApplicationController
   
   def update
     @assignment = Assignment.find(params[:id])
+    date_due = Chronic.parse(params[:date_due])
+    if !date_due
+      flash_message :error, "Incorrect format for due date."
+      redirect_to "/assignments/new/#{c.id}"
+    end
     @assignment.update_attributes(
       :name => params[:assignment_name],
-      :due_date => DateTime.strptime(params[:date_due], '%d/%m/%Y %H:%M'),
+      :due_date => date_due,
       :kind => params[:assignment][:kind],
       :description => params[:text],
       :tests => params[:tests]
