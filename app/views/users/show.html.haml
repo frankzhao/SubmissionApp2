@@ -1,0 +1,93 @@
+.row
+  #content.col-md-9
+    %h1.page-header
+      = @user.full_name
+      %span.uid_heading
+        (#{@user.uid})
+      .menu-icon-container.hidden
+        %span.glyphicon.glyphicon-tasks.menu-icon
+    %h3 Your courses
+    %table.table.table-hover.table-striped
+      - if @user.courses.empty?
+        %p You don't have any courses.
+        - if current_user.is_admin_or_convenor?
+          = link_to 'Create one', new_course_path
+      - else
+        %tr
+          %th Course Code
+          %th Name
+          %th Convenors
+          %th Groups
+          %th Assignments
+        - @user.courses.each do |c|
+          %tr
+            %td= link_to c.code, course_path(c)
+            %td= link_to c.name, course_path(c)
+            %td
+              - c.convenors.each do |convenor|
+                = link_to convenor.firstname + " " + convenor.surname, user_path(convenor)
+                %br/
+            %td
+              - c.groups.each do |g|
+                = link_to g.name, group_path(g)
+                %br/
+            %td
+              - c.assignments.each do |a|
+                = link_to a.name, assignment_path(a)
+                %br/
+    %h3 Your groups
+    %table.table.table-hover.table-striped
+      - if current_user.is_convenor? && !current_user.courses.empty?
+        %tr
+          %th Course Code
+          %th Group Name
+        - for c in @user.courses
+          - for group in c.groups
+            %tr
+              %td= link_to c.code, course_path(c)
+              %td= link_to group.name, group_path(group)
+      - elsif @user.groups.empty?
+        %p You don't have any groups.
+      - else
+        %tr
+          %th Group
+          %th Course
+          - if current_user.is_staff?
+            %th Enrolments
+        - @user.groups.each do |g|
+          %tr
+            %td= link_to g.name, group_path(g)
+            %td= link_to g.course.name, course_path(g.course)
+            - if current_user.is_staff?
+              %td= g.users.length
+    %h3 Your Assignments
+    %table.table.table-hover.table-striped
+      - if @user.assignments.empty?
+        %p You don't have any assignments.
+      - else
+        %tr
+          %th Course Code
+          %th Assignment
+          %th Date Due
+          %th Your Submissions
+        - @user.assignments.each do |a|
+          %tr
+            %td= link_to a.course.code, course_path(a)
+            %td= link_to a.name, assignment_path(a)
+            %td= a.due_date.strftime('%d/%m/%Y %I:%M%p')
+            %td
+              - if @user.submissions_for(a).empty?
+                %span.glyphicon.glyphicon-warning-sign.warn
+                %span.warn No submissions found.
+                %br/
+                = link_to "Add submission", "/submissions/#{a.id}/new"
+              - else
+                - @user.submissions_for(a).each do |s|
+                  - if s.finalised
+                    %span.glyphicon.glyphicon-thumbs-up.good
+                    = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good"
+                  - else
+                    %span.glyphicon.glyphicon-ok
+                    = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
+                  %br/
+  = render 'sidebar_show'
