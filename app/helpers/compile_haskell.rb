@@ -2,6 +2,7 @@ module CompileHaskell
   def run(submission, tests)
     comments = ""
     score = 0
+    #hash = (0...8).map { (65 + rand(26)).chr }.join
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
     # write file
     folder = "#{Rails.root}/tmp/compilations"
@@ -13,7 +14,7 @@ module CompileHaskell
     # check compilation, include files in /Library
     command = "ghc -XSafe #{folder}/#{hash}.hs -i.:#{libraries} 2>&1"
     ghc_result = `#{command}`
-    
+
     result = File.exist?("#{folder}/#{hash}")
     
     if result
@@ -26,11 +27,11 @@ module CompileHaskell
     if result && !tests.nil?
       comments += "Running tests...\n<ol>"
       for test in tests
-        command = "timeout 3 ghc -i.:#{libraries}" + " -XSafe #{folder}/#{hash}.hs 2>&1 -e " +
+        command = "cd #{folder} && timeout 3 ghc -i.:#{libraries}" + " -XSafe #{hash}.hs 2>&1 -e " +
                   "\"#{test.gsub('"','\"')}\""
         ghc_result = `#{command}`
         comments += "<li>" + test + ": " + ghc_result + "</li>"
-        
+
         # Score
         if ghc_result.strip == "True"
           score += 1
