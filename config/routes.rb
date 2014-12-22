@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :submissions
   resources :assignments
   resources :courses
-  resources :groups
+  resources :groups, except: [:edit]
 
   get "users/notifications" => "notifications#list"
   delete "users/notifications" => "notifications#dismiss"
@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"
   post "courses/:id/groups" => "groups#create"
+  #post "courses/:id/groups/edit" => "groups#edit"
   
   get "submissions/:assignment_id/new" => "submissions#new"
   get "submissions/:id/finalise" => "submissions#finalise"

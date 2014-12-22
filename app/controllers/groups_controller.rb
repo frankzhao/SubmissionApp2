@@ -88,6 +88,15 @@ class GroupsController < ApplicationController
         if s && c.students.include?(s)
           if !group.students.include?(s)
             group.students << Student.find_by_uid(uid)
+
+            # Remove existing groups
+            for g in Student.find_by_uid(uid).groups
+              if g.course == c
+                Student.find_by_uid(uid).groups.delete(g)
+              end
+            end
+
+            # Add group to student's groups
             Student.find_by_uid(uid).groups << group
             counter += 1
             Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [s])

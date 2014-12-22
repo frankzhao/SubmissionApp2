@@ -1,0 +1,22 @@
+    %h3#groups Groups
+    - if @groups.empty?
+      %p This course currently has no groups.
+      - if current_user.is_admin_or_convenor?
+        = link_to 'Create one', new_group_path
+    - else
+      - for group in @groups
+        .panel.panel-default
+          .panel-heading
+            %h4.panel-title= link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
+          .panel-body
+            %table.table.table-hover.table-striped
+              %tr
+                %th ID
+                %th Name
+                %th Role
+              - for u in group.users
+                %tr
+                  %td= link_to u.uid, user_path(u)
+                  %td= link_to u.firstname + " " + u.surname, user_path(u)
+                  %td= u.type
+  = render 'sidebar_show'
