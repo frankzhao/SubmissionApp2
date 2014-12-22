@@ -30,7 +30,7 @@ module CompileHaskell
         command = "cd #{folder} && timeout 3 ghc -i.:#{libraries}" + " -XSafe #{hash}.hs 2>&1 -e " +
                   "\"#{test.gsub('"','\"')}\""
         ghc_result = `#{command}`
-        comments += "<li>" + test + ": " + ghc_result + "</li>"
+        comments += "<li>" + test.strip + ": " + ghc_result.strip + "</li>"
 
         # Score
         if ghc_result.strip == "True"

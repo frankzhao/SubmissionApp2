@@ -33,8 +33,9 @@ class GroupsController < ApplicationController
       if s.length == 1
         flash_message :error, "A group was not specified for the student #{s}"
         redirect_to "/courses/#{params[:course_id]}/groups/new"
+      else
+        enroll_users(course, s[0].lstrip.rstrip, s[1].lstrip.rstrip, "student")
       end
-      enroll_users(course, s[0].lstrip.rstrip, s[1].lstrip.rstrip, "student")
     end
 
     for t in tutors
@@ -42,8 +43,9 @@ class GroupsController < ApplicationController
       if t.length == 1
         flash_message :error, "A group was not specified for the tutor #{t}"
         redirect_to "/courses/#{params[:course_id]}/groups/new"
+      else
+        enroll_users(course, t[0].lstrip.rstrip, t[1].lstrip.rstrip, "tutor")
       end
-      enroll_users(course, t[0].lstrip.rstrip, t[1].lstrip.rstrip, "tutor")
     end
 
     redirect_to course_path(course)
