@@ -46,20 +46,9 @@
             %tr
               %td= link_to c.code, course_path(c)
               %td= link_to group.name, group_path(group)
-      - elsif @user.groups.empty?
+      - else @user.groups.empty?
         %p You don't have any groups.
-      - else
-        %tr
-          %th Group
-          %th Course
-          - if current_user.is_staff?
-            %th Enrolments
-        - @user.groups.each do |g|
-          %tr
-            %td= link_to g.name, group_path(g)
-            %td= link_to g.course.name, course_path(g.course)
-            - if current_user.is_staff?
-              %td= g.users.length
+
     %h3 Your Assignments
     %table.table.table-hover.table-striped
       - if @user.assignments.empty?

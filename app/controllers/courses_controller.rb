@@ -100,8 +100,8 @@ class CoursesController < ApplicationController
         if !Student.find_by_uid(s).nil?
           s = Student.find_by_uid(s)
           if !c.students.include?(s)
-            c.students << Student.find_by_uid(s)
-            Student.find_by_uid(s).courses << c
+            c.students << s
+            s.courses << c
             counter += 1
           end
         else
