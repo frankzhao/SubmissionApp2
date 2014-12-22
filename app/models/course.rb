@@ -1,9 +1,9 @@
 class Course < ActiveRecord::Base
   has_many :groups, dependent: :destroy
   has_many :assignments, dependent: :destroy
-  has_and_belongs_to_many :users
+  has_and_belongs_to_many :convenors
+  has_and_belongs_to_many :admins
   has_many :tutors
-  has_many :convenors
   has_many :students
 
   validates :name, presence: true
