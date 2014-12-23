@@ -110,7 +110,7 @@ class CoursesController < ApplicationController
           s = Student.find_by_uid(s)
           if !c.students.include?(s)
             c.students << s
-            s.courses << c
+            #s.courses << c
             counter += 1
           end
         else
@@ -119,7 +119,7 @@ class CoursesController < ApplicationController
           if !ldap_user.nil?
             s = Student.create(:uid => s, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.students << s
-            s.courses << c
+            #s.courses << c
             counter += 1
           else
             flash_message :error, "The student <#{s}> could not be found on the LDAP server."
@@ -139,7 +139,7 @@ class CoursesController < ApplicationController
           t = Tutor.find_by_uid(t)
           if !c.tutors.include?(t)
             c.tutors << t
-            t.courses << c
+            #t.courses << c
             counter += 1
           end
         else
@@ -148,7 +148,7 @@ class CoursesController < ApplicationController
           if !ldap_user.nil?
             t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.tutors << t
-            t.courses << c
+            #t.courses << c
             counter += 1
           else
             flash_message :error, "The tutor <#{t}> could not be found on the LDAP server."
@@ -168,7 +168,7 @@ class CoursesController < ApplicationController
           conv = Convenor.find_by_uid(conv)
           if !c.convenors.include?(conv)
             c.convenors << conv
-            conv.courses << c
+            #conv.courses << c
             counter += 1
           end
         else
@@ -177,7 +177,7 @@ class CoursesController < ApplicationController
           if !ldap_user.nil?
             conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.convenors << conv
-            conv.courses << c
+            #conv.courses << c
             counter += 1
           else
             flash_message :error, "The convenor <#{conv}> could not be found on the LDAP server."

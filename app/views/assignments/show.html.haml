@@ -23,12 +23,12 @@
         %tr
           %th Group
           %th Finalised submissions
-        %tr
-          - for group in @course.groups
+        - for group in @course.groups
+          %tr
             %td= link_to group.name, group_assignment_path(group, @assignment)
             %td
               = link_to "#{@assignment.submissions.select{|s| (s.finalised && s.user.type == "Student") && group.students.include?(s.user)}.length} out of #{group.students.length}", group_assignment_path(group, @assignment)
-    
+
     %h3 Your submissions
     %table.table.table-hover.table-striped
       - if @submissions.empty?
