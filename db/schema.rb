@@ -57,9 +57,15 @@ ActiveRecord::Schema.define(version: 20141221045856) do
   create_table "courses_users", id: false, force: true do |t|
     t.integer "course_id"
     t.integer "user_id"
+    t.integer "convenor_id"
+    t.integer "student_id"
   end
 
+  add_index "courses_users", ["convenor_id"], name: "index_courses_users_on_convenor_id"
+  add_index "courses_users", ["course_id", "convenor_id"], name: "index_courses_users_on_course_id_and_convenor_id"
+  add_index "courses_users", ["course_id", "student_id"], name: "index_courses_users_on_course_id_and_student_id"
   add_index "courses_users", ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
+  add_index "courses_users", ["student_id"], name: "index_courses_users_on_student_id"
   add_index "courses_users", ["user_id"], name: "index_courses_users_on_user_id"
 
   create_table "delayed_jobs", force: true do |t|
@@ -93,9 +99,12 @@ ActiveRecord::Schema.define(version: 20141221045856) do
   create_table "groups_users", id: false, force: true do |t|
     t.integer "group_id"
     t.integer "user_id"
+    t.integer "student_id"
   end
 
+  add_index "groups_users", ["group_id", "student_id"], name: "index_groups_users_on_group_id_and_student_id"
   add_index "groups_users", ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
+  add_index "groups_users", ["student_id"], name: "index_groups_users_on_student_id"
   add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id"
 
   create_table "notifications", force: true do |t|

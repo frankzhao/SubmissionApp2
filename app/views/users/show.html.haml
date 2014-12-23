@@ -8,7 +8,7 @@
         %span.glyphicon.glyphicon-tasks.menu-icon
     %h3 Your courses
     %table.table.table-hover.table-striped
-      - if @user.courses.empty?
+      - if @courses.empty?
         %p You don't have any courses.
         - if current_user.is_admin_or_convenor?
           = link_to 'Create one', new_course_path
@@ -19,7 +19,7 @@
           %th Convenors
           %th Groups
           %th Assignments
-        - @user.courses.each do |c|
+        - @courses.each do |c|
           %tr
             %td= link_to c.code, course_path(c)
             %td= link_to c.name, course_path(c)
@@ -29,23 +29,25 @@
                 %br
             %td
               - c.groups.each do |g|
-                = link_to g.name, group_path(g)
-                %br
+                - if g.users.include?(@user)
+                  = link_to g.name, group_path(g)
+                  %br
             %td
               - c.assignments.each do |a|
                 = link_to a.name, assignment_path(a)
                 %br
     %h3 Your groups
     %table.table.table-hover.table-striped
-      - if current_user.is_convenor? && !current_user.courses.empty?
+      - if !@courses.empty?
         %tr
           %th Course Code
           %th Group Name
         - for c in @user.courses
           - for group in c.groups
-            %tr
-              %td= link_to c.code, course_path(c)
-              %td= link_to group.name, group_path(group)
+            - if group.users.include?(@user)
+              %tr
+                %td= link_to c.code, course_path(c)
+                %td= link_to group.name, group_path(group)
       - else @user.groups.empty?
         %p You don't have any groups.
 

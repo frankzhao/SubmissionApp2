@@ -12,7 +12,9 @@ class UsersController < ApplicationController
     end
 
     if current_user.is_admin?
-      current_user.courses = Course.all
+      @courses = Course.all
+    else
+      @courses = @user.courses
     end
   end
 end

@@ -29,6 +29,10 @@ class CoursesController < ApplicationController
 
     enroll_users(c, students, tutors, convenors)
 
+    for u in c.users
+      u.assignments << c.assignments
+    end
+
     redirect_to '/courses'
   end
 
@@ -52,6 +56,11 @@ class CoursesController < ApplicationController
     enroll_users(@course,
       students, tutors, convenors
     )
+
+    for u in @course.users
+      u.assignments << @course.assignments
+    end
+
     respond_with @course
   end
 
