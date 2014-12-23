@@ -32,9 +32,12 @@ class GroupsController < ApplicationController
       s = s.split(',')
       if s.length == 1
         flash_message :error, "A group was not specified for the student #{s}"
-        redirect_to "/courses/#{params[:course_id]}/groups/new"
+        #redirect_to "/courses/#{params[:course_id]}/groups/new"
+      #elsif !User.find_by_uid(s[0])
+      #  flash_message :error, "User #{s} has not been enrolled in a course."
+        #redirect_to "/courses/#{params[:course_id]}/groups/new"
       else
-        enroll_users(course, s[0].lstrip.rstrip, s[1].lstrip.rstrip, "student")
+        enroll_users(course, s[0].strip, s[1].strip, "student")
       end
     end
 
@@ -42,9 +45,12 @@ class GroupsController < ApplicationController
       t = t.split(',')
       if t.length == 1
         flash_message :error, "A group was not specified for the tutor #{t}"
-        redirect_to "/courses/#{params[:course_id]}/groups/new"
+        #redirect_to "/courses/#{params[:course_id]}/groups/new"
+      #elsif !User.find_by_uid(t[0])
+      #  flash_message :error, "User #{s} has not been enrolled in the course."
+        #redirect_to "/courses/#{params[:course_id]}/groups/new"
       else
-        enroll_users(course, t[0].lstrip.rstrip, t[1].lstrip.rstrip, "tutor")
+        enroll_users(course, t[0].strip, t[1].strip, "tutor")
       end
     end
 
@@ -106,16 +112,19 @@ class GroupsController < ApplicationController
         end
       elsif type == "tutor"
         t = Tutor.find_by_uid(uid)
-        if t && !group.tutors.include?(t)
+        if t && !(group.tutor == t)
           group.tutor = t
+          group.save!
           t.groups << group
           counter += 1
         elsif t.nil?
           # Look up tutor details
-          ldap_user = AnuLdap.find_by_uni_id(t)
+          ldap_user = AnuLdap.find_by_uni_id(uid)
           if ldap_user
-            t = Tutor.create(:uid => t, :firstname => ldap_user.given_name, :surname => ldap_user.surname)
+            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.tutors << t
+            group.tutor = t
+            group.save!
             t.courses << c
             # add to group
             group.tutor = t

@@ -41,16 +41,18 @@
           %h4.panel-title
             %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
               #{group.name}
+          - if group.tutor
+            %p.small Tutor: #{group.tutor.full_name}
         .panel-collapse.collapse.in{id: "group" + group.id.to_s}
           .panel-body
-            - if group.select{|u| u.type == "Student"}.empty?
+            - if group.students.select.empty?
               This group currently has no students.
             - else
               %table.table.table-hover.table-striped
                 %tr
                   %th Name
                   %th Student ID
-                - for student in group.users.select{|u| u.type == "Student"}
+                - for student in group.students
                   %tr
                     %td
                       = link_to student.full_name, user_path(student)

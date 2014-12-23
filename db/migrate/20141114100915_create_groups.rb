@@ -3,6 +3,7 @@ class CreateGroups < ActiveRecord::Migration
     create_table :groups do |t|
       t.string :name, :null => false
       t.belongs_to :course
+      t.belongs_to :tutor
       t.timestamps
     end
   end

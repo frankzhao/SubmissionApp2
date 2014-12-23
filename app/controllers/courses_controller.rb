@@ -126,7 +126,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message :success, "Sucessfully enrolled #{counter} students."
+      flash_message :success, "Sucessfully enrolled #{counter} students." unless counter == 0
     end
 
     if not tutors.empty?
@@ -147,7 +147,7 @@ class CoursesController < ApplicationController
           ldap_user = AnuLdap.find_by_uni_id(t)
           if !ldap_user.nil?
             t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
-            c.tutor << t
+            c.tutors << t
             t.courses << c
             counter += 1
           else
@@ -155,7 +155,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message :success, "Sucessfully enrolled #{counter} tutors."
+      flash_message :success, "Sucessfully enrolled #{counter} tutors." unless counter == 0
     end
 
     if not convenors.empty?
@@ -184,7 +184,7 @@ class CoursesController < ApplicationController
           end
         end
       end
-      flash_message :success, "Sucessfully enrolled #{counter} convenors."
+      flash_message :success, "Sucessfully enrolled #{counter} convenors." unless counter == 0
     end
   end
   

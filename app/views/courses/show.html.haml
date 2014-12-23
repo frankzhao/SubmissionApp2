@@ -53,7 +53,11 @@
       - for group in @groups
         .panel.panel-default
           .panel-heading
-            %h4.panel-title= link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
+            %h4.panel-title
+              = link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
+              - if group.tutor
+                %span.uid_heading{style: "font-size: 80%; padding-left: 10px"}
+                  Tutor: #{group.tutor.full_name}
           .panel-body
             %table.table.table-hover.table-striped
               %tr
