@@ -34,6 +34,7 @@
               - if user_submission
                 .comment-form
                   = form_for @comment do |f|
+                    = f.text_field :no_redirect, value: "true", class: "hidden"
                     = f.text_field :submission_id, value: user_submission.id, class: "hidden"
                     = f.text_field :user_id, value: current_user.id, class: "hidden"
                     = f.text_area :text, placeholder: "Comment", class: "form-control"

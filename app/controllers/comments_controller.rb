@@ -15,7 +15,11 @@ class CommentsController < ApplicationController
       comment.save!
     end
     
-    redirect_to submission_path(submission)
+    if params[:comment][:no_redirect].to_bool
+      redirect_to :back
+    else
+      redirect_to submission_path(submission)
+    end
   end
 
   def destroy

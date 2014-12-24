@@ -48,7 +48,7 @@
               %tr
                 %td= link_to c.code, course_path(c)
                 %td= link_to group.name, group_path(group)
-      - else @user.groups.empty?
+      - elsif !@user.is_admin? && @user.groups.empty?
         %p You don't have any groups.
 
     %h3 Your Assignments

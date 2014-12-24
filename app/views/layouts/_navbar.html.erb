@@ -26,7 +26,7 @@
         </li>
 
         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments<b class="caret"></b></a>
-          <% unless current_user.is_admin? %>
+          <% unless current_user.is_admin_or_convenor? %>
             <% if current_user.assignments.empty? %>
               <ul class="dropdown-menu">
               <li><a>You have no assignments.</a></li>
@@ -44,6 +44,17 @@
             <ul class="dropdown-menu scrollable-menu">
               <% Assignment.all.each do |a| %>
                 <li><%= link_to a.name, assignment_path(a) %></li>
+              <% end %>
+            </ul>
+          <% end %>
+          
+          <% if current_user.is_convenor? %>
+            <ul class="dropdown-menu scrollable-menu">
+              <% for course in Course.all.select{|c| c.convenors.include?(current_user)} %>
+                <% for a in course.assignments %>
+                  <li><%= link_to a.name, assignment_path(a) %></li>
+                <% end %>
+                <li class="divider"></li>
               <% end %>
             </ul>
           <% end %>

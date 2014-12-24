@@ -31,7 +31,7 @@
 
     %h3 Your submissions
     %table.table.table-hover.table-striped
-      - if @submissions.empty?
+      - if @submissions.empty? && !current_user.is_staff?
         %p
         .alert.alert-danger{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
