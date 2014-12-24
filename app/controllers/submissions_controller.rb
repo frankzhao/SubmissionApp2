@@ -61,11 +61,9 @@ class SubmissionsController < ApplicationController
 
   def show
     @submission = Submission.find(params[:id])
+    require_owner_or_staff(@submission)
     @assignment = @submission.assignment
     @comment = Comment.new
-  end
-
-  def index
   end
 
   def destroy

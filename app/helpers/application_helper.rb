@@ -29,6 +29,13 @@ module ApplicationHelper
     end
   end
   
+  def require_owner_or_staff(resource)
+    unless (resource.user == current_user) || current_user.is_staff?
+      flash[:errors] = ["You don't have permission to access that."]
+      redirect_to '/'
+    end
+  end
+  
   # Group assignment views
   def group_assignment_path(group, assignment)
     "/assignments/#{assignment.id}/group/#{group.id}"

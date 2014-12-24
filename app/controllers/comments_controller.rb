@@ -8,6 +8,13 @@ class CommentsController < ApplicationController
       text: params[:comment][:text],
       user_id: params[:comment][:user_id]
     )
+    
+    # file uploads
+    if params[:comment][:attachment]
+      comment.attachment = params[:comment][:attachment]
+      comment.save!
+    end
+    
     redirect_to submission_path(submission)
   end
 

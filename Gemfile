@@ -53,6 +53,9 @@ gem 'daemons'
 # Date NLP
 gem 'chronic'
 
+# Attachments
+gem 'carrierwave'
+
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"

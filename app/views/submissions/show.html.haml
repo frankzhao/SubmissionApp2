@@ -34,9 +34,18 @@
           = User.find(comment.user).full_name
         .small.date
           = comment.created_at.strftime('%d/%m/%Y %I:%M%p')
+          - if comment.attachment?
+            %span.glyphicon.glyphicon-paperclip
         %p
           = comment.text
-          - if current_user == comment.user
+        - if comment.attachment?
+          %p
+            = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
+              %span.glyphicon.glyphicon-download-alt
+              Download
+              = comment.attachment.file.filename
+        - if current_user == comment.user
+          .delete
             = link_to "Delete", comment_path(comment), class: "btn btn-xs btn-danger", method: :delete, data: { confirm: "Are you sure you wish to delete your comment?"}
     
     .comment-form
@@ -45,7 +54,7 @@
         = f.text_field :user_id, value: current_user.id, class: "hidden"
         = f.text_area :text, placeholder: "Comment", class: "form-control", style: "height: 200px"
         - if current_user.is_staff?
-          = f.file_field :file, :type => "file", id: "file-upload"
+          = f.file_field :attachment, :type => "file", id: "file-upload"
         = f.submit value: "Add comment", class: "btn btn-xs btn-primary"
 
   = render 'sidebar_show'
