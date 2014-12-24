@@ -72,6 +72,23 @@ ul hr {
   text-decoration: none;
 }
 
+.quote {
+  text-align: right;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.byline {
+  text-align: right;
+  text-transform: uppercase;
+  font-size: 80%;
+  font-weight: bold;
+  color: gray;
+  margin-top: 0;
+}
+
+/* Form */
+
 form label {
   font-size: 14px !important;
   padding: 0 0 0 10px;
@@ -215,4 +232,5 @@ form .controls {
   margin-left: 0.5em;
   margin-right: 0.5em;
   margin-top: -2px;
+  font-size: 100%;
 }

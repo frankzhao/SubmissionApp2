@@ -50,17 +50,29 @@
             %td
               - if s.finalised
                 = link_to submission_path(s), class: "good" do
-                  %span.glyphicon.glyphicon-thumbs-up
-                  = s.created_at.strftime('%d/%m/%Y %I:%M%p')
-                - if s.created_at > @assignment.due_date
-                  %span.label.label-danger
+                  %p
+                    %span.glyphicon.glyphicon-thumbs-up
+                    = s.created_at.strftime('%d/%m/%Y %I:%M%p')
+                - if is_late_with_extension(s, @assignment)
+                  .alert.alert-warning
+                    %span.glyphicon.glyphicon-warning-sign
+                    Your submission is late, but you have an extension granted until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+                - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
+                  .alert.alert-danger
+                    %span.glyphicon.glyphicon-warning-sign
                     Your submission is late. Unless you have been granted an exception your assignment may not be marked.
               - else
                 = link_to submission_path(s) do
-                  %span.glyphicon.glyphicon-ok
-                  = s.created_at.strftime('%d/%m/%Y %I:%M%p')
-                - if s.created_at > @assignment.due_date
-                  %span.label.label-danger
+                  %p
+                    %span.glyphicon.glyphicon-ok
+                    = s.created_at.strftime('%d/%m/%Y %I:%M%p')
+                - if is_late_with_extension(s, @assignment)
+                  .alert.alert-warning
+                    %span.glyphicon.glyphicon-warning-sign
+                    Your submission is late, but you have an extension granted until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+                - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
+                  .alert.alert-danger
+                    %span.glyphicon.glyphicon-warning-sign
                     Your submission is late. Unless you have been granted an exception your assignment may not be marked.
             %td= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary"
     - if current_user.is_staff?
@@ -80,9 +92,12 @@
               %td= link_to s.user.uid, user_path(s.user)
               %td
                 = s.created_at.strftime('%d/%m/%Y %I:%M%p')
-                - if s.created_at > @assignment.due_date
+                - if is_late_with_extension(s, @assignment)
+                  %span.label.label-warning
+                    Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+                - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
                   %span.label.label-danger
-                    Your submission is late. Unless you have been granted an exception your assignment may not be marked.
+                    Late
               %td= link_to "View Submission", submission_path(s)
   = render 'sidebar_show'
 

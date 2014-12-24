@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :assignments
   resources :courses
   resources :groups, except: [:edit]
+  resources :assignment_extensions, only: [:create, :destroy]
 
   get "users/notifications" => "notifications#list"
   delete "users/notifications" => "notifications#dismiss"
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
   get "assignments/new/:course_id" => "assignments#new"
   get "assignments/data/:id" => "assignments#data"
   get "assignments/:assignment_id/group/:group_id" => "assignments#groups"
+  get "assignments/:assignment_id/extension/new" => "assignment_extensions#new"
   
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"

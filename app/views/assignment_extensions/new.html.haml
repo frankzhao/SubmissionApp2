@@ -1,0 +1,28 @@
+.row
+  .col-md-12
+    %h1.page-header
+      New extension for #{@assignment.name}
+    = form_for @assignment_extension, :html => {:class => "form-horizontal"} do |f|
+      %input{:name => "authenticity_token", :type => "hidden", :value => form_authenticity_token}
+      %input{:name => "assignment_id", :type => "hidden", :value => params[:assignment_id]}
+      .col-md-12
+        .row
+          .col-md-8.col-md-offset-2
+            %h3 Grant extension
+            
+            .extra{style: "float: right"}
+              %p.quote "It is better to refuse permission than grant forgiveness."
+              %p.byline - Dr Joseph Hope, 2014
+            
+            = label_tag "Uni ID", nil, class: "control-label"
+            .input-group
+              .controls
+                = text_field_tag 'uid', nil, placeholder: "uxxxxxxx"
+                
+            = f.label :due_date, "New due date", class: "control-label"
+            .input-group
+              .controls
+                = f.text_field :due_date, placeholder: "dd/mm/yyyy hh:mm, three hours from now, tomorrow 5pm...", style: "width: 100%"
+            .input-group
+              .controls
+                = f.submit "Grant", class: "btn btn-primary", style: "float: right"

@@ -23,7 +23,7 @@ class AssignmentsController < ApplicationController
     if course && Course.find_by_id(course)
       c = Course.find_by_id(course)
 
-          # Parse due date
+      # Parse due date
       date_due = Chronic.parse(date_due)
       if !date_due
         flash_message :error, "Incorrect format for due date."
