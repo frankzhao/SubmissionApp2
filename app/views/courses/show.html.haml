@@ -22,7 +22,7 @@
             %td
               %a{:href => "/assignments/#{a.id.to_s}"}= a.name
             %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
-            %td= a.submissions.length.to_s + " of " + @course.students.length.to_s
+            %td= a.submissions.select{|s| s.user.type == "Student"}.length.to_s + " of " + @course.students.length.to_s
     %h3#enrolments Enrolments
     %table.table.table-hover.table-striped
       - if @course.students.nil?

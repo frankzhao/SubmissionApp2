@@ -28,6 +28,23 @@
             %td= link_to group.name, group_assignment_path(group, @assignment)
             %td
               = link_to "#{@assignment.submissions.select{|s| (s.finalised && s.user.type == "Student") && group.students.include?(s.user)}.length} out of #{group.students.length}", group_assignment_path(group, @assignment)
+    - if current_user.is_admin_or_convenor?
+      %h3 Extensions
+      %table.table.table-hover.table-striped
+        %tr
+          %th Uni ID
+          %th Name
+          %th Extended Due Date
+          %th Delete
+        - for extension in @assignment.assignment_extensions
+          %tr
+            %td= link_to extension.user.uid, user_path(group, extension.user)
+            %td= link_to extension.user.full_name, user_path(group, extension.user)
+            %td= extension.due_date.strftime('%d/%m/%Y %I:%M%p')
+            %td
+              %a{"data-confirm" => "Are you sure you wish to delete this extension?", "data-method" => "delete", :href => "/assignment_extensions/#{extension.id}", :rel => "nofollow"}
+                %span.glyphicon.glyphicon-trash
+                Delete
 
     %h3 Your submissions
     %table.table.table-hover.table-striped

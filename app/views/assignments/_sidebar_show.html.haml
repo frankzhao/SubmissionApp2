@@ -7,6 +7,10 @@
           %span.glyphicon.glyphicon-tasks.menu-icon
     %hr
     %li.sidebar-item
+      = link_to assignment_path(@assignment) do
+        %span.glyphicon.glyphicon-file
+        View assignment
+    %li.sidebar-item
       %a{:href => "/submissions/#{@assignment.id}/new"}
         %span.glyphicon.glyphicon-plus>
         Add submission
