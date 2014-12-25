@@ -1,7 +1,9 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :only => [:new, :create, :destroy, :edit]
+  before_filter :require_convenor_or_admin, :except => [:show, :index]
 
+  require 'zip'
+  
   def new
     @assignment = Assignment.new
     if params[:course_id] && Course.find_by_id(params[:course_id])
@@ -113,4 +115,65 @@ class AssignmentsController < ApplicationController
     
     render 'group_assignment'
   end
+  
+  def download_all_submissions
+    @assignment = Assignment.find(params[:assignment_id])
+    files = []
+    for submission in @assignment.submissions
+      if @assignment.kind == 'zip'
+        files << submission.zipfile_path
+      elsif @assignment.kind == 'plaintext'
+        files << submission.plaintext_path
+      end
+    end
+    
+    # Zip files
+    `mkdir -p #{Rails.root}/tmp/downloads/`
+    currtime = sanitize_str(Time.now)
+    zipfile_name = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}_#{currtime}.zip"
+
+    unless File.exists?(zipfile_name)
+      Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+        for file in files
+          filename = file.split('/').last
+          zipfile.add(filename, file)
+        end
+      end
+    end
+
+    send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
+    `rm #{zipfile_name}`
+  end
+  
+  def download_all_submissions_for_group
+    @assignment = Assignment.find(params[:assignment_id])
+    @group = Group.find(params[:group_id])
+    files = []
+    for submission in @assignment.submissions
+      if submission.user.groups.include?(@group)
+        if @assignment.kind == 'zip'
+          files << submission.zipfile_path
+        elsif @assignment.kind == 'plaintext'
+          files << submission.plaintext_path
+        end
+      end
+    end
+    
+    # Zip files
+    `mkdir -p #{Rails.root}/tmp/downloads/`
+    zipfile_name = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}_#{sanitize_str @group.name}__#{Time.now.strftime('%d_%m_%Y_%I_%M%p')}.zip"
+
+    unless File.exists?(zipfile_name)
+      Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+        for file in files
+          filename = file.split('/').last
+          zipfile.add(filename, file)
+        end
+      end
+    end
+    
+    send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
+    `rm #{zipfile_name}`
+  end
+  
 end

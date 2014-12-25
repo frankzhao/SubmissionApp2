@@ -12,18 +12,24 @@
         View assignment
     %li.sidebar-item
       %a{:href => "/submissions/#{@assignment.id}/new"}
-        %span.glyphicon.glyphicon-plus>
+        %span.glyphicon.glyphicon-plus
         Add submission
     - if current_user.is_admin_or_convenor?
       %li.sidebar-item
         %a{:href => "/assignments/#{@assignment.id}/edit"}
-          %span.glyphicon.glyphicon-pencil>
+          %span.glyphicon.glyphicon-pencil
           Edit Assignment
       %li.sidebar-item
         %a{:href => "/assignments/#{@assignment.id}/extension/new"}
-          %span.glyphicon.glyphicon-plus>
+          %span.glyphicon.glyphicon-plus
           Grant Extension
       %li.sidebar-item
         %a{"data-confirm" => "Are you sure you wish to delete #{@assignment.name}?", "data-method" => "delete", :href => "/assignments/#{@assignment.id}", :rel => "nofollow"}
           %span.glyphicon.glyphicon-trash
           Delete Assignment
+    - if current_user.is_staff?
+      %li.sidebar-item
+        = link_to "/assignments/#{@assignment.id}/download", :rel => "nofollow" do
+          %span.glyphicon.glyphicon-download-alt
+          Download all submissions
+    

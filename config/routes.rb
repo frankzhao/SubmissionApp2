@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "assignments/data/:id" => "assignments#data"
   get "assignments/:assignment_id/group/:group_id" => "assignments#groups"
   get "assignments/:assignment_id/extension/new" => "assignment_extensions#new"
+  get "assignments/:assignment_id/download" => "assignments#download_all_submissions"
   
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"
