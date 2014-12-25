@@ -32,4 +32,9 @@
         = link_to "/assignments/#{@assignment.id}/download" do
           %span.glyphicon.glyphicon-download-alt
           Download all submissions
+    - if current_user.is_staff?
+      %li.sidebar-item
+        = link_to "/assignments/#{@assignment.id}/#{@group.id}/download" do
+          %span.glyphicon.glyphicon-download-alt
+          Download group submissions
     
