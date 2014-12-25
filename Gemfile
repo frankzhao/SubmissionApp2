@@ -56,6 +56,9 @@ gem 'chronic'
 # Attachments
 gem 'carrierwave'
 
+# ZIPs
+gem 'rubyzip'
+
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"

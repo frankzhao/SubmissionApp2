@@ -22,20 +22,36 @@
         .alert.alert-danger{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
           Your submission is late. Unless you have been granted an exception your assignment may not be marked
-
+    
+    -# Plaintext submissions ---
     %p.italic
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
     - if @assignment.kind == "plaintext"
       %pre.prettyprint.linenums.lang-hs
         = @submission.plaintext.gsub("\n", '')
-    
-    %h3 Results
-    .results
-      - if @submission.test_result
-        = simple_format @submission.test_result.result
+    - elsif @assignment.kind == 'zip'
+      -# ZIP submissions ---
+      - if @contents.blank?
+        .alert.alert-danger{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-warning-sign
+          No files were found in your archive.
       - else
-        %p Your submission is being processed. Check back later to see your results.
+        %h3 Submitted files
+        %p If these files do not look correct, please try re-zipping and creating a new submission.
+        %ul.list-group
+          - for file in @contents
+            %li.list-group-item
+              %span.glyphicon.glyphicon-ok.good
+              = file
+          
+    - unless @assignment.kind == 'zip'
+      %h3 Results
+      .results
+        - if @submission.test_result
+          = simple_format @submission.test_result.result
+        - else
+          %p Your submission is being processed. Check back later to see your results.
     
     %h3 Comments
     - for comment in @submission.comments

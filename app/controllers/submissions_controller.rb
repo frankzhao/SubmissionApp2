@@ -1,6 +1,8 @@
 class SubmissionsController < ApplicationController
   before_filter :require_logged_in
   respond_to :html
+  
+  require 'zip'
 
   def new
     @submission = Submission.new
@@ -63,6 +65,17 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     require_owner_or_staff(@submission)
     @assignment = @submission.assignment
+    
+    if @assignment.kind == 'zip'
+      # Retrieve file list
+      @contents = []
+      Zip::File.open(@submission.zipfile_path) do |zipfile|
+        for file in zipfile
+          @contents << file.name
+        end
+      end
+    end
+    
     @comment = Comment.new
   end
 
