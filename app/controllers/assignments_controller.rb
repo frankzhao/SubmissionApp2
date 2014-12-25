@@ -149,8 +149,6 @@ class AssignmentsController < ApplicationController
     end
 
     send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
-    cleanup = "rm #{zipfile_name}"
-    `cleanup`
   end
   
   def download_all_submissions_for_group
@@ -187,8 +185,6 @@ class AssignmentsController < ApplicationController
     end
     
     send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
-    cleanup = "rm #{zipfile_name}"
-    `cleanup`
   end
   
 end
