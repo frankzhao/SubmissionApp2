@@ -4,6 +4,7 @@ class GroupsController < ApplicationController
   respond_to :html
 
   def new
+    @course = Course.find(params[:id])
   end
 
   def create

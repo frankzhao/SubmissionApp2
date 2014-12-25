@@ -1,9 +1,9 @@
 //= require jquery
 //= require bootstrap.min
 //= require jquery_ujs
-//= require prettify/prettify
 //= require date
 //= require chart.min
+//= require prettify/prettify
 //= require turbolinks
 //= require_tree .
 

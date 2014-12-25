@@ -21,15 +21,25 @@
       - elsif is_late(@submission, @assignment) || is_late_without_extension(@submission, @assignment)
         .alert.alert-danger{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
-          Your submission is late. Unless you have been granted an exception your assignment may not be marked
+          Your submission is late. Unless you have been granted an exception your assignment may not be marked.
     
     -# Plaintext submissions ---
     %p.italic
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
     - if @assignment.kind == "plaintext"
-      %pre.prettyprint.linenums.lang-hs
-        = @submission.plaintext.gsub("\n", '')
+    
+      %script{src: "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"}
+      %pre
+        %code.prettyprint.lang-hs
+          test :: Integer -> Integer -> Integer
+    
+    
+      %pre
+        %code.prettyprint
+          - @submission.plaintext.split("\n").each_with_index do |line, index|
+            %small= (index + 1).to_s.ljust(3)
+            %span.line-of-code= line.rstrip.gsub("\t","    ")
     - elsif @assignment.kind == 'zip'
       -# ZIP submissions ---
       - if @contents.blank?
@@ -84,4 +94,3 @@
         = f.submit value: "Add comment", class: "btn btn-xs btn-primary"
 
   = render 'sidebar_show'
-
