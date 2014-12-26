@@ -4,6 +4,20 @@
   font-family: monospace;
 }
 
+.meta {
+  padding: 10px 15px;
+  border: 1px solid rgb(204, 204, 204);
+  margin-bottom: -2px;
+  background-color: rgb(245, 245, 245);
+  font-size: 90%;
+}
+
+.actions {
+  float: right;
+  a { color: black; }
+  a:hover {text-decoration: none;}
+}
+
 .results {
   padding: 5px;
 }
@@ -44,6 +58,9 @@
   td {
     padding-left: 0;
     padding-right: 0;
+  }
+  pre {
+    background-color: #fff;
   }
 }
 .c { color: #999988; font-style: italic } /* Comment */

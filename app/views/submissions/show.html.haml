@@ -24,9 +24,14 @@
           Your submission is late. Unless you have been granted an exception your assignment may not be marked.
     
     -# Plaintext submissions ---
-    %p.italic
+    .meta
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
+      .actions
+        %a{:href => "/submissions/#{@submission.id}/finalise"}
+          %span.glyphicon.glyphicon-check
+        = link_to submission_path(@submission) + "/download" do
+          %span.glyphicon.glyphicon-floppy-save
     - if @assignment.kind == "plaintext"
       = (preserve @plaintext).html_safe
 
