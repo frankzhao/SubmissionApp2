@@ -60,7 +60,7 @@ gem 'carrierwave'
 gem 'rubyzip'
 
 # Syntax highlighting
-gem "google-code-prettify-rails"
+gem 'pygments.rb', :require => 'pygments'
 
 group :development do
   gem 'better_errors'

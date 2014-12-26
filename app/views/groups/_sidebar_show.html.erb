@@ -4,7 +4,6 @@
     <hr>
     <% if current_user.is_admin_or_convenor? %>
       <li class="sidebar-item">
-        <%= link_to "Edit", edit_group_path(@group)  %>
         <%= link_to group_path(@group), method: :delete,
         data: { confirm: "Are you sure you wish to delete " + @group.course.code + " " + @group.name + "?"} do %>
           <span class="glyphicon glyphicon-trash"></span>Delete group

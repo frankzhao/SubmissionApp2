@@ -3,16 +3,13 @@
 //= require jquery_ujs
 //= require date
 //= require chart.min
-//= require prettify/prettify
 //= require turbolinks
-//= require_tree .
 
 function hide (e) {
   $(e).fadeOut(200);
 }
 
 ready = function () {
-  prettyPrint();
   /* Hide sidebar */
   $(".sidebar .menu-icon-container").click(
     function () {

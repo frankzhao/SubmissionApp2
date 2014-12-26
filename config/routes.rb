@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :submissions
   resources :assignments
   resources :courses
-  resources :groups#, except: [:edit]
+  resources :groups, except: [:edit]
   resources :assignment_extensions, only: [:create, :destroy]
 
   get "users/notifications" => "notifications#list"

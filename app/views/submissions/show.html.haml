@@ -28,18 +28,8 @@
       = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
       = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
     - if @assignment.kind == "plaintext"
-    
-      %script{src: "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"}
-      %pre
-        %code.prettyprint.lang-hs
-          test :: Integer -> Integer -> Integer
-    
-    
-      %pre
-        %code.prettyprint
-          - @submission.plaintext.split("\n").each_with_index do |line, index|
-            %small= (index + 1).to_s.ljust(3)
-            %span.line-of-code= line.rstrip.gsub("\t","    ")
+      = (preserve @plaintext).html_safe
+
     - elsif @assignment.kind == 'zip'
       -# ZIP submissions ---
       - if @contents.blank?
@@ -61,7 +51,7 @@
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else
-          %p Your submission is being processed. Check back later to see your results.
+          %p Your submission is being processed. Check back in a few seconds to see your results.
     
     %h3 Comments
     - for comment in @submission.comments

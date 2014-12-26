@@ -58,9 +58,6 @@ class GroupsController < ApplicationController
     redirect_to course_path(course)
   end
 
-  def edit
-  end
-
   def show
     @group = Group.find(params[:id])
   end

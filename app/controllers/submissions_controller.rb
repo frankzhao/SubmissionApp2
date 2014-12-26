@@ -76,6 +76,7 @@ class SubmissionsController < ApplicationController
       end
     end
     
+    @plaintext = Pygments.highlight(@submission.plaintext, lexer: 'haskell', options: {linenos: 'table'})
     @comment = Comment.new
   end
 
