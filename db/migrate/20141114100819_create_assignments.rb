@@ -8,6 +8,7 @@ class CreateAssignments < ActiveRecord::Migration
       t.string :kind, :null => false
       t.belongs_to :course
       t.belongs_to :user
+      t.boolean :peer_review_enabled
       t.timestamps
     end
   end

@@ -27,13 +27,14 @@ ActiveRecord::Schema.define(version: 20141224071846) do
   end
 
   create_table "assignments", force: true do |t|
-    t.string   "name",        null: false
+    t.string   "name",                null: false
     t.datetime "due_date"
     t.text     "description"
     t.text     "tests"
-    t.string   "kind",        null: false
+    t.string   "kind",                null: false
     t.integer  "course_id"
     t.integer  "user_id"
+    t.boolean  "peer_review_enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

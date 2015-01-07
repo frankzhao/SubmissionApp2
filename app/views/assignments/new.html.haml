@@ -33,4 +33,8 @@
                 %textarea#text.form-control{:name => "tests", :rows => "8"}
             .input-group
               .controls
+                = f.label :peer_review_enabled, "Enable peer review", style: "padding: 0 !important"
+                = f.check_box :peer_review_enabled
+            .input-group
+              .controls
                 %input.btn.btn-primary{:style => "float:right;", :type => "submit", :value => "Create"}

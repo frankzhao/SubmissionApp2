@@ -69,10 +69,14 @@ class SubmissionsController < ApplicationController
     if @assignment.kind == 'zip'
       # Retrieve file list
       @contents = []
-      Zip::File.open(@submission.zipfile_path) do |zipfile|
-        for file in zipfile
-          @contents << file.name
+      begin
+        Zip::File.open(@submission.zipfile_path) do |zipfile|
+          for file in zipfile
+            @contents << file.name
+          end
         end
+      rescue
+        # Leave contents empty
       end
     end
     
