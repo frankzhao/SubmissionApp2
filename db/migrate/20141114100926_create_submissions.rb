@@ -8,6 +8,7 @@ class CreateSubmissions < ActiveRecord::Migration
       t.belongs_to :assignment
       t.text :status
       t.boolean :finalised, default: false
+      t.integer :peer_review_user_id
       t.timestamps
     end
   end

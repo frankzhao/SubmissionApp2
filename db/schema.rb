@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20141224071846) do
     t.integer  "assignment_id"
     t.text     "status"
     t.boolean  "finalised",            default: false
+    t.integer  "peer_review_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

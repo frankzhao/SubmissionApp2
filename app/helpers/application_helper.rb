@@ -36,6 +36,13 @@ module ApplicationHelper
     end
   end
   
+  def require_submission_privileges(resource)
+    unless (resource.peer_review_user_id == current_user.id) || ((resource.user == current_user) || current_user.is_staff?)
+      flash[:errors] = ["You don't have permission to access that."]
+      redirect_to '/'
+    end
+  end
+  
   # Group assignment views
   def group_assignment_path(group, assignment)
     "/assignments/#{assignment.id}/group/#{group.id}"

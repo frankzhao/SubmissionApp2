@@ -63,9 +63,8 @@ class SubmissionsController < ApplicationController
 
   def show
     @submission = Submission.find(params[:id])
-    require_owner_or_staff(@submission)
+    require_submission_privileges(@submission)
     @assignment = @submission.assignment
-    
     if @assignment.kind == 'zip'
       # Retrieve file list
       @contents = []
@@ -93,6 +92,19 @@ class SubmissionsController < ApplicationController
   def finalise
     @submission = Submission.find(params[:id])
     @submission.update_attributes(finalised: true)
+    @assignment = @submission.assignment
+
+    # Peer reviews
+    unless @assignment.kind == "zip"
+      if @assignment.peer_review_enabled && !@assignment.finalised_submissions.empty?
+        peer_submission = @assignment.finalised_submissions.select{|s| (s.user != current_user) && (s.peer_review_user_id.nil?)}.last
+        peer_submission.peer_review_user_id = current_user.id
+        peer_submission.save
+        # Notify
+        Notification.create_and_distribute("New submission to review for " + @assignment.name, submission_path(peer_submission), [current_user])
+      end
+    end
+    
     redirect_to submission_path(@submission)
   end
   

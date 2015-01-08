@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
   def is_staff?
     self.is_admin_or_convenor? or self.type == "Tutor"
   end
+  
+  def is_owner_or_staff?(resource)
+    self.is_staff? || resource.user == self
+  end
 
   def email_required?
     false

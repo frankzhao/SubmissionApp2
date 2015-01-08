@@ -9,4 +9,8 @@ class Assignment < ActiveRecord::Base
   def latest_extension_for(user)
     self.assignment_extensions.select{|x| x.user == user}.last
   end
+  
+  def finalised_submissions
+    self.submissions.select{|s| s.finalised}
+  end
 end

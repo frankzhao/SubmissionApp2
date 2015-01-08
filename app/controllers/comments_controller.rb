@@ -20,6 +20,8 @@ class CommentsController < ApplicationController
     else
       redirect_to submission_path(submission)
     end
+    
+    Notification.create_and_distribute("New comment on your submission for: " + assignment.name, submission_path(submission), [submission.user])
   end
 
   def destroy
