@@ -7,7 +7,7 @@ function NotificationSetup()
 function NotificationUpdate()
 {
 	$.get( "/users/notifications", function(data) {
-		var list = data.list
+		var list = data.list;
 
 		if(list.length == 0) {
 			$("#notification-badge").addClass("hidden");
@@ -21,10 +21,10 @@ function NotificationUpdate()
 			var link = document.createElement('a');
 
 			container.className = "notification";
-			link.id = list[i].id;
+			link.id = 'notification_' + list[i].id;
 			link.href = list[i].link;
 			link.innerText = list[i].text;
-			link.onclick = function(){
+			link.onclick = function() {
 				NotificationDismiss(this);
 			};
 
@@ -40,7 +40,7 @@ function NotificationUpdate()
 
 function NotificationDismiss(e)
 {
-	var id = parseInt(e.id);
+	var id = parseInt(e.id.match(/(\d)+/));
 
 	$.ajax({
 		url: "/users/notifications",
@@ -50,6 +50,8 @@ function NotificationDismiss(e)
 			"authenticity_token" : AUTH_TOKEN
 		}
 	});
+  
+  NotificationUpdate();
 }
 
 NotificationSetup();

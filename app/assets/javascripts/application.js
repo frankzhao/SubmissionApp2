@@ -3,7 +3,8 @@
 //= require jquery_ujs
 //= require date
 //= require chart.min
-//= require turbolinks
+//= require_self
+//= require_tree .
 
 function hide (e) {
   $(e).fadeOut(200);
