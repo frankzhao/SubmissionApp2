@@ -45,4 +45,8 @@ class Submission < ActiveRecord::Base
   def reviewed_by?(user)
     !self.comments.select{|c| c.user ==  user}.empty?
   end
+  
+  def comments_by(user)
+    self.comments.select{|c| c.user ==  user}
+  end
 end

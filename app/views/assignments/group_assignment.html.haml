@@ -31,13 +31,16 @@
                 = link_to submission_path(user_submission) do
                   = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
             %td
-              - if user_submission
-                .comment-form
-                  = form_for @comment do |f|
-                    = f.text_field :no_redirect, value: "true", class: "hidden"
-                    = f.text_field :submission_id, value: user_submission.id, class: "hidden"
-                    = f.text_field :user_id, value: current_user.id, class: "hidden"
-                    = f.text_area :text, placeholder: "Comment", class: "form-control"
-                    = f.file_field :attachment
-                    = f.submit "Add comment", class: "btn btn-xs btn-primary"
+              .comment-form
+              - if user_submission && user_submission.comments_by(current_user).empty?
+                = form_for @comment do |f|
+                  = f.text_field :no_redirect, value: "true", class: "hidden"
+                  = f.text_field :submission_id, value: user_submission.id, class: "hidden"
+                  = f.text_field :user_id, value: current_user.id, class: "hidden"
+                  = f.text_area :text, placeholder: "Comment", class: "form-control"
+                  = f.file_field :attachment
+                  = f.submit "Add comment", class: "btn btn-xs btn-primary"
+              - else
+                %span.good
+                  Commented
   = render 'sidebar_show_group'
