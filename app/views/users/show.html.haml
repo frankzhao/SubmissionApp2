@@ -81,4 +81,30 @@
                     %span.glyphicon.glyphicon-ok
                     = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
                   %br
+                  
+    %h3 Submissions to Review
+    %table.table.table-hover.table-striped
+      %tr
+        %th Submission
+        %th Date Submitted
+        %th Review Status
+      - if current_user.is_admin?
+        - Assignment.all.each do |a|
+          - for s in a.peer_review_submissions_for(@user)
+            %tr
+              %td= link_to "View", submission_path(s)
+              %td= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
+              %td
+                - if s.reviewed_by?(@user)
+                  %span.label.label-success
+                    Reviewed
+                - else
+                  %span.label.label-danger
+                    Not Reviewed
+                  
+      - else
+        - @user.assignments.each do |a|
+          - for s in a.peer_review_submissions_for(@user)
+            %tr
+              %td= link_to "View", submission_path(s)
   = render 'sidebar_show'

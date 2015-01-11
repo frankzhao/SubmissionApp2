@@ -41,4 +41,8 @@ class Submission < ActiveRecord::Base
     run(self, tests)
   end
   handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
+  
+  def reviewed_by?(user)
+    !self.comments.select{|c| c.user ==  user}.empty?
+  end
 end

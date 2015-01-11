@@ -13,4 +13,8 @@ class Assignment < ActiveRecord::Base
   def finalised_submissions
     self.submissions.select{|s| s.finalised}
   end
+  
+  def peer_review_submissions_for(user)
+    self.submissions.select{|s| s.peer_review_user_id == user.id}
+  end
 end

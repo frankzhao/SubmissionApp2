@@ -8,6 +8,7 @@ class CommentsController < ApplicationController
       text: params[:comment][:text],
       user_id: params[:comment][:user_id]
     )
+    assignment = submission.assignment
     
     # file uploads
     if params[:comment][:attachment]
@@ -15,8 +16,10 @@ class CommentsController < ApplicationController
       comment.save!
     end
     
-    if params[:comment][:no_redirect].to_bool
-      redirect_to :back
+    if params[:comment][:no_redirect]
+      if params[:comment][:no_redirect].to_bool
+        redirect_to :back
+      end
     else
       redirect_to submission_path(submission)
     end
