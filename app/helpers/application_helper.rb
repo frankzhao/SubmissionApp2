@@ -17,7 +17,7 @@ module ApplicationHelper
 
   def require_admin
     unless current_user.is_admin?
-      flash[:errors] = ["You have to be an admin to see that."]
+      flash[:errors] = ["You have to be an admin to see that. This incident will be reported."]
       redirect_to '/'
     end
   end
