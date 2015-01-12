@@ -7,6 +7,28 @@ RSpec.describe User, :type => :model do
     true
 	end
   
+  it "ensures users must have a uni id" do
+    s = Student.create(
+      :firstname => "Thomas",
+      :surname => "Jenkins",
+      :password => "pass")
+    expect(User.all.length).to eq(0)
+  end
+  
+  it "ensures users are only created once" do
+    s = Student.create(
+      :firstname => "Thomas",
+      :surname => "Jenkins",
+      :password => "pass",
+      :uid => "u0000002")
+    Student.create(
+      :firstname => "Thomas",
+      :surname => "Jenkins",
+      :password => "pass",
+      :uid => "u0000002")
+    expect(User.all.length).to eq(1)
+  end
+  
   describe "student" do
     before(:each) do
       User.delete_all
