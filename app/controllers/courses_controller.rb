@@ -71,6 +71,7 @@ class CoursesController < ApplicationController
       if !@course.users.include?(current_user) && !current_user.is_staff?
         flash_message :error, "You don't have permission to access that."
         redirect_to '/'
+      end
     else
       flash_message :error, "Could not find a course with ID=" + params[:id].to_s
       redirect_to "/"
