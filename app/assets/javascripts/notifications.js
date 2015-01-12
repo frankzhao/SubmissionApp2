@@ -8,8 +8,12 @@ function NotificationUpdate()
 {
 	$.get( "/users/notifications", function(data) {
 		var list = data.list;
+    
+    if (list == null) {
+      return;
+    }
 
-		if(list.length == 0) {
+		if(list.length === 0) {
 			$("#notification-badge").addClass("hidden");
 			return
 		}

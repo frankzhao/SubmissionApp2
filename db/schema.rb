@@ -148,12 +148,10 @@ ActiveRecord::Schema.define(version: 20141224071846) do
 
   create_table "submissions", force: true do |t|
     t.text     "kind"
-    t.integer  "submitted_by_user_id"
     t.text     "plaintext"
     t.integer  "user_id"
     t.integer  "assignment_id"
-    t.text     "status"
-    t.boolean  "finalised",            default: false
+    t.boolean  "finalised",           default: false
     t.integer  "peer_review_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
