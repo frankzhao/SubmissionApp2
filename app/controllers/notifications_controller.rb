@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
 	before_filter :require_logged_in
 
-	respond_to :json
+	respond_to :js
 
   def dismiss
   	notification = Notification.find(params[:id])
