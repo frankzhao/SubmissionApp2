@@ -34,6 +34,10 @@ class User < ActiveRecord::Base
   def is_admin?
     self.type == "Admin"
   end
+  
+  def is_tutor?
+    self.type == "Tutor"
+  end
 
   def is_convenor?
     self.type == "Convenor"

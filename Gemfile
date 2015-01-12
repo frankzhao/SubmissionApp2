@@ -62,8 +62,9 @@ gem 'rubyzip'
 # Syntax highlighting
 gem 'pygments.rb', :require => 'pygments'
 
-group :development do
+group :development, :test do
   gem 'better_errors'
-  gem "binding_of_caller"
+  gem 'binding_of_caller'
+  gem 'rspec-rails'
 end
 
