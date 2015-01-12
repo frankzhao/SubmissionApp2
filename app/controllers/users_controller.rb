@@ -6,11 +6,11 @@ class UsersController < ApplicationController
       @user = User.find_by_id(params[:id])
       unless current_user.is_staff? or current_user == @user
         flash_message :error, "You don't have permission to access that."
-        redirect_to :back
+        redirect_to '/'
       end
     else
       flash_message :error, "Could not find user with ID=" + params[:id]
-      redirect_to :back
+      redirect_to '/'
     end
 
     if current_user.is_admin?
