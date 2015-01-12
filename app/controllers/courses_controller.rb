@@ -68,6 +68,9 @@ class CoursesController < ApplicationController
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
       @groups = @course.groups
+      if !@course.users.include?(current_user) && !current_user.is_staff?
+        flash_message :error, "You don't have permission to access that."
+        redirect_to '/'
     else
       flash_message :error, "Could not find a course with ID=" + params[:id].to_s
       redirect_to "/"
