@@ -152,7 +152,7 @@ class CoursesController < ApplicationController
           if !ldap_user.nil?
             t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
             c.tutors << t
-            #t.courses << c
+            t.courses << c
             counter += 1
           else
             flash_message :error, "The tutor <#{t}> could not be found on the LDAP server."
