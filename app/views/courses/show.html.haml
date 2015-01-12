@@ -23,50 +23,51 @@
               %a{:href => "/assignments/#{a.id.to_s}"}= a.name
             %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
             %td= a.submissions.select{|s| s.user.type == "Student"}.length.to_s + " of " + @course.students.length.to_s
-    %h3#enrolments Enrolments
-    %table.table.table-hover.table-striped
-      - if @course.students.nil?
-        %p No students are enrolled in this course.
-        - if current_user.is_admin_or_convenor?
-          = link_to 'Enrol students', edit_course_path(@course.id)
-      - else
-        %tr
-          %th ID
-          %th Name
-          %th Group
-        - @course.students.each do |s|
+    - if current_user.is_staff?
+      %h3#enrolments Enrolments
+      %table.table.table-hover.table-striped
+        - if @course.students.nil?
+          %p No students are enrolled in this course.
+          - if current_user.is_admin_or_convenor?
+            = link_to 'Enrol students', edit_course_path(@course.id)
+        - else
           %tr
-            %td= link_to s.uid, user_path(s)
-            %td= link_to s.firstname + " " + s.surname, user_path(s)
-            %td
-              - if s.groups.select{|g| g.course == @course}.empty?
-                None
-              - else
-                - group = s.groups.select{|g| g.course == @course}.first
-                = link_to group.name, group_path(group)
-    %h3#groups Groups
-    - if @groups.empty?
-      %p This course currently has no groups.
-      - if current_user.is_admin_or_convenor?
-        = link_to 'Create one', new_group_path
-    - else
-      - for group in @groups
-        .panel.panel-default
-          .panel-heading
-            %h4.panel-title
-              = link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
-              - if group.tutor
-                %span.uid_heading{style: "font-size: 80%; padding-left: 10px"}
-                  Tutor: #{group.tutor.full_name}
-          .panel-body
-            %table.table.table-hover.table-striped
-              %tr
-                %th ID
-                %th Name
-                %th Role
-              - for u in group.users
+            %th ID
+            %th Name
+            %th Group
+          - @course.students.each do |s|
+            %tr
+              %td= link_to s.uid, user_path(s)
+              %td= link_to s.firstname + " " + s.surname, user_path(s)
+              %td
+                - if s.groups.select{|g| g.course == @course}.empty?
+                  None
+                - else
+                  - group = s.groups.select{|g| g.course == @course}.first
+                  = link_to group.name, group_path(group)
+      %h3#groups Groups
+      - if @groups.empty?
+        %p This course currently has no groups.
+        - if current_user.is_admin_or_convenor?
+          = link_to 'Create one', new_group_path
+      - else
+        - for group in @groups
+          .panel.panel-default
+            .panel-heading
+              %h4.panel-title
+                = link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
+                - if group.tutor
+                  %span.uid_heading{style: "font-size: 80%; padding-left: 10px"}
+                    Tutor: #{group.tutor.full_name}
+            .panel-body
+              %table.table.table-hover.table-striped
                 %tr
-                  %td= link_to u.uid, user_path(u)
-                  %td= link_to u.firstname + " " + u.surname, user_path(u)
-                  %td= u.type
+                  %th ID
+                  %th Name
+                  %th Role
+                - for u in group.users
+                  %tr
+                    %td= link_to u.uid, user_path(u)
+                    %td= link_to u.firstname + " " + u.surname, user_path(u)
+                    %td= u.type
   = render 'sidebar_show'
