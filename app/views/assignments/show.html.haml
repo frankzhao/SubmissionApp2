@@ -103,20 +103,32 @@
             %th Submitted by
             %th Uni ID
             %th Date submitted
-            %th
+            %th View submission
+            %th Flags
           - @assignment.submissions.each do |s|
             %tr
               %td= link_to s.user.full_name, user_path(s.user)
               %td= link_to s.user.uid, user_path(s.user)
               %td
                 = s.created_at.strftime('%d/%m/%Y %I:%M%p')
+              %td= link_to "View Submission", submission_path(s)
+              %td
                 - if is_late_with_extension(s, @assignment)
                   %span.label.label-warning
                     Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
                 - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
                   %span.label.label-danger
                     Late
-              %td= link_to "View Submission", submission_path(s)
+                - if s.finalised
+                  %span.label.label-success
+                    Finalised
+                - if @assignment.peer_review_enabled
+                  - if s.peer_review_user_id && s.reviewed_by?(User.find(s.peer_review_user_id))
+                    %span.label.label-success
+                      Reviewed
+                  - elsif s.peer_review_user_id && !s.reviewed_by?(User.find(s.peer_review_user_id))
+                    %span.label.label-warning
+                      Assigned
   = render 'sidebar_show'
 
 -# Chart
