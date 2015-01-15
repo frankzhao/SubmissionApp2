@@ -10,7 +10,7 @@ Setup
 - Seeding will also create demo users `u0000001` (convenor), and `u0000002` (student) with the password `pass`
 - Restart server using `./restart_server.sh`
 - For development, the server can be restarted with `./restart_development.sh`
-- If you have SSL certificates, place tem in a folder named `ssl` and exit the restart script to include the certificate and key filenames.
+- If you have SSL certificates, place tem in a folder named `ssl` and edit the restart script to include the certificate and key filenames.
 
 Notes
 ===
