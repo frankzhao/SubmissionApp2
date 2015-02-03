@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get "submissions/:assignment_id/new" => "submissions#new"
   get "submissions/:id/finalise" => "submissions#finalise"
   get "submissions/:id/download" => "submissions#download"
+  get "submissions/:id/pdf" => "submissions#pdf"
   
   get "/admin" => "admin#index"
   post "/admin" => "admin#form"
