@@ -44,11 +44,14 @@
           No files were found in your archive.
       - else
         %h3 Submitted files
-        %p If these files do not look correct, please try re-zipping and creating a new submission.
+        %p If these files do not look correct, please try re-zipping and creating a new submission. Files marked with a red cross should be removed before finalising your submission.
         %ul.list-group
           - for file in @contents
             %li.list-group-item
-              %span.glyphicon.glyphicon-ok.good
+              - if file =~ /^[.].*$/ || file =~ /MACOSX/
+                %span.glyphicon.glyphicon-remove.warn
+              - else
+                %span.glyphicon.glyphicon-ok.good
               = file
           
     - unless @assignment.kind == 'zip'
@@ -57,7 +60,7 @@
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else
-          %p Your submission is being processed. Check back in a few seconds to see your results.
+          %p Finalise your submission and reload this page in a few seconds to see your results.
     
     %h3 Comments
     - for comment in @submission.comments
