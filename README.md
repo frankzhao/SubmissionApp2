@@ -24,6 +24,16 @@ Dependencies marked in *italic* are currently using system installations on vare
 - *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
 - Haskell platform (ghc, runhaskell, ghci).
 
+Manual Restart/Shutdown
+===
+
+Generally it is sufficient just to run the restart script.
+To gracefully shot down the server, execute the following commands from the application root.
+
+bundle exec thin stop
+bin/delayed_job stop
+
+To start the server manually, run the restart script. Errors involving non existent PIDs can be ignored.
 Notes
 ===
 
