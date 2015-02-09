@@ -19,7 +19,7 @@ Dependencies marked in *italic* are currently using system installations on vare
 
 - Ruby 2.1.0p0 (built with OpenSSL support)
 - *Rails 4.0.2*
-- sqlite3, libsqlite3-dev
+- SQLite3 (sqlite3, libsqlite-dev)
 - OpenSSL ( *openssl*, libopenssl-dev)
 - *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
 - Haskell platform (ghc, runhaskell, ghci).
@@ -28,14 +28,17 @@ Manual Restart/Shutdown
 ===
 
 Generally it is sufficient just to run the restart script.
-To gracefully shot down the server, execute the following commands from the application root.
+To gracefully shut down the server, execute the following commands from the application root.
 
+```
 bundle exec thin stop
 bin/delayed_job stop
+```
 
 To start the server manually, run the restart script. Errors involving non existent PIDs can be ignored.
+
 Notes
 ===
 
 - Submissions are saved in `public/uploads`
-- Additional libraries can be placed in `Library` to be included during submission compilation
+- Additional libraries can be placed in `Library` to be included during Haskell submission compilation
