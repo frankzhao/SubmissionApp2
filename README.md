@@ -40,5 +40,7 @@ To start the server manually, run the restart script. Errors involving non exist
 Notes
 ===
 
+- The database is in the `db` folder
 - Submissions are saved in `public/uploads`
 - Additional libraries can be placed in `Library` to be included during Haskell submission compilation
+- For backup purposes, the most important folders to back up is the database and the user uploads
