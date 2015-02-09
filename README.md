@@ -15,10 +15,14 @@ Setup
 Dependencies
 ===
 
-- Ruby 2.1.0p0
-- Rails 4.0.2
-- Latex (pdflatex, gs)
-- Haskell platform (ghc, runhaskell, ghci)
+Dependencies marked in *italic* are currently using system installations on varese.
+
+- Ruby 2.1.0p0 (built with OpenSSL support)
+- *Rails 4.0.2*
+- sqlite3, libsqlite3-dev
+- OpenSSL (*openssl*, libopenssl-dev)
+- *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
+- Haskell platform (ghc, runhaskell, ghci).
 
 Notes
 ===
