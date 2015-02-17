@@ -121,7 +121,7 @@ class CoursesController < ApplicationController
           # Look up student details
           ldap_user = AnuLdap.find_by_uni_id(s)
           if !ldap_user.nil?
-            s = Student.create(:uid => s, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
+            s = Student.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.students << s
             #s.courses << c
             counter += 1
@@ -150,7 +150,7 @@ class CoursesController < ApplicationController
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(t)
           if !ldap_user.nil?
-            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
+            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.tutors << t
             t.courses << c
             counter += 1
@@ -179,7 +179,7 @@ class CoursesController < ApplicationController
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(conv)
           if !ldap_user.nil?
-            conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
+            conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.convenors << conv
             #conv.courses << c
             counter += 1
