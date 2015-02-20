@@ -1,0 +1,5 @@
+<%- for group in groups %>
+  <%- unless group.tutor.nil? %>
+<%= "#{group.tutor.uid}, #{group.name}" %>
+  <% end %>
+<% end %>

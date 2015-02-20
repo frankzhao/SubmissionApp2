@@ -11,19 +11,15 @@
       .input-group
         .controls
           %textarea#students.form-control{:cols => "50", :name => "students", :placeholder => "Paste newline seperated student IDs and group names. e.g: uxxxxxxx, Tuesday 9-11", :rows => "10"}
-            - for group in @course.groups
-              - for user in group.students
-                = "#{user.uid}, #{group.name}\n"
+            = render 'group_students', groups: @course.groups
           %input#csv_upload{:name => "csv_upload", :type => "file"}
     .col-md-6
       %label.control-label{:for => "tutors"} Tutors
       .input-group
         .controls
           %textarea#tutors.form-control{:cols => "50", :name => "tutors", :placeholder => "Paste newline seperated tutor IDs and group names. e.g: uxxxxxxx, Tuesday 9-11", :rows => "10"}
-            - for group in @course.groups
-              - unless group.tutor.nil?
-                = "#{group.tutor.uid}, #{group.tutor.name}\n"
-          
+            = render 'group_users', groups: @course.groups
+ 
       .input-group
         .controls
           = f.submit "Create", :class => "btn btn-primary", :style => "float:right;", :type => "submit", data: {disable_with: "Processing..."}
