@@ -1,0 +1,5 @@
+<%- for group in groups %>
+<%- for s in group.students %>
+<%= "#{s.uid}, #{group.name}" %>
+<% end %>
+<% end %>

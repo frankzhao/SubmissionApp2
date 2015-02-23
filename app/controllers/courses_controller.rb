@@ -114,16 +114,16 @@ class CoursesController < ApplicationController
           s = Student.find_by_uid(s)
           if !c.students.include?(s)
             c.students << s
-            #s.courses << c
+            s.courses << c
             counter += 1
           end
         else
           # Look up student details
           ldap_user = AnuLdap.find_by_uni_id(s)
           if !ldap_user.nil?
-            s = Student.create(:uid => s, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
+            s = Student.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.students << s
-            #s.courses << c
+            s.courses << c
             counter += 1
           else
             flash_message :error, "The student <#{s}> could not be found on the LDAP server."
@@ -143,7 +143,7 @@ class CoursesController < ApplicationController
           t = Tutor.find_by_uid(t)
           if !c.tutors.include?(t)
             c.tutors << t
-            #t.courses << c
+            t.courses << c
             counter += 1
           end
         else
@@ -172,7 +172,7 @@ class CoursesController < ApplicationController
           conv = Convenor.find_by_uid(conv)
           if !c.convenors.include?(conv)
             c.convenors << conv
-            #conv.courses << c
+            conv.courses << c
             counter += 1
           end
         else
