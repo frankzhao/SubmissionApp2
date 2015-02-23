@@ -123,10 +123,10 @@
                   %span.label.label-success
                     Finalised
                 - if @assignment.peer_review_enabled
-                  - if s.peer_review_user_id && s.reviewed_by?(User.find(s.peer_review_user_id))
+                  - if !@assignment.peer_review_submissions_for(s.user).empty? && @assignment.peer_review_submissions_for(s.user).first.reviewed_by?(s.user)
                     %span.label.label-success
                       Reviewed
-                  - elsif s.peer_review_user_id && !s.reviewed_by?(User.find(s.peer_review_user_id))
+                  - elsif !@assignment.peer_review_submissions_for(s.user).empty? && !@assignment.peer_review_submissions_for(s.user).first.reviewed_by?(s.user)
                     %span.label.label-warning
                       Assigned
   = render 'sidebar_show'
