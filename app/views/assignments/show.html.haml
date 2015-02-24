@@ -122,7 +122,7 @@
                 - if s.finalised
                   %span.label.label-success
                     Finalised
-                - if @assignment.peer_review_enabled
+                - if @assignment.peer_review_enabled && s.finalised
                   - if !@assignment.peer_review_submissions_for(s.user).empty? && @assignment.peer_review_submissions_for(s.user).first.reviewed_by?(s.user)
                     %span.label.label-success
                       Reviewed

@@ -59,10 +59,18 @@ class GroupsController < ApplicationController
   end
 
   def show
+    if !current_user.is_staff?
+      flash_message :error, "You don't have permission to access that."
+      redirect_to '/'
+    end
     @group = Group.find(params[:id])
   end
 
   def index
+    if !current_user.is_staff?
+      flash_message :error, "You don't have permission to access that."
+      redirect_to '/'
+    end
   end
 
   def destroy
