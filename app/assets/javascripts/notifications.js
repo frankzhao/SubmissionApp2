@@ -27,6 +27,7 @@ function NotificationUpdate()
 			container.className = "notification";
 			link.id = 'notification_' + list[i].id;
 			link.href = list[i].link;
+      link.textContent = list[i].text;
 			link.innerText = list[i].text;
 			link.onclick = function() {
 				NotificationDismiss(this);

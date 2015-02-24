@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index]
+  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data]
 
   require 'zip'
   
@@ -93,6 +93,10 @@ class AssignmentsController < ApplicationController
   end
   
   def data
+    if !current_user.is_staff?
+      flash_message :error, "You don't have permission to access that."
+      redirect_to '/'
+    end
     assignment = Assignment.find(params[:id])
     data = assignment.submissions.group("strftime('%Y%m%d %H', created_at)").count
     render :json => {data: data}
@@ -100,6 +104,10 @@ class AssignmentsController < ApplicationController
   
   # Assignment group views
   def groups
+    if !current_user.is_staff?
+      flash_message :error, "You don't have permission to access that."
+      redirect_to '/'
+    end
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
     @submissions = @assignment.submissions.select{
