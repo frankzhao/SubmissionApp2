@@ -88,7 +88,7 @@
         %th Submission
         %th Date Submitted
         %th Review Status
-      - if current_user.is_admin?
+      - if current_user
         - Assignment.all.each do |a|
           - for s in a.peer_review_submissions_for(@user)
             %tr

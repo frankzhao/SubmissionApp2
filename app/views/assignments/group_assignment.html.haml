@@ -40,7 +40,10 @@
                   = f.text_area :text, placeholder: "Comment", class: "form-control"
                   = f.file_field :attachment
                   = f.submit "Add comment", class: "btn btn-xs btn-primary"
-              - else
+              - elsif user_submission && !user_submission.comments_by(current_user).empty?
                 %span.good
                   Commented
+              - else
+                %span.warn
+                  No Submission
   = render 'sidebar_show_group'

@@ -52,6 +52,9 @@
   color: gray;
   border-right: none;
   text-align: right;
+  line-height: 1.5;
+  word-break: normal !important;
+  word-wrap: normal !important;
 }
 .highlighttable {
   width: 100%;
