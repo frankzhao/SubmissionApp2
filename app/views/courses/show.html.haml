@@ -22,7 +22,7 @@
             %td
               %a{:href => "/assignments/#{a.id.to_s}"}= a.name
             %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
-            %td= a.submissions.select{|s| s.user.type == "Student"}.length.to_s + " of " + @course.students.length.to_s
+            %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.length.to_s
     - if current_user.is_staff?
       %h3#enrolments Enrolments
       %table.table.table-hover.table-striped

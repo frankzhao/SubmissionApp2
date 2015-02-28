@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :notifications
   has_many :extensions
-  has_many :assignments
+  has_and_belongs_to_many :assignments
 
   validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}

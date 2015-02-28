@@ -7,7 +7,8 @@ class NotificationsController < ApplicationController
   	notification = Notification.find(params[:id])
 
   	if !notification.nil?
-  		notification.dismiss!
+      current_user.notifications.delete(notification)
+      notification.destroy
   		render :json => "", :status => 200
   	else
   		render :json => { :error => "Unable to find Notification"}, :status => 404

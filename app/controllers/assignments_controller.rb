@@ -23,8 +23,8 @@ class AssignmentsController < ApplicationController
     tests = params[:tests]
     peer_review = params[:assignment][:peer_review_enabled]
 
-    if course && Course.find_by_id(course)
-      c = Course.find_by_id(course)
+    if course && Course.find(course)
+      c = Course.find(course)
 
       # Parse due date
       date_due = Chronic.parse(date_due)

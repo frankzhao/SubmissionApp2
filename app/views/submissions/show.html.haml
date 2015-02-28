@@ -60,7 +60,11 @@
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else
-          %p Finalise your submission and reload this page in a few seconds to see your results.
+          %p Reload this page in a few seconds to see your results.
+          :javascript
+            setTimeout(function(){
+              window.location.reload();
+            }, 2000);
     
     %h3 Comments
     - for comment in @submission.comments

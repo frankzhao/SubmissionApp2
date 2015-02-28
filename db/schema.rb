@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224071846) do
+ActiveRecord::Schema.define(version: 20150228005201) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 20141224071846) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "assignments_users", force: true do |t|
+    t.integer "user_id"
+    t.integer "assignment_id"
+  end
+
+  add_index "assignments_users", ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id"
+  add_index "assignments_users", ["user_id"], name: "index_assignments_users_on_user_id"
 
   create_table "comments", force: true do |t|
     t.integer  "submission_id"
