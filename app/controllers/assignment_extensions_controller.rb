@@ -11,7 +11,8 @@ class AssignmentExtensionsController < ApplicationController
     student = User.find_by_uid(params[:uid])
     
     # Parse due date
-    due_date = Chronic.parse(params[:assignment_extension][:due_date])
+    due_date = Chronic.parse(params[:assignment_extension][:due_date],
+      :endian_precedence => [:little, :median])
     assignment = Assignment.find(params[:assignment_id])
     if !due_date
       flash_message :error, "Incorrect format for due date."

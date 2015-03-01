@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
       c = Course.find(course)
 
       # Parse due date
-      date_due = Chronic.parse(date_due)
+      date_due = Chronic.parse(date_due, :endian_precedence => [:little, :median])
       assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type, :tests => tests,
                                    peer_review_enabled: peer_review)
@@ -53,7 +53,7 @@ class AssignmentsController < ApplicationController
   
   def update
     @assignment = Assignment.find(params[:id])
-    date_due = Chronic.parse(params[:date_due])
+    date_due = Chronic.parse(params[:date_due], :endian_precedence => [:little, :median])
     @assignment.update_attributes(
       :name => params[:assignment_name],
       :due_date => date_due,
