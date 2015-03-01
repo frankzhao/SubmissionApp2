@@ -127,7 +127,7 @@ class GroupsController < ApplicationController
           # Look up tutor details
           ldap_user = AnuLdap.find_by_uni_id(uid)
           if ldap_user
-            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name], :surname => ldap_user[:surname])
+            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.tutors << t
             group.tutor = t
             group.save!
