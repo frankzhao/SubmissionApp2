@@ -66,7 +66,7 @@
             %td= link_to a.course.code, course_path(a)
             %td= link_to a.name, assignment_path(a)
             %td= a.due_date.strftime('%d/%m/%Y %I:%M%p')
-            %td
+            %td{style: "line-height: 2em;"}
               - if @user.submissions_for(a).empty?
                 %span.glyphicon.glyphicon-warning-sign.warn
                 %span.warn No submissions found.
@@ -80,6 +80,13 @@
                   - else
                     %span.glyphicon.glyphicon-ok
                     = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
+
+                  - if is_late_with_extension(s, a)
+                    %span.label.label-warning
+                      Extension until #{a.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+                  - elsif is_late(s, a) || is_late_without_extension(s, a)
+                    %span.label.label-danger
+                      Late
                   %br
                   
     %h3 Submissions to Review

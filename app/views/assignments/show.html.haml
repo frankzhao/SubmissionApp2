@@ -23,10 +23,12 @@
       %table.table.table-hover.table-striped
         %tr
           %th Group
+          %th Tutor
           %th Finalised submissions
         - for group in @course.groups
           %tr
             %td= link_to group.name, group_assignment_path(group, @assignment)
+            %td= link_to group.tutor.nil? ? "" : group.tutor.full_name, group_assignment_path(group, @assignment)
             %td
               = link_to "#{@assignment.submissions.select{|s| (s.finalised && s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length} of #{group.students.length}", group_assignment_path(group, @assignment)
     - if current_user.is_admin_or_convenor?
