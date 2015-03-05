@@ -104,11 +104,13 @@ class CoursesController < ApplicationController
   private
   
   def enroll_users(c, students, tutors, convenors)
+    student_list = Array.new
     if not students.empty?
       counter = 0
       students.each do |s|
         # Remove spaces
         s.gsub!(/\s+/, "")
+        student_list << s
 
         if !Student.find_by_uid(s).nil?
           s = Student.find_by_uid(s)
@@ -130,6 +132,22 @@ class CoursesController < ApplicationController
           end
         end
       end
+      
+      for s in c.students
+        if !student_list.include?(s.uid)
+          # Remove from course
+          s.courses.delete(c)
+          c.students.delete(s)
+          # Remove from groups
+          for g in s.groups
+            if g.course == c
+              s.groups.delete(g)
+              g.students.delete(s)
+            end
+          end
+        end
+      end
+      
       flash_message :success, "Sucessfully enrolled #{counter} students." unless counter == 0
     end
 
