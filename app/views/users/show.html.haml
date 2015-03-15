@@ -61,7 +61,7 @@
           %th Assignment
           %th Date Due
           %th Your Submissions
-        - @user.assignments.each do |a|
+        - @user.assignments.uniq.each do |a|
           %tr
             %td= link_to a.course.code, course_path(a)
             %td= link_to a.name, assignment_path(a)
