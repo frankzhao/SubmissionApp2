@@ -33,7 +33,7 @@
               </ul>
             <% else %>
             <ul class="dropdown-menu scrollable-menu">
-              <% current_user.assignments.each do |assignment| %>
+              <% current_user.assignments.uniq.each do |assignment| %>
                 <li><%= link_to assignment.name, assignment_path(assignment) %></li>
               <% end %>
             </ul>
