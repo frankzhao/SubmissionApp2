@@ -57,13 +57,20 @@
   word-wrap: normal !important;
 }
 .highlighttable {
+  table-layout: fixed;
   width: 100%;
+  margin-left: 1px;
   td {
     padding-left: 0;
     padding-right: 0;
   }
+  td.linenos {width: 6%;}
+  td.code {width: 94%;}
   pre {
     background-color: #fff;
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
   }
 }
 .c { color: #999988; font-style: italic } /* Comment */
