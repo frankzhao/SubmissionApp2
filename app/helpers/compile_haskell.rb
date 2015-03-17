@@ -27,8 +27,7 @@ module CompileHaskell
     if result && !tests.nil?
       comments += "Running tests...\n<ol>"
       for test in tests
-        command = "cd #{folder} && timeout 3 ghc -i.:#{libraries}" + " -XSafe #{hash}.hs 2>&1 -e " +
-                  "\"#{test.gsub('"','\"')}\""
+        command = "timeout 3 ghc -i.:#{libraries}" + " #{folder}/#{hash}.hs 2>&1 -e " + "\"#{test.gsub('"','\"')}\""
         ghc_result = `#{command}`
         comments += "<li>" + test.strip + ": " + ghc_result.strip + "</li>"
 
