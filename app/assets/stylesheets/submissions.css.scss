@@ -68,9 +68,10 @@
   td.code {width: 94%;}
   pre {
     background-color: #fff;
-    overflow: auto;
+    overflow-x: overlay;
     word-wrap: normal;
     white-space: pre;
+    padding-bottom: 20px;
   }
 }
 .c { color: #999988; font-style: italic } /* Comment */
