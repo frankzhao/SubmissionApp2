@@ -1,6 +1,6 @@
 function NotificationSetup()
 {
-	setInterval(NotificationUpdate, 60000);
+	//setInterval(NotificationUpdate, 60000);
 	NotificationUpdate();
 }
 
@@ -45,7 +45,7 @@ function NotificationUpdate()
 
 function NotificationDismiss(e)
 {
-	var id = parseInt(e.id.match(/(\d)+/));
+	var id = parseInt(e.id.match(/(\d)+/igm)[0]);
 
 	$.ajax({
 		url: "/users/notifications",
