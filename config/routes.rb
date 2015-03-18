@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get "submissions/:id/download" => "submissions#download"
   get "submissions/:id/pdf" => "submissions#pdf"
   
+  get "/admin/become/:id" => "admin#become"
   get "/admin" => "admin#index"
   post "/admin" => "admin#form"
 

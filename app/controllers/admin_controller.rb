@@ -16,6 +16,13 @@ class AdminController < ApplicationController
     redirect_to '/admin'
   end
   
+  def become
+    return unless current_user.is_admin?
+    sign_in(:user, User.find_by_uid(params[:id]))
+    $is_fake_user = true
+    redirect_to root_url
+  end
+  
   private
   
   def enroll_convenor(uid)
