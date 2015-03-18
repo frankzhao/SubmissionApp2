@@ -128,11 +128,11 @@
                   %span.label.label-success
                     Finalised
                 - if @assignment.peer_review_enabled && s.finalised
-                  - if !@assignment.peer_review_submissions_for(s.user).empty? && @assignment.peer_review_submissions_for(s.user).first.reviewed_by?(s.user)
-                    %span.label.label-success
+                  - if s.peer_reviewed?
+                    %span.label.label-success{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
                       Reviewed
-                  - elsif !@assignment.peer_review_submissions_for(s.user).empty? && !@assignment.peer_review_submissions_for(s.user).first.reviewed_by?(s.user)
-                    %span.label.label-warning
+                  - elsif !s.peer_reviewed? && !s.peer_review_user_id.nil?
+                    %span.label.label-warning{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
                       Assigned
   = render 'sidebar_show'
 
@@ -142,6 +142,7 @@
     var ready;
 
     ready = function() {
+      $(".label").tooltip();
       var assignment_id, ctx, options;
       ctx = $("#chart").get(0).getContext("2d");
       options = {

@@ -1,6 +1,6 @@
 //= require jquery
-//= require bootstrap.min
 //= require jquery_ujs
+//= require bootstrap.min
 //= require date
 //= require chart.min
 //= require_self

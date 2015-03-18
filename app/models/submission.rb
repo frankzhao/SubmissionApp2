@@ -49,6 +49,12 @@ class Submission < ActiveRecord::Base
   end
   handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
   
+  def peer_reviewed?
+    return false unless !self.peer_review_user_id.nil?
+    user = User.find(self.peer_review_user_id)
+    !self.comments.select{|c| c.user ==  user}.empty?
+  end
+  
   def reviewed_by?(user)
     !self.comments.select{|c| c.user ==  user}.empty?
   end
