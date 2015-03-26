@@ -29,8 +29,10 @@ function NotificationUpdate()
 			link.href = list[i].link;
       link.textContent = list[i].text;
 			link.innerText = list[i].text;
-			link.onclick = function() {
+			link.onclick = function(e) {
+        e.preventDefault();
 				NotificationDismiss(this);
+        window.location = link.href;
 			};
 
 			container.appendChild(link);
