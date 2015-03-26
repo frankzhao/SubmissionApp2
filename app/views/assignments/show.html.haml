@@ -44,8 +44,8 @@
           %th Delete
         - for extension in @assignment.assignment_extensions
           %tr
-            %td= link_to extension.user.uid, user_path(group, extension.user)
-            %td= link_to extension.user.full_name, user_path(group, extension.user)
+            %td= link_to extension.user.uid, user_path(extension.user)
+            %td= link_to extension.user.full_name, user_path(extension.user)
             %td= extension.due_date.strftime('%d/%m/%Y %I:%M%p')
             %td
               %a{"data-confirm" => "Are you sure you wish to delete this extension?", "data-method" => "delete", :href => "/assignment_extensions/#{extension.id}", :rel => "nofollow"}
