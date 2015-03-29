@@ -23,7 +23,7 @@
           %span.glyphicon.glyphicon-warning-sign
           Your submission is late. Unless you have been granted an exception your assignment may not be marked.
     
-    -# Plaintext submissions ---
+    /# Plaintext submissions ---
     .meta
       - if current_user.is_owner_or_staff?(@submission)
         = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
@@ -37,7 +37,7 @@
       = (preserve @plaintext).html_safe
 
     - elsif @assignment.kind == 'zip'
-      -# ZIP submissions ---
+      /# ZIP submissions ---
       - if @contents.blank?
         .alert.alert-danger{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
@@ -47,12 +47,13 @@
         %p If these files do not look correct, please try re-zipping and creating a new submission. Files marked with a red cross should be removed before finalising your submission.
         %ul.list-group
           - for file in @contents
-            %li.list-group-item
-              - if file =~ /^[.].*$/ || file =~ /MACOSX/
-                %span.glyphicon.glyphicon-remove.warn
-              - else
-                %span.glyphicon.glyphicon-ok.good
-              = file
+            - unless file =~ /MACOSX/ || file =~ /DS_Store/
+              %li.list-group-item
+                - if file =~ /^[.].*$/
+                  %span.glyphicon.glyphicon-remove.warn
+                - else
+                  %span.glyphicon.glyphicon-ok.good
+                = file
           
     - unless @assignment.kind == 'zip'
       %h3 Results
