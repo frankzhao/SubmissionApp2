@@ -20,6 +20,11 @@ module Devise
 
             if AnuLdap.authenticate(uid, pass)
               ldap_user = AnuLdap.find_by_uni_id(uid)
+              
+              if ldap_user.nil?
+                fail()
+                return
+              end
 
               # Create and update first time users
               if not User.find_by_uid(ldap_user[:uni_id])
