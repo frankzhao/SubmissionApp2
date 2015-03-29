@@ -172,7 +172,7 @@
         for (_i = 0, _len = labels.length; _i < _len; _i++) {
           l = labels[_i];
           date = Date.parseExact(l, 'yyyMMdd HH');
-          dates.push(date.getDate() + "/" + date.getMonth() + " " + date.getHours() + ":00");
+          dates.push(date.getDate() + "/" + (date.getMonth()+1) + " " + date.getHours() + ":00");
         }
         chartdata = {
           labels: dates,
