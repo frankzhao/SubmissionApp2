@@ -71,8 +71,8 @@ class Submission < ActiveRecord::Base
       puts "Creating PDF of ZIP submission"
       begin
         Zip::File.open(self.zipfile_path) do |zipfile|
-          for file in zipfile
-            if file.name !~ /\/./ || file.name =~ /MACOSX/
+          for file in zipfile.sort
+            if file.name =~ /\/\./ || file.name =~ /MACOSX/
               puts "Skipping: " + file.name
               next
             end

@@ -46,7 +46,7 @@
         %h3 Submitted files
         %p If these files do not look correct, please try re-zipping and creating a new submission. Files marked with a red cross should be removed before finalising your submission.
         %ul.list-group
-          - for file in @contents
+          - for file in @contents.sort
             - unless file =~ /MACOSX/ || file =~ /DS_Store/
               %li.list-group-item
                 - if file =~ /^[.].*$/
