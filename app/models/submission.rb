@@ -165,7 +165,10 @@ FILE
       end
     end
 
-    files_string = "/tmp/pdf/#{hash}/*.pdf"
+    #files_string = "/tmp/pdf/#{hash}/*.pdf"
+    files_list = `ls /tmp/pdf/#{hash}/*.pdf`
+    files_string = files_list.split("\n").sort_by { |x| x[/\d+\.pdf/].to_i }.join(" ")
+    `echo \"#{files_string}\" > /Users/frank/Desktop/test.txt`
     system("gs -q -sPAPERSIZE=a4 -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/pdf/#{self.pretty_filename}.pdf #{files_string}")
     "/tmp/pdf/#{hash}/#{self.pretty_filename}.pdf"
     system("rm -rf /tmp/pdf/#{hash}")
