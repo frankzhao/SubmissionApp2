@@ -1,6 +1,7 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data]
+  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group]
+  before_filter :require_staff, :only => [:download_all_submissions_for_group]
 
   require 'zip'
   
@@ -159,7 +160,7 @@ class AssignmentsController < ApplicationController
     group_submissions = Array.new
     for s in @group.students
       student_submissions = s.submissions_for(@assignment)
-      group_submissions << student_submissions.last unless student_submissions.nil?
+      group_submissions << student_submissions.last unless student_submissions.empty?
     end
     #group_submissions =
     #  @assignment.submissions.select{|s| s.user.type == "Student" && s.user.groups.include?(@group)}

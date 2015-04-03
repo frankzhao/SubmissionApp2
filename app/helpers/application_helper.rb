@@ -22,6 +22,13 @@ module ApplicationHelper
     end
   end
   
+  def require_staff
+    unless current_user.is_staff?
+      flash[:errors] = ["You don't have permission to access that."]
+      redirect_to '/'
+    end
+  end
+  
   def require_owner(resource)
     unless resource.user == current_user
       flash[:errors] = ["You don't have permission to access that."]
