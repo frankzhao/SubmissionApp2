@@ -156,8 +156,13 @@ class AssignmentsController < ApplicationController
   def download_all_submissions_for_group
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
-    group_submissions =
-      @assignment.submissions.select{|s| s.user.type == "Student" && s.user.groups.include?(@group)}
+    group_submissions = Array.new
+    for s in @group.students
+      student_submissions = s.submissions_for(@assignment)
+      group_submissions << student_submissions.last unless student_submissions.nil?
+    end
+    #group_submissions =
+    #  @assignment.submissions.select{|s| s.user.type == "Student" && s.user.groups.include?(@group)}
     if group_submissions.blank?
       flash_message :error, "Group has no submissions for download."
       redirect_to :back
