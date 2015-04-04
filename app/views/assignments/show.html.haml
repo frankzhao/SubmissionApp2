@@ -119,20 +119,20 @@
               %td= link_to "View Submission", submission_path(s)
               %td
                 - if is_late_with_extension(s, @assignment)
-                  %span.label.label-warning
+                  %span.label.label-warning.label-left
                     Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
                 - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
-                  %span.label.label-danger
+                  %span.label.label-danger.label-left
                     Late
                 - if s.finalised
-                  %span.label.label-success
+                  %span.label.label-success.label-left
                     Finalised
                 - if @assignment.peer_review_enabled && s.finalised
                   - if s.peer_reviewed?
-                    %span.label.label-success{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
+                    %span.label.label-success.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
                       Reviewed
                   - elsif !s.peer_reviewed? && !s.peer_review_user_id.nil?
-                    %span.label.label-warning{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
+                    %span.label.label-warning.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
                       Assigned
   = render 'sidebar_show'
 
