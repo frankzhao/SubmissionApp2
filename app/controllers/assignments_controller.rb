@@ -169,8 +169,10 @@ class AssignmentsController < ApplicationController
     unless File.exists?(zipfile_name)
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
         for file in files
-          filename = file.split('/').last
-          zipfile.add(filename, file)
+          if File.exists?(file)
+            filename = file.split('/').last
+            zipfile.add(filename, file)
+          end
         end
       end
     end
@@ -210,8 +212,10 @@ class AssignmentsController < ApplicationController
     unless File.exists?(zipfile_name)
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
         for file in files
-          filename = file.split('/').last
-          zipfile.add(filename, file)
+          if File.exists?(file)
+            filename = file.split('/').last
+            zipfile.add(filename, file)
+          end
         end
       end
     end
