@@ -6,7 +6,9 @@ class CommentsController < ApplicationController
     comment = Comment.create(
       submission_id: submission.id,
       text: params[:comment][:text],
-      user_id: params[:comment][:user_id]
+      user_id: params[:comment][:user_id],
+      hidden: params[:comment][:hidden],
+      visible: !(params[:comment][:hidden].to_bool)
     )
     assignment = submission.assignment
     
@@ -33,4 +35,5 @@ class CommentsController < ApplicationController
     comment.destroy
     redirect_to submission_path(submission)
   end
+
 end

@@ -69,25 +69,50 @@
     
     %h3 Comments
     - for comment in @submission.comments
-      .comment
-        .bold
-          = User.find(comment.user).full_name
-        .small.date
-          = comment.created_at.strftime('%d/%m/%Y %I:%M%p')
-          - if comment.attachment?
-            %span.glyphicon.glyphicon-paperclip
-        %p
-          = comment.text
-        - if comment.attachment?
+      - if comment.hidden && current_user.is_staff?
+        .comment.light
+          .bold
+            = User.find(comment.user).full_name
+            %span.glyphicon.glyphicon-eye-close
+          .small.date
+            = comment.created_at.strftime('%d/%m/%Y %I:%M%p')
+            - if comment.attachment?
+              %span.glyphicon.glyphicon-paperclip
           %p
-            = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
-              %span.glyphicon.glyphicon-download-alt
-              Download
-              = comment.attachment.file.filename
-        - if current_user == comment.user
-          .delete
-            = link_to "Delete", comment_path(comment), class: "btn btn-xs btn-danger", method: :delete, data: { confirm: "Are you sure you wish to delete your comment?"}
-    
+            = comment.text
+          - if comment.attachment?
+            %p
+              = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
+                %span.glyphicon.glyphicon-download-alt
+                Download
+                = comment.attachment.file.filename
+          - if current_user == comment.user
+            .delete
+              = link_to "Delete", comment_path(comment), class: "btn btn-xs btn-danger", method: :delete, data: { confirm: "Are you sure you wish to delete your comment?"}
+      - elsif !comment.hidden
+        .comment
+          .bold
+            = User.find(comment.user).full_name
+            - if !comment.visible
+              %span.glyphicon.glyphicon-eye-open
+          .small.date
+            = comment.created_at.strftime('%d/%m/%Y %I:%M%p')
+            - if comment.attachment?
+              %span.glyphicon.glyphicon-paperclip
+          %p
+            = comment.text
+          - if comment.attachment?
+            %p
+              = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
+                %span.glyphicon.glyphicon-download-alt
+                Download
+                = comment.attachment.file.filename
+          - if current_user == comment.user || current_user.is_admin_or_convenor?
+            .delete
+              = link_to "Delete", comment_path(comment), class: "btn btn-xs btn-danger", method: :delete, data: { confirm: "Are you sure you wish to delete your comment?"}
+      - else
+        -next
+  
     .comment-form
       = form_for @comment do |f|
         = f.text_field :submission_id, value: @submission.id, class: "hidden"
@@ -95,6 +120,9 @@
         = f.text_area :text, placeholder: "Comment", class: "form-control", style: "height: 200px"
         - if current_user.is_staff?
           = f.file_field :attachment, :type => "file", id: "file-upload"
+          .hide-comment
+            = f.check_box :hidden
+            = f.label :hidden, "Hide comment"
         = f.submit value: "Add comment", class: "btn btn-xs btn-primary"
 
   = render 'sidebar_show'

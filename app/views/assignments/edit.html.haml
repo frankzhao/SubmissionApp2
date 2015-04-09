@@ -20,7 +20,7 @@
             %label.control-label{:for => "type"} Submission type
             .input-group
               .controls
-                = f.select :kind, ["zip", "plaintext"], {}, :class => "form-control"
+                = f.select :kind, ["zip", "plaintext"], {}, :class => "form-control", disabled: true
             %label.control-label{:for => "text"} Submission instructions
             .input-group
               .controls

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150228005201) do
+ActiveRecord::Schema.define(version: 20150408044834) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -50,12 +50,14 @@ ActiveRecord::Schema.define(version: 20150228005201) do
   create_table "comments", force: true do |t|
     t.integer  "submission_id"
     t.integer  "user_id"
-    t.text     "text",                      null: false
+    t.text     "text",                          null: false
     t.string   "mark"
     t.integer  "parent_id",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "attachment"
+    t.boolean  "hidden",        default: false
+    t.boolean  "visible",       default: true
   end
 
   create_table "convenors", force: true do |t|

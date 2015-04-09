@@ -1,3 +1,13 @@
-// Place all the styles related to the comments controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.light {
+	color: #888;
+}
+
+.hide-comment {
+	label {
+		padding-top: 8px !important;
+		padding-left: 0 !important;
+	}
+	input {
+		margin-top: 12px !important;
+	}
+}

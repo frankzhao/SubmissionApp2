@@ -54,11 +54,35 @@ class AssignmentsController < ApplicationController
   
   def update
     @assignment = Assignment.find(params[:id])
+    old_folder = sanitize_str(@assignment.name)
+    new_folder = sanitize_str(params[:assignment_name])
+
+    if old_folder != new_folder
+      # Rename upload directories if assignment is renamed
+      old_path = Rails.root.to_s + "/public/uploads/#{old_folder}"
+      new_path = Rails.root.to_s + "/public/uploads/#{new_folder}"
+      `mv #{old_path} #{new_path}`
+
+      # Rename uploaded submissions
+      for submission in @assignment.submissions
+        old_submission_path = submission.file_path.sub(/#{old_folder}/,"#{new_folder}")
+        new_submission_path = submission.file_path.gsub(/#{old_folder}/,"#{new_folder}")
+        if @assignment.kind == "zip"
+          old_submission_path = old_submission_path + ".zip"
+          new_submission_path = new_submission_path + ".zip"
+        elsif @assignment.kind == "plaintext"
+          old_submission_path = old_submission_path + ".txt"
+          new_submission_path = new_submission_path + ".txt"
+        end
+
+        File.rename(old_submission_path, new_submission_path)
+      end
+    end
+
     date_due = Chronic.parse(params[:date_due], :endian_precedence => [:little, :median])
     @assignment.update_attributes(
       :name => params[:assignment_name],
       :due_date => date_due,
-      :kind => params[:assignment][:kind],
       :description => params[:text],
       :tests => params[:tests],
       :peer_review_enabled => params[:assignment][:peer_review_enabled]
@@ -193,6 +217,30 @@ class AssignmentsController < ApplicationController
     end
     
     send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
+  end
+
+  def show_hidden_comments
+    assignment = Assignment.find(params[:assignment_id])
+    for submission in assignment.submissions
+      for comment in submission.comments
+        if comment.hidden && !comment.visible
+          comment.update_attributes(hidden: false)
+        end
+      end
+    end
+    redirect_to assignment_path(assignment)
+  end
+
+  def hide_hidden_comments
+    assignment = Assignment.find(params[:assignment_id])
+    for submission in assignment.submissions
+      for comment in submission.comments
+        if !comment.hidden && !comment.visible
+          comment.update_attributes(hidden: true)
+        end
+      end
+    end
+    redirect_to assignment_path(assignment)
   end
   
 end
