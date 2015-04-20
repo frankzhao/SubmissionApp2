@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
       text: params[:comment][:text],
       user_id: params[:comment][:user_id],
       hidden: params[:comment][:hidden],
-      visible: !(params[:comment][:hidden].to_bool)
+      visible: !!!(params[:comment][:hidden])
     )
     assignment = submission.assignment
     
