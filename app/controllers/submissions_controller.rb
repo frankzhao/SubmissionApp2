@@ -11,8 +11,8 @@ class SubmissionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @most_recent_submission = current_user.recent_submission_for(@assignment)
     @course = @assignment.course
-    
-    unless current_user.relationship_to @course
+
+    unless current_user.relationship_to(@course) || current_user.is_staff?
       flash_message :error, "You must be enrolled in the course to create a new submission."
       redirect_to '/'
       return
