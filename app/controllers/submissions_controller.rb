@@ -1,4 +1,6 @@
 class SubmissionsController < ApplicationController
+  include SubmissionsHelper
+
   before_filter :require_logged_in
   respond_to :html
   
@@ -47,7 +49,9 @@ class SubmissionsController < ApplicationController
       end
       
       # Run tests
-      out = @submission.compile_haskell
+      unless @assignment.disable_compilation
+        out = @submission.compile_haskell
+      end
       
     elsif @assignment.kind == 'zipfile'
       uploaded_zip = params[:submission][:zipfile]
@@ -56,6 +60,13 @@ class SubmissionsController < ApplicationController
       File.open(zip_path, 'wb') do |file|
         file.write(uploaded_zip.read)
       end
+    end
+    
+    # Copy if path is specified
+    if @assignment.copy_path.present?
+      folder = @assignment.copy_path.split("/")[0...-1].join("/")
+      FileUtils.mkdir_p parse_copy_path(folder, @submission)
+      FileUtils.cp(@submission.plaintext_path, parse_copy_path(@assignment.copy_path, @submission))
     end
     
     redirect_to submission_path(@submission)

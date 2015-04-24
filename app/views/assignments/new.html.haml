@@ -37,4 +37,15 @@
                 = f.check_box :peer_review_enabled
             .input-group
               .controls
+                = f.label :disable_compilation, "Disable compilation", style: "padding: 0 !important"
+                = f.check_box :disable_compilation
+            .input-group
+              .controls
+                %p
+                  Also copy submission to:
+                  %span.small.light
+                    (Options: $uid, $fullname, $submissionid)
+                = f.text_field :copy_path, class: "form-control", placeholder: "/dept/dcs/comp1100/submissions/Assignment_2/$uid/Player.hs"
+            .input-group
+              .controls
                 %input.btn.btn-primary{:style => "float:right;", :type => "submit", :value => "Create"}

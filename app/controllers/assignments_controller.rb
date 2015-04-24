@@ -23,6 +23,7 @@ class AssignmentsController < ApplicationController
     text = params[:text]
     tests = params[:tests]
     peer_review = params[:assignment][:peer_review_enabled]
+    copy_path = params[:assignment][:copy_path]
 
     if course && Course.find(course)
       c = Course.find(course)
@@ -31,7 +32,8 @@ class AssignmentsController < ApplicationController
       date_due = Chronic.parse(date_due, :endian_precedence => [:little, :median])
       assignment = Assignment.create(:name => name, :due_date => date_due,
                                    :description => text, :kind => type, :tests => tests,
-                                   peer_review_enabled: peer_review)
+                                   :peer_review_enabled => peer_review, :copy_path => copy_path,
+                                   :disable_compilation => params[:assignment][:disable_compilation])
       # Add assignment to the course
       Course.find(course).assignments << assignment
       
@@ -85,7 +87,9 @@ class AssignmentsController < ApplicationController
       :due_date => date_due,
       :description => params[:text],
       :tests => params[:tests],
-      :peer_review_enabled => params[:assignment][:peer_review_enabled]
+      :peer_review_enabled => params[:assignment][:peer_review_enabled],
+      :copy_path => params[:assignment][:copy_path],
+      :disable_compilation => params[:assignment][:disable_compilation]
     )
     
     redirect_to assignment_path(@assignment)

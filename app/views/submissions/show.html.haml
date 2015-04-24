@@ -55,7 +55,7 @@
                   %span.glyphicon.glyphicon-ok.good
                 = file
           
-    - unless @assignment.kind == 'zip'
+    - unless @assignment.kind == 'zip' || @assignment.disable_compilation
       %h3 Results
       .results
         - if @submission.test_result
@@ -121,7 +121,7 @@
         - if current_user.is_staff?
           = f.file_field :attachment, :type => "file", id: "file-upload"
           .hide-comment
-            = f.check_box :hidden
+            = f.check_box :hidden, style: "margin-top: 12px"
             = f.label :hidden, "Hide comment"
         = f.submit value: "Add comment", class: "btn btn-xs btn-primary"
 

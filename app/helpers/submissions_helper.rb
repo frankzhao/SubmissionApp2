@@ -26,6 +26,13 @@ module SubmissionsHelper
     end
   end
   
+  def parse_copy_path(path, submission)
+    path = path.gsub(/\$uid/, submission.user.uid)
+    path = path.gsub(/\$fullname/, submission.user.full_name)
+    path = path.gsub(/\$submissionid/, submission.id.to_s)
+    return path
+  end
+  
   private
   
   def has_due_date(assignment)

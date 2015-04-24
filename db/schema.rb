@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408044834) do
+ActiveRecord::Schema.define(version: 20150424142402) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -27,16 +27,18 @@ ActiveRecord::Schema.define(version: 20150408044834) do
   end
 
   create_table "assignments", force: true do |t|
-    t.string   "name",                null: false
+    t.string   "name",                                null: false
     t.datetime "due_date"
     t.text     "description"
     t.text     "tests"
-    t.string   "kind",                null: false
+    t.string   "kind",                                null: false
     t.integer  "course_id"
     t.integer  "user_id"
     t.boolean  "peer_review_enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "copy_path"
+    t.boolean  "disable_compilation", default: false
   end
 
   create_table "assignments_users", force: true do |t|
