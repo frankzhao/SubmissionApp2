@@ -60,7 +60,7 @@
           <% end %>
         </li>
 
-        <% unless current_user.is_admin? %>
+        <% unless !current_user.is_staff? || current_user.is_admin? %>
           <% unless current_user.groups.empty? %>
             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
               <ul class="dropdown-menu scrollable-menu">

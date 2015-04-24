@@ -5,7 +5,9 @@
       .menu-icon-container.hidden
         %span.glyphicon.glyphicon-tasks.menu-icon
       - if @group.tutor
-        %span.uid_heading Tutor: #{@group.tutor.full_name}
+        %span.uid_heading
+          Tutor:
+          = link_to @group.tutor.full_name, user_path(@group.tutor)
     %h3 Enrolments
     %table.table.table-hover.table-striped
       - if @group.students.empty?
