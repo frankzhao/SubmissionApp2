@@ -41,8 +41,9 @@
                   = f.file_field :attachment
                   - if current_user.is_staff?
                     .hide-comment
-                      = f.check_box :hidden
-                      = f.label :hidden, "Hide comment"
+                      %label
+                        = f.check_box :hidden, id: "hidden_comment_#{s.uid}"
+                        Hide comment
                   = f.submit "Add comment", class: "btn btn-xs btn-primary"
               - elsif user_submission && !user_submission.comments_by(current_user).empty?
                 %span.good
