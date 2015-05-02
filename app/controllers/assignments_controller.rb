@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group]
+  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data]
   before_filter :require_staff, :only => [:download_all_submissions_for_group]
 
   require 'zip'
@@ -128,6 +128,38 @@ class AssignmentsController < ApplicationController
     end
     assignment = Assignment.find(params[:id])
     data = assignment.submissions.group("strftime('%Y%m%d %H', created_at)").count
+    render :json => {data: data}
+  end
+  
+  def group_data
+    if !current_user.is_staff?
+      flash_message :error, "You don't have permission to access that."
+      redirect_to '/'
+    end
+    
+    data = Hash.new
+    assignment = Assignment.find(params[:id])
+    course = assignment.course
+    
+    for group in course.groups
+      group_data = Hash.new
+      enrolled = group.students.length
+      submissions = assignment.submissions
+      finalised = submissions.where(finalised: true)
+      finalised_count = finalised.select{|s| group.students.include?(s.user)}.map(&:user).uniq.length
+      submission_count = submissions.select{|s| (s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length
+      
+      group_data["name"] = group.name.to_s
+      group_data["enrolled"] = enrolled.to_i
+      group_data["finalised"] = finalised_count
+      group_data["submissions"] = submission_count
+      group_data["tutor"] = group.tutor.present? ? group.tutor.full_name.to_s : "None"
+      group_data["group_url"] = group_path(group)
+      group_data["group_submissions_url"] = "/assignments/#{assignment.id}/group/#{group.id}"
+      
+      data[group.name] = group_data
+    end
+    
     render :json => {data: data}
   end
   

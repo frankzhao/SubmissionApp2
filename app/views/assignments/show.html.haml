@@ -20,20 +20,16 @@
         %canvas#chart{width: "800", height: "250"}
       
       %h3 Submissions by group
-      %table.table.table-hover.table-striped
+      .spinner
+        .double-bounce1
+        .double-bounce2
+      %table.table.table-hover.table-striped#group-data
         %tr
           %th Group
           %th Tutor
           %th Finalised submissions
           %th Unique submissions
-        - for group in @course.groups
-          %tr
-            %td= link_to group.name, group_assignment_path(group, @assignment)
-            %td= link_to group.tutor.nil? ? "" : group.tutor.full_name, group_assignment_path(group, @assignment)
-            %td
-              = link_to "#{@assignment.submissions.select{|s| (s.finalised && s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length} of #{group.students.length}", group_assignment_path(group, @assignment)
-            %td
-              = link_to "#{@assignment.submissions.select{|s| (s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length} of #{group.students.length}", group_assignment_path(group, @assignment)
+
     - if current_user.is_admin_or_convenor?
       %h3 Extensions
       %table.table.table-hover.table-striped
@@ -145,22 +141,8 @@
       $(".label").tooltip();
       var assignment_id, ctx, options;
       ctx = $("#chart").get(0).getContext("2d");
-      options = {
-        scaleShowGridLines: true,
-        scaleGridLineColor: "rgba(0,0,0,.05)",
-        scaleGridLineWidth: 1,
-        bezierCurve: true,
-        bezierCurveTension: 0.4,
-        pointDot: true,
-        pointDotRadius: 4,
-        pointDotStrokeWidth: 1,
-        pointHitDetectionRadius: 20,
-        datasetStroke: true,
-        datasetStrokeWidth: 2,
-        datasetFill: true
-      };
       assignment_id = $("#assignment-name").attr("assignment-id");
-      return $.get("/assignments/data/" + assignment_id, function(data) {
+      $.get("/assignments/data/" + assignment_id, function(data) {
         var chart, chartdata, date, dates, k, l, labels, values, _i, _len;
         labels = [];
         values = [];
@@ -189,7 +171,40 @@
             }
           ]
         };
+        var xlabeln = Math.round(dates.length / 4);
+        options = {
+          scaleShowGridLines: true,
+          showXLabels: xlabeln,
+          scaleGridLineColor: "rgba(0,0,0,.05)",
+          scaleGridLineWidth: 1,
+          bezierCurve: true,
+          bezierCurveTension: 0.4,
+          pointDot: true,
+          pointDotRadius: 2,
+          pointDotStrokeWidth: 1,
+          pointHitDetectionRadius: 1,
+          datasetStroke: true,
+          datasetStrokeWidth: 2,
+          datasetFill: true
+        };
         chart = new Chart(ctx).Line(chartdata, options);
+      });
+      
+      $.get("/assignments/group_data/"+assignment_id, function(data){
+        for (var group in data.data) {
+          var group_data = data.data[group]
+          var group_url = group_data["group_url"]
+          var group_submissions_url = group_data["group_submissions_url"]
+          $("#group-data").append(
+            '<tr><td><a href='+group_url+'>'+group_data.name+'</a></td>'+
+            '<td><a href='+group_url+'>'+group_data.tutor+'</a></td>'+
+            '<td><a href='+group_submissions_url+'>'+group_data.finalised+' out of '+group_data.enrolled+'</a></td>'+
+            '<td><a href='+group_submissions_url+'>'+group_data.submissions+' out of '+group_data.enrolled+'</a></td>'+
+            '</tr>'
+          );
+        }
+        $(".spinner").addClass("hidden");
+        $("#group-data").fadeIn(300);
       });
     };
 
