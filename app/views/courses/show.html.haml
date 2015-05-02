@@ -17,15 +17,44 @@
           %th Assignment
           %th Deadline (dd/mm/yyyy)
           %th Finalised Submissions
-        - @course.assignments.each do |a|
-          %tr
-            %td
-              %a{:href => "/assignments/#{a.id.to_s}"}= a.name
-            - if !a.due_date.nil?
-              %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
-            - else
-              %td No due date
-            %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.length.to_s
+        - if current_user.is_staff?
+          - @course.assignments.each do |a|
+            %tr
+              %td
+                %a{:href => "/assignments/#{a.id.to_s}"}= a.name
+              - if !a.due_date.nil?
+                %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
+              - else
+                %td No due date
+              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.length.to_s
+        - else
+          - @course.assignments.each do |a|
+            %tr
+              %td
+                %a{:href => "/assignments/#{a.id.to_s}"}= a.name
+              - if !a.due_date.nil?
+                %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
+              - else
+                %td No due date
+              %td
+                - s = current_user.submissions_for(a).sort_by{|x| x.created_at}.last
+                - if s.present?
+                  - if s.finalised
+                    %span.glyphicon.glyphicon-thumbs-up.good
+                    = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good"
+                  - else
+                    %span.glyphicon.glyphicon-ok
+                    = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
+
+                  - if is_late_with_extension(s, a)
+                    %span.label.label-warning
+                      Extension
+                  - elsif is_late(s, a) || is_late_without_extension(s, a)
+                    %span.label.label-danger
+                      Late
+                - else
+                  %span.glyphicon.glyphicon-exclamation-sign.warn
+                  %span.warn No submissions
     - if current_user.is_staff?
       %h3#enrolments Enrolments
       %table.table.table-hover.table-striped

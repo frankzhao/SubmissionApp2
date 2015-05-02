@@ -68,8 +68,8 @@
             %td= a.due_date.strftime('%d/%m/%Y %I:%M%p')
             %td{style: "line-height: 2em;"}
               - if @user.submissions_for(a).empty?
-                %span.glyphicon.glyphicon-warning-sign.warn
-                %span.warn No submissions found.
+                %span.glyphicon.glyphicon-exclamation-sign.warn
+                %span.warn No submissions
                 %br
                 = link_to "Add submission", "/submissions/#{a.id}/new"
               - else
