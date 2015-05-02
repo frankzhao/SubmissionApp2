@@ -17,10 +17,13 @@
     - if !@assignment.submissions.empty? && current_user.is_staff?
       - if @assignment.submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
         %h3 Submissions by hour
+        .spinner#chart-spinner
+          .double-bounce1
+          .double-bounce2
         %canvas#chart{width: "800", height: "250"}
       
       %h3 Submissions by group
-      .spinner
+      .spinner#groups-spinner
         .double-bounce1
         .double-bounce2
       %table.table.table-hover.table-striped#group-data
@@ -188,6 +191,7 @@
           datasetFill: true
         };
         chart = new Chart(ctx).Line(chartdata, options);
+        $("#chart-spinner").addClass("hidden");
       });
       
       $.get("/assignments/group_data/"+assignment_id, function(data){
@@ -203,7 +207,7 @@
             '</tr>'
           );
         }
-        $(".spinner").addClass("hidden");
+        $("#groups-spinner").addClass("hidden");
         $("#group-data").fadeIn(300);
       });
     };
