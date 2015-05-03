@@ -127,8 +127,28 @@ class AssignmentsController < ApplicationController
       redirect_to '/'
     end
     assignment = Assignment.find(params[:id])
-    data = assignment.submissions.group("strftime('%Y%m%d %H', created_at)").count
-    render :json => {data: data}
+    submissions = assignment.submissions
+    hourly_data = submissions.group("strftime('%Y%m%d %H', created_at)").count
+    daily_data = submissions.group("strftime('%Y%m%d', created_at)").count
+    
+    unique_submission_users = submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq
+    finalised = submissions.where(finalised: true)
+    finalised_count = finalised.map(&:user).uniq.count
+    submission_count = assignment.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count
+    notfinalised = submission_count - finalised_count
+    nonsubmissions = (assignment.course.students.count - unique_submission_users.count)
+    commented_submissions = assignment.submissions.select{|s| (s.user.type == "Student" && s.comments.present?)}.map(&:user).uniq.count
+    uncommented_submissions = (submission_count - commented_submissions)
+    
+    render :json => {
+      hourly_data: hourly_data,
+      daily_data: daily_data,
+      finalised: finalised_count,
+      notfinalised: notfinalised,
+      nonsubmissions: nonsubmissions,
+      commented_submissions: commented_submissions,
+      uncommented_submissions: uncommented_submissions
+    }
   end
   
   def group_data
@@ -146,7 +166,7 @@ class AssignmentsController < ApplicationController
       enrolled = group.students.length
       submissions = assignment.submissions
       finalised = submissions.where(finalised: true)
-      finalised_count = finalised.select{|s| group.students.include?(s.user)}.map(&:user).uniq.length
+      finalised_count = finalised.select{|s| group.students.include?(s.user)}.map(&:user).uniq.count
       submission_count = submissions.select{|s| (s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length
       
       group_data["name"] = group.name.to_s

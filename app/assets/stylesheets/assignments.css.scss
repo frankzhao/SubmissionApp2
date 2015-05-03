@@ -14,10 +14,51 @@
   padding: 5px 10px 5px 10px !important;
 }
 
-#group-data {
+#group-data, {
   display: none; // Hide initially
 }
 
-#chart {
-  //display: none; // Hide initially
+.charts {
+  height: 0;
+}
+
+.pie-charts {
+  margin-top: 10px;
+  width: 800px;
+  height: 150px;
+}
+
+.pie-chart {
+  width: 400px;
+  float: left;
+  display: inline-block;
+}
+.pie-chart canvas {
+  float: left;
+}
+
+.legend {
+  width: 180px;
+  height: 150px;
+  margin-left: 10px;
+  float: left;
+}
+
+.legend-square {
+  width: 10px;
+  height: 10px;
+  float: left;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.legend li {
+  margin-left: 20px;
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.legend ul {
+  margin-top: 15px;
+  padding-left: 0px;
 }
