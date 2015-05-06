@@ -17,6 +17,8 @@
           %th Assignment
           %th Deadline (dd/mm/yyyy)
           %th Finalised Submissions
+          %th Unique Submissions
+          %th Total Submissions
         - if current_user.is_staff?
           - @course.assignments.each do |a|
             %tr
@@ -26,7 +28,9 @@
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else
                 %td No due date
-              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.length.to_s
+              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.count.to_s
+              %td= a.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count.to_s + " of " + @course.students.count.to_s
+              %td= a.submissions.count.to_s
         - else
           - @course.assignments.each do |a|
             %tr
