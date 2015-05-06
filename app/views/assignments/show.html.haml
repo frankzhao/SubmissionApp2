@@ -135,6 +135,12 @@
                 - if s.finalised
                   %span.label.label-success.label-left
                     Finalised
+                - if s.comments.present? && s.comments.pluck(:attachment).compact.present?
+                  %span.label.label-primary.label-left
+                    Attachment
+                - elsif s.comments.present?
+                  %span.label.label-primary.label-left
+                    Commented
                 - if @assignment.peer_review_enabled && s.finalised
                   - if s.peer_reviewed?
                     %span.label.label-success.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
