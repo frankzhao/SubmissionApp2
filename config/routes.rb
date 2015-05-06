@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get "submissions/:id/finalise" => "submissions#finalise"
   get "submissions/:id/download" => "submissions#download"
   get "submissions/:id/pdf" => "submissions#pdf"
+  get "submissions/:id/pdf_comments" => "submissions#pdf_comments"
   
   get "/admin/become/:id" => "admin#become"
   get "/admin" => "admin#index"

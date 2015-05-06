@@ -23,6 +23,11 @@
       = link_to submission_path(@submission) + "/pdf" do
         %span.glyphicon.glyphicon-floppy-save
         Download PDF
+    - if @submission.kind == "plaintext"
+      %li.sidebar-item
+        = link_to submission_path(@submission) + "/pdf_comments" do
+          %span.glyphicon.glyphicon-floppy-save
+          Download PDF with comments
     %li.sidebar-item
       = link_to assignment_path(@submission.assignment) do
         %span.glyphicon.glyphicon-file

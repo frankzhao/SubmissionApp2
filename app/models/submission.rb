@@ -128,8 +128,7 @@ FILE
     elsif kind == "plaintext"
       File.open(self.plaintext_path, 'r') do |file|
         escaped_body = file.read
-        escaped_body = escaped_body.force_encoding('UTF-8').scrub('?')
-        File.open("/tmp/pdf/#{hash}/#{hash}.tex", "w") do |f|
+        File.open("/tmp/pdf/#{hash}/#{hash}.tex", "wb") do |f|
           f.write <<-FILE
 \\nonstopmode
 \\documentclass[a4paper, 8pt]{article}
@@ -162,6 +161,74 @@ FILE
 FILE
         end
         system("pdflatex -output-directory=/tmp/pdf/#{hash} /tmp/pdf/#{hash}/#{hash}.tex")
+      end
+    end
+
+    #files_string = "/tmp/pdf/#{hash}/*.pdf"
+    files_list = `ls /tmp/pdf/#{hash}/*.pdf`
+    files_string = files_list.split("\n").sort_by { |x| x[/\d+\.pdf/].to_i }.join(" ")
+    `echo \"#{files_string}\" > /Users/frank/Desktop/test.txt`
+    system("gs -q -sPAPERSIZE=a4 -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/pdf/#{self.pretty_filename}.pdf #{files_string}")
+    "/tmp/pdf/#{hash}/#{self.pretty_filename}.pdf"
+    system("rm -rf /tmp/pdf/#{hash}")
+    return "/tmp/pdf/#{self.pretty_filename}.pdf"
+  end
+  
+  def make_pdf_with_comments
+    hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
+    system "mkdir -p /tmp/pdf/#{hash}"
+    count = 0
+    if kind == "plaintext"
+      File.open(self.plaintext_path, 'r') do |file|
+        escaped_body = file.read
+        File.open("/tmp/pdf/#{hash}/#{hash}.tex", "wb") do |f|
+          f.write <<-FILE
+\\nonstopmode
+\\documentclass[a4paper, 8pt]{article}
+\\usepackage[usenames]{color}
+\\usepackage{hyperref}
+\\usepackage{listings}
+\\lstset{breaklines=true}
+\\lstset{numbers=left, numberstyle=\\scriptsize\\ttfamily, numbersep=10pt, captionpos=b}
+\\lstset{basicstyle=\\small\\ttfamily}
+\\lstset{framesep=4pt}
+\\oddsidemargin 0in
+\\textwidth 6in
+\\topmargin -0.5in
+\\textheight 9in
+\\columnsep 0.25in
+\\newsavebox{\\spaceb}
+\\newsavebox{\\tabb}
+\\savebox{\\spaceb}[1ex]{~}
+\\savebox{\\tabb}[4ex]{~}
+\\newcommand{\\hsspace}{\\usebox{\\spaceb}}
+\\newcommand{\\hstab}{\\usebox{\\tabb}}
+\\newcommand{\\conceal}[1]{}
+\\begin{document}
+\\textbf{#{self.pretty_filename.gsub(/(?<foo>[$%_\\])/, '\\\\\k<foo>')}}\\\\
+\\textbf{#{self.user.full_name.strip}}\ \ \\textbf{#{self.user.uid}}
+\\begin{lstlisting}
+#{escaped_body}
+\\end{lstlisting}
+\\end{document}
+FILE
+        end
+        system("pdflatex -output-directory=/tmp/pdf/#{hash} /tmp/pdf/#{hash}/#{hash}.tex")
+      end
+    end
+    
+    # Add any attached comments
+    if self.comments.present?
+      for comment in self.comments
+        if comment.attachment.present?
+          comment_file = comment.attachment
+          if comment_file.file.filename =~ /.pdf$/
+            contents = comment_file.read
+            File.open("/tmp/pdf/#{hash}/#{comment_file.file.filename}", "wb") do |f|
+              f.write(contents)
+            end
+          end
+        end
       end
     end
 

@@ -135,4 +135,9 @@ class SubmissionsController < ApplicationController
     send_file @submission.make_pdf, :type=>"application/pdf", :x_sendfile=>true
   end
   
+  def pdf_comments
+    @submission = Submission.find(params[:id])
+    send_file @submission.make_pdf_with_comments, :type=>"application/pdf", :x_sendfile=>true
+  end
+  
 end
