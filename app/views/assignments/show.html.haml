@@ -16,18 +16,25 @@
     
     - if !@assignment.submissions.empty? && current_user.is_staff?
       - if @assignment.submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
-        %h3 Graphs
         .spinner#chart-spinner
           .double-bounce1
           .double-bounce2
         .charts
+          .light.chart-title
+            Submissions by hour for the past week
           %canvas#chart{width: "800", height: "200"}
+          .light.chart-title
+            Submissions by day
           %canvas#daily-chart{width: "800", height: "150"}
           .pie-charts
             .pie-chart
+              .light.chart-title
+                Submissions
               %canvas#submissions-chart{width: "150", height: "150"}
               .legend#submissions-chart-legend
             .pie-chart
+              .light.chart-title
+                Comments
               %canvas#comments-chart{width: "150", height: "150"}
               .legend#comments-chart-legend
       

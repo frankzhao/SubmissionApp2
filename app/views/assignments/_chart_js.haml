@@ -163,6 +163,7 @@
       $("#submissions-chart-legend").append(submissions_chart_legend);
       $("#comments-chart-legend").append(comments_chart_legend);
       $("#chart-spinner").addClass("hidden");
+      $(".chart-title").fadeIn();
       $(".charts").height("auto");
     });
     
@@ -180,7 +181,8 @@
         );
       }
       $("#groups-spinner").addClass("hidden");
-      $("#group-data").fadeIn(300);
+      $("#group-data").height("auto");
+      $("#group-data th").fadeIn();
     });
   };
 

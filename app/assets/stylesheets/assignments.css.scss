@@ -15,11 +15,15 @@
 }
 
 #group-data, {
-  display: none; // Hide initially
+  height: 0;; // Hide initially
+  th {
+    display: none;
+  }
 }
 
 .charts {
   height: 0;
+  margin-bottom: 50px;
 }
 
 .pie-charts {
@@ -61,4 +65,9 @@
 .legend ul {
   margin-top: 15px;
   padding-left: 0px;
+}
+
+.chart-title {
+  display: none;
+  margin-bottom: 10px;
 }
