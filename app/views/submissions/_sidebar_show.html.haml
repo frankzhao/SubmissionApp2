@@ -5,7 +5,7 @@
         Actions
         .menu-icon-container
           %span.glyphicon.glyphicon-tasks.menu-icon
-    %hr/
+    %hr
     %li.sidebar-item
       %a{:href => "/submissions/#{@assignment.id}/new"}
         %span.glyphicon.glyphicon-plus
@@ -19,21 +19,23 @@
       = link_to submission_path(@submission) + "/download" do
         %span.glyphicon.glyphicon-floppy-save
         Download submission
-    %li.sidebar-item
-      = link_to submission_path(@submission) + "/pdf" do
-        %span.glyphicon.glyphicon-floppy-save
-        Download PDF
-    - if @submission.kind == "plaintext"
+    - if current_user.is_owner_or_staff?(@submission)
       %li.sidebar-item
-        = link_to submission_path(@submission) + "/pdf_comments" do
+        = link_to submission_path(@submission) + "/pdf" do
           %span.glyphicon.glyphicon-floppy-save
-          Download PDF with comments
+          Download PDF
+      - if @submission.kind == "plaintext"
+        %li.sidebar-item
+          = link_to submission_path(@submission) + "/pdf_comments" do
+            %span.glyphicon.glyphicon-floppy-save
+            Download PDF with comments
     %li.sidebar-item
       = link_to assignment_path(@submission.assignment) do
         %span.glyphicon.glyphicon-file
         View assignment
-    %li.sidebar-item
-      = link_to submission_path(@submission), method: :delete, |
-        data: { confirm: "Are you sure you wish to delete this submission?"} do |
-        %span.glyphicon.glyphicon-trash
-        Delete submission
+    - if current_user.is_owner_or_staff?(@submission)
+      %li.sidebar-item
+        = link_to submission_path(@submission), method: :delete, |
+          data: { confirm: "Are you sure you wish to delete this submission?"} do |
+          %span.glyphicon.glyphicon-trash
+          Delete submission
