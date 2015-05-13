@@ -93,6 +93,7 @@
     %table.table.table-hover.table-striped
       %tr
         %th Submission
+        %th Course
         %th Assignment
         %th Date Submitted
         %th Review Status
@@ -104,7 +105,8 @@
                 = link_to submission_path(s) do
                   %i.glyphicon.glyphicon-share-alt
                   View
-              %td= link_to s.assignment.name, assignment_path(s.assignment)
+              %td= link_to a.course.code, course_path(a.course)
+              %td= link_to a.name, assignment_path(s.assignment)
               %td= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
               %td
                 - if s.reviewed_by?(@user)
