@@ -100,7 +100,7 @@
             - if comment.attachment?
               %span.glyphicon.glyphicon-paperclip
           %p
-            = comment.text
+            = simple_format(comment.text)
           - if comment.attachment?
             %p
               = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do

@@ -93,13 +93,18 @@
     %table.table.table-hover.table-striped
       %tr
         %th Submission
+        %th Assignment
         %th Date Submitted
         %th Review Status
       - if current_user
         - Assignment.all.each do |a|
           - for s in a.peer_review_submissions_for(@user)
             %tr
-              %td= link_to "View", submission_path(s)
+              %td
+                = link_to submission_path(s) do
+                  %i.glyphicon.glyphicon-share-alt
+                  View
+              %td= link_to s.assignment.name, assignment_path(s.assignment)
               %td= link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s)
               %td
                 - if s.reviewed_by?(@user)
