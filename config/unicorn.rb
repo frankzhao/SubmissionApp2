@@ -11,7 +11,7 @@ STDOUT.write "Starting in " + rails_env + " from " + app_root
 
 listen 3000
 listen "127.0.0.1:3000"
-worker_processes 2
+worker_processes 4
 timeout 60
 
 # PID

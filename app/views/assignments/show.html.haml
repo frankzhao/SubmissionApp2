@@ -14,8 +14,8 @@
           Due at #{@assignment.due_date.strftime('%d/%m/%Y %I:%M%p')}
     %p= @assignment.description
     
-    - if !@assignment.submissions.empty? && current_user.is_staff?
-      - if @assignment.submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
+    - if !@all_submissions.empty? && current_user.is_staff?
+      - if @all_submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
         .spinner#chart-spinner
           .double-bounce1
           .double-bounce2

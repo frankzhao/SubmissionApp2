@@ -30,6 +30,7 @@ gem 'spring',        group: :development
 
 # Use thin as the app server
 gem 'thin'
+#gem 'unicorn'
 
 # Haml templates
 gem 'haml-rails'

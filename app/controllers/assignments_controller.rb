@@ -98,9 +98,14 @@ class AssignmentsController < ApplicationController
   def show
     if params[:id] && Assignment.find_by_id(params[:id])
       @assignment = Assignment.find_by_id(params[:id])
-      @all_submissions = @assignment.submissions
       @course = @assignment.course
       @submissions = current_user.submissions_for(@assignment)
+      if current_user.is_staff?
+        @all_submissions = Submission.where(assignment_id: @assignment.id).order(created_at: :desc)
+        @finalised_submissions = @all_submissions.select{|s| s.finalised?}.group_by(&:user_id)
+        @submissions_by_id = @all_submissions.group_by(&:user_id)
+        @comments = @all_submissions.map(&:comments).flatten.group_by(&:submission_id)
+      end
     else
       flash_message :error, "Could not find assignment with ID=" + params[:id]
       redirect_to '/'
@@ -159,15 +164,21 @@ class AssignmentsController < ApplicationController
     
     data = Hash.new
     assignment = Assignment.find(params[:id])
+    submissions = assignment.submissions
+    finalised = submissions.select{|s| s.finalised?}
     course = assignment.course
+    groups = course.groups
     
-    for group in course.groups
+    groups_hash = Hash.new
+    for group in groups
+      groups_hash[group.id] = group.students
+    end
+    
+    for group in groups
       group_data = Hash.new
       enrolled = group.students.length
-      submissions = assignment.submissions
-      finalised = submissions.where(finalised: true)
-      finalised_count = finalised.select{|s| group.students.include?(s.user)}.map(&:user).uniq.count
-      submission_count = submissions.select{|s| (s.user.type == "Student") && group.students.include?(s.user)}.map(&:user).uniq.length
+      finalised_count = finalised.select{|s| groups_hash[group.id].include?(s.user)}.map(&:user).uniq.count
+      submission_count = submissions.select{|s| (s.user.type == "Student") && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
       
       group_data["name"] = group.name.to_s
       group_data["enrolled"] = enrolled.to_i
