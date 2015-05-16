@@ -37,4 +37,9 @@
         = link_to "/assignments/#{@assignment.id}/#{@group.id}/download" do
           %span.glyphicon.glyphicon-download-alt
           Download group submissions
+        - if @assignment.kind == "plaintext"
+          %li.sidebar-item
+            = link_to "/assignments/#{@assignment.id}/#{@group.id}/download_archives" do
+              %span.glyphicon.glyphicon-download-alt
+              Download group archives
     

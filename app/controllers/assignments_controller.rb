@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data]
-  before_filter :require_staff, :only => [:download_all_submissions_for_group]
+  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives]
+  before_filter :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives]
 
   require 'zip'
   
@@ -284,6 +284,71 @@ class AssignmentsController < ApplicationController
             zipfile.add(filename, file)
           end
         end
+      end
+    end
+    
+    send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
+  end
+  
+  def download_group_archives
+    @group = Group.find(params[:group_id])
+    @assignment = Assignment.find(params[:assignment_id])
+    
+    group_submissions = []
+    for s in @group.students
+      student_submissions = s.submissions_for(@assignment)
+      group_submissions << student_submissions.last unless student_submissions.empty?
+    end
+    
+    if group_submissions.blank?
+      flash_message :error, "Group has no submissions for download."
+      redirect_to :back
+      return
+    end
+    
+    files = []
+    for submission in group_submissions
+      submission_files = Hash.new
+      user = submission.user
+      attached_files = user.submissions_for(@assignment).select{
+        |s| s.comments.present?}.map(&:comments).flatten.map(&:attachment).map(&:file)
+      submission_files[:file] = submission.plaintext_path
+      submission_files[:user] = submission.user
+      
+      if attached_files.compact.present?
+        submission_files[:attachment] = attached_files.compact.last.path
+      end
+      
+      files << submission_files
+    end
+    
+    # Zip each user submission
+    group_zip_folder = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}"
+    zipfile_name = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}_#{sanitize_str @group.name}__#{sanitize_str Time.now}.zip"
+    
+    `rm -rf #{group_zip_folder}`
+    `mkdir -p #{group_zip_folder}`
+    
+    for file in files
+      userzipfilename = sanitize_str("#{file[:user].uid}_#{file[:user].full_name}_#{@assignment.name}.zip")
+      Zip::File.open(group_zip_folder+"/"+userzipfilename, Zip::File::CREATE) do |zipfile|
+        if File.exists?(file[:file])
+          filename = file[:file].split('/').last
+          zipfile.add(filename.gsub(".txt",".hs"), file[:file])
+        end
+        if file[:attachment].present?
+          filename = file[:attachment].split('/').last
+          zipfile.add(filename, file[:attachment])
+        end
+      end
+    end
+    
+    # Create final archive
+    @user_zips = Dir.glob("#{group_zip_folder}/*")
+    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+      for file in @user_zips
+        filename = file.split('/').last
+        zipfile.add(filename, file)
       end
     end
     

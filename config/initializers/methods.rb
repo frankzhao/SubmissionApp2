@@ -4,7 +4,7 @@ end
 
 def sanitize_str(str)
   str = str.to_s.strip
-  str = str.gsub(/^.*(\\|\/)/, '') # remove slashes etc
+  str = str.gsub(/\^.*(\\|\/)/, '') # remove slashes etc
   str = str.gsub(/[^0-9A-Za-z.\-]/, '_') # remove non-ascii
   return str
 end
