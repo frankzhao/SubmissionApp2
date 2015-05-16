@@ -190,6 +190,18 @@
       e.preventDefault()
       $(this).tab('show')
     })
+    
+    // Datatables
+    var tableoptions = {
+      "searching": true,
+      "order" : [],
+      "pageLength": 100,
+      "pagingType": "full_numbers",
+      "dom": '<<"top"lf><t>ip>'
+    }
+    
+    $('#allsubmissions-table').DataTable(tableoptions);
+    $('#finalised-table').DataTable(tableoptions);
   };
 
   $(document).ready(ready);

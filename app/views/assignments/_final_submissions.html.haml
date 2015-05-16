@@ -1,33 +1,42 @@
 .tab-pane.fade#finalsubmissions
   %h3 Final submissions
-  %table.table.table-hover.table-striped
+  %p.light
+    The latest finalised submission will be displayed. If no finalised submissions are found, the most recent submission for the user will be shown.
+  %table.table.table-hover.table-striped#finalised-table
     - if @all_submissions.empty?
       %p No submissions found.
     - else
-      %tr
-        %th Submitted by
-        %th Uni ID
-        %th Latest Finalised
-        %th Latest Attachment
-      - @course.students.each do |s|
+      %thead
         %tr
-          %td
-            = link_to s.full_name, user_path(s)
-          %td
-            = link_to s.uid, user_path(s)
-          %td
-            - finalised_submissions = s.submissions_for(@assignment).select{|x| x.finalised?}
-            - if finalised_submissions.empty?
-              .warn
-                No Submission
-            - else
-              - finalised_submission = finalised_submissions.last
-              = link_to finalised_submission.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(finalised_submission), class: "good"
-          %td
-            - last_attachments = s.submissions_for(@assignment).select{|x| x.comments.present? && x.comments.pluck(:attachment).compact.present?}
-            - if last_attachments.empty?
-              .warn
-                No Attachment
-            - else
-              - last_attachment = last_attachments.last
-              = link_to last_attachment.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(last_attachment), class: "good"
+          %th Submitted by
+          %th Uni ID
+          %th Latest Finalised
+          %th Latest Attachment
+      %tbody
+        - @assignment.submissions.pluck(:user_id).uniq.each do |user_id|
+          - s = User.find(user_id)
+          %tr
+            %td
+              = link_to s.full_name, user_path(s)
+            %td
+              = link_to s.uid, user_path(s)
+            %td
+              - finalised_submissions = s.submissions_for(@assignment).select{|x| x.finalised?}
+              - if finalised_submissions.empty?
+                - if s.submissions_for(@assignment).present?
+                  - submission = s.submissions_for(@assignment).last
+                  = link_to submission.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(submission)
+                - else
+                  .warn
+                    No Submission
+              - else
+                - finalised_submission = finalised_submissions.last
+                = link_to finalised_submission.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(finalised_submission), class: "good"
+            %td
+              - last_attachments = s.submissions_for(@assignment).select{|x| x.comments.present? && x.comments.pluck(:attachment).compact.present?}
+              - if last_attachments.empty?
+                .warn
+                  No Attachment
+              - else
+                - last_attachment = last_attachments.last
+                = link_to last_attachment.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(last_attachment), class: "good"
