@@ -29,7 +29,7 @@
               - if s.finalised
                 %span.label.label-success.label-left
                   Finalised
-              - if @comments[s.id].present? && @comments[s.id].map(&:attachment).present?
+              - if @comments[s.id].present? && @comments[s.id].map(&:attachment).map(&:file).compact.present?
                 %span.label.label-primary.label-left
                   Attachment
               - elsif @comments[s.id].present?

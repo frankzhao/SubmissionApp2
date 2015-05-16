@@ -34,7 +34,7 @@
                 - finalised_submission = finalised_submissions.last
                 = link_to finalised_submission.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(finalised_submission), class: "good"
             %td
-              - last_attachments = @submissions_by_id[s.id].select{|x| @comments[x.id].present? && @comments[x.id].map(&:attachment).present?}
+              - last_attachments = @submissions_by_id[s.id].select{|x| @comments[x.id].present? && @comments[x.id].map(&:attachment).map(&:file).compact.present?}
               - if last_attachments.empty?
                 .warn
                   No Attachment
