@@ -114,47 +114,18 @@
                     Your submission is late. Unless you have been granted an exception your assignment may not be marked.
             %td= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary"
     - if current_user.is_staff?
-      %h3 All submissions
-      %table.table.table-hover.table-striped
-        - if @assignment.submissions.empty?
-          %p No submissions found.
-        - else
-          %tr
-            %th Submitted by
-            %th Uni ID
-            %th Date submitted
-            %th View submission
-            %th Flags
-          - @assignment.submissions.each do |s|
-            %tr
-              %td= link_to s.user.full_name, user_path(s.user)
-              %td= link_to s.user.uid, user_path(s.user)
-              %td
-                = s.created_at.strftime('%d/%m/%Y %I:%M%p')
-              %td= link_to "View Submission", submission_path(s)
-              %td
-                - if is_late_with_extension(s, @assignment)
-                  %span.label.label-warning.label-left
-                    Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
-                - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
-                  %span.label.label-danger.label-left
-                    Late
-                - if s.finalised
-                  %span.label.label-success.label-left
-                    Finalised
-                - if s.comments.present? && s.comments.pluck(:attachment).compact.present?
-                  %span.label.label-primary.label-left
-                    Attachment
-                - elsif s.comments.present?
-                  %span.label.label-primary.label-left
-                    Commented
-                - if @assignment.peer_review_enabled && s.finalised
-                  - if s.peer_reviewed?
-                    %span.label.label-success.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
-                      Reviewed
-                  - elsif !s.peer_reviewed? && !s.peer_review_user_id.nil?
-                    %span.label.label-warning.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
-                      Assigned
+      .tabs
+        -# Tabs
+        %ul.nav.nav-tabs#submission-tabs
+          %li.active
+            %a#allsubmissions-tab{href: "#allsubmissions", data:{toggle:"tab"}}
+              All Submissions
+          %li
+            %a#finalsubmissions-tab{href: "#finalsubmissions", data:{toggle:"tab"}}
+              Final Submissions
+        .tab-content
+          = render 'all_submissions'
+          = render 'final_submissions'
   = render 'sidebar_show'
 
 -# Chart

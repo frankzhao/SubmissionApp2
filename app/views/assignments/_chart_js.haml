@@ -184,6 +184,12 @@
       $("#group-data").height("auto");
       $("#group-data th").fadeIn();
     });
+    
+    // Tabs
+    $('#submission-tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
   };
 
   $(document).ready(ready);

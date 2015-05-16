@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   include UserAssignmentRelations
 
   def submissions_for(a)
-    self.submissions.select { |s| s.user == self and s.assignment == a}
+    Submission.where(user_id: self.id, assignment_id: a.id)
   end
 
   def recent_submission_for(a)

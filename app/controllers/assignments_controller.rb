@@ -98,6 +98,7 @@ class AssignmentsController < ApplicationController
   def show
     if params[:id] && Assignment.find_by_id(params[:id])
       @assignment = Assignment.find_by_id(params[:id])
+      @all_submissions = @assignment.submissions
       @course = @assignment.course
       @submissions = current_user.submissions_for(@assignment)
     else
