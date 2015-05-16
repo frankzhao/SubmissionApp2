@@ -1,5 +1,7 @@
 .tab-pane.fade.in.active#allsubmissions
   %h3 All submissions
+  %p.light
+    Newest to oldest. Click on a table heading to sort.
   %table.table.table-hover.table-striped.dataTable#allsubmissions-table
     - if @all_submissions.empty?
       %p No submissions found.
