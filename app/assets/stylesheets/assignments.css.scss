@@ -71,3 +71,14 @@
   display: none;
   margin-bottom: 10px;
 }
+
+.top {
+  width: 100%;
+  display: inline-block;
+  .dataTables_length {
+    float: left;
+  }
+  .dataTables_filter {
+    float: right;
+  }
+}

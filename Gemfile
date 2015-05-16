@@ -31,7 +31,7 @@ gem 'spring',        group: :development
 # Use thin as the app server
 gem 'thin'
 
-# Slim templates
+# Haml templates
 gem 'haml-rails'
 
 # Devise for authentication
@@ -58,6 +58,9 @@ gem 'carrierwave'
 
 # ZIPs
 gem 'rubyzip'
+
+# Tables
+gem 'jquery-datatables-rails', '~> 3.3.0'
 
 # Syntax highlighting
 gem 'pygments.rb', :require => 'pygments'
