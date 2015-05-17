@@ -67,6 +67,8 @@ class CoursesController < ApplicationController
   def show
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
+      @all_students = @course.students
+      @all_assignments = @course.assignments
       @groups = @course.groups
       if !@course.users.include?(current_user) && !current_user.is_staff?
         flash_message :error, "You don't have permission to access that."

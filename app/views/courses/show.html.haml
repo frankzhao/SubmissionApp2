@@ -8,7 +8,7 @@
     %p= @course.description
     %h3 Assignments
     %table.table.table-hover.table-striped
-      - if @course.assignments.empty?
+      - if @all_assignments.empty?
         %p There are currently no assignments for this course.
         - if current_user.is_admin_or_convenor?
           %a{:href => "/assignments/new/#{@course.id}"} Create assignment
@@ -20,7 +20,7 @@
           %th Unique Submissions
           %th Total Submissions
         - if current_user.is_staff?
-          - @course.assignments.each do |a|
+          - @all_assignments.each do |a|
             %tr
               %td
                 %a{:href => "/assignments/#{a.id.to_s}"}= a.name
@@ -28,11 +28,11 @@
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else
                 %td No due date
-              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @course.students.count.to_s
-              %td= a.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count.to_s + " of " + @course.students.count.to_s
+              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @all_students.count.to_s
+              %td= a.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count.to_s + " of " + @all_students.count.to_s
               %td= a.submissions.count.to_s
         - else
-          - @course.assignments.each do |a|
+          - @all_assignments.each do |a|
             %tr
               %td
                 %a{:href => "/assignments/#{a.id.to_s}"}= a.name
@@ -61,26 +61,28 @@
                   %span.warn No submission
     - if current_user.is_staff?
       %h3#enrolments Enrolments
-      %table.table.table-hover.table-striped
-        - if @course.students.nil?
+      %table.table.table-hover.table-striped.dataTable#enrolments-table
+        - if @all_students.nil?
           %p No students are enrolled in this course.
           - if current_user.is_admin_or_convenor?
             = link_to 'Enrol students', edit_course_path(@course.id)
         - else
-          %tr
-            %th ID
-            %th Name
-            %th Group
-          - @course.students.each do |s|
+          %thead
             %tr
-              %td= link_to s.uid, user_path(s)
-              %td= link_to s.firstname + " " + s.surname, user_path(s)
-              %td
-                - if s.groups.select{|g| g.course == @course}.empty?
-                  None
-                - else
-                  - group = s.groups.select{|g| g.course == @course}.first
-                  = link_to group.name, group_path(group)
+              %th ID
+              %th Name
+              %th Group
+          %tbody
+            - @all_students.each do |s|
+              %tr
+                %td= link_to s.uid, user_path(s)
+                %td= link_to s.firstname + " " + s.surname, user_path(s)
+                %td
+                  - if s.groups.select{|g| g.course == @course}.empty?
+                    None
+                  - else
+                    - group = s.groups.select{|g| g.course == @course}.first
+                    = link_to group.name, group_path(group)
       %h3#groups Groups
       - if @groups.empty?
         %p This course currently has no groups.
@@ -107,3 +109,5 @@
                     %td= link_to u.firstname + " " + u.surname, user_path(u)
                     %td= u.type
   = render 'sidebar_show'
+  - if current_user.is_staff?
+    = render 'courses_js'
