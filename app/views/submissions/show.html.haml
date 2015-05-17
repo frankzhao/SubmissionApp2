@@ -67,6 +67,13 @@
               window.location.reload();
             }, 2000);
     
+    - if current_user.is_admin?
+      %h3 Admin actions
+      = form_for @submission do |f|
+        = f.label :created_at, "Update timestamp"
+        = f.text_field :created_at
+        = f.submit "Update"
+    
     %h3 Comments
     - for comment in @submission.comments
       - if comment.hidden && current_user.is_staff?

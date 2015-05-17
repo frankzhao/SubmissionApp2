@@ -10,6 +10,7 @@
     %th ID
     %th Name
     %th Courses
+    %th
   - for convenor in Convenor.all
     %tr
       %td 
@@ -20,6 +21,9 @@
         - for c in convenor.courses
           = link_to c.name, course_path(c)
           %br
+      %td
+        = link_to "Delete", user_path(convenor), class: "btn btn-danger btn-xs", method: :delete, data: { confirm: "Are you sure you wish to delete " + convenor.full_name + "?"}
+
 %h3 Log
 
 = link_to 'Stop', 'javascript:void("stop")', id: :stop, class: "btn btn-default"

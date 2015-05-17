@@ -93,6 +93,13 @@ class SubmissionsController < ApplicationController
     @plaintext = Pygments.highlight(@submission.plaintext, lexer: 'haskell', options: {linenos: 'table'})
     @comment = Comment.new
   end
+  
+  def update
+    @submission = Submission.find(params[:id])
+    @submission.update_attributes(submission_params)
+    
+    redirect_to submission_path(@submission)
+  end
 
   def destroy
     @submission = Submission.find(params[:id])
@@ -148,6 +155,12 @@ class SubmissionsController < ApplicationController
   def pdf_comments
     @submission = Submission.find(params[:id])
     send_file @submission.make_pdf_with_comments, :type=>"application/pdf", :x_sendfile=>true
+  end
+  
+  private
+  
+  def submission_params
+    params.require(:submission).permit(:created_at)
   end
   
 end
