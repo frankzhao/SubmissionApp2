@@ -96,7 +96,17 @@ class SubmissionsController < ApplicationController
   
   def update
     @submission = Submission.find(params[:id])
+    
+    if @submission.kind == "zipfile"
+      old_path = @submission.zipfile_path
+    end
+    
     @submission.update_attributes(submission_params)
+    
+    # Rename
+    if @submission.kind == "zipfile"
+      `mv #{old_path} #{@submission.zipfile_path}`
+    end
     
     redirect_to submission_path(@submission)
   end
