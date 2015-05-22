@@ -40,4 +40,8 @@
         = link_to "/assignments/#{@assignment.id}/download" do
           %span.glyphicon.glyphicon-download-alt
           Download all submissions
+      %li.sidebar-item
+        = link_to "/assignments/#{@assignment.id}/download_finals" do
+          %span.glyphicon.glyphicon-download-alt
+          Download final submissions
     

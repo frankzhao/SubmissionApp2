@@ -13,6 +13,8 @@
           %th Date submitted
           %th View submission
           %th Flags
+          - if @assignment.kind == "plaintext"
+            %th.hidden Content
       %tbody
         - @all_submissions.each do |s|
           %tr
@@ -44,3 +46,6 @@
                 - elsif !s.peer_reviewed? && !s.peer_review_user_id.nil?
                   %span.label.label-warning.label-left{title: s.peer_review_user_id.nil? ? "No user" : User.find(s.peer_review_user_id).full_name + " (#{User.find(s.peer_review_user_id).uid})", data: {toggle:"tooltip", placement:"bottom"}}
                     Assigned
+            - if @assignment.kind == "plaintext"
+              %td.hidden
+                = s.plaintext

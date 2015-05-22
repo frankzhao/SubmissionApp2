@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get "assignments/:assignment_id/hide_hidden_comments" => "assignments#hide_hidden_comments"
   get "assignments/:assignment_id/:group_id/download" => "assignments#download_all_submissions_for_group"
   get "assignments/:assignment_id/:group_id/download_archives" => "assignments#download_group_archives"
+  get "assignments/:assignment_id/download_finals" => "assignments#download_all_finals"
   
   get "courses/:id/groups" => "courses#groups"
   get "courses/:id/groups/new" => "groups#new"

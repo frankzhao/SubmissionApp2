@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives]
-  before_filter :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives]
+  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives, :download_group_archives, :download_all_finals]
+  before_filter :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives, :download_all_finals]
 
   require 'zip'
   
@@ -275,6 +275,48 @@ class AssignmentsController < ApplicationController
     # Zip files
     `mkdir -p #{Rails.root}/tmp/downloads/`
     zipfile_name = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}_#{sanitize_str @group.name}__#{sanitize_str Time.now}.zip"
+
+    unless File.exists?(zipfile_name)
+      Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+        for file in files
+          if File.exists?(file)
+            filename = file.split('/').last
+            zipfile.add(filename, file)
+          end
+        end
+      end
+    end
+    
+    send_file zipfile_name, :type=>"application/zip", :x_sendfile=>true
+  end
+  
+  def download_all_finals
+    @assignment = Assignment.find(params[:assignment_id])
+    @course = @assignment.course
+    final_submissions = []
+    for s in @course.students
+      student_submissions = s.submissions_for(@assignment)
+      final_submissions << student_submissions.last unless student_submissions.empty?
+    end
+    
+    if final_submissions.blank?
+      flash_message :error, "Assignment has no submissions for download."
+      redirect_to :back
+      return
+    end
+    
+    files = []
+    for submission in final_submissions
+      if @assignment.kind == 'zip'
+        files << submission.zipfile_path
+      elsif @assignment.kind == 'plaintext'
+        files << submission.plaintext_path
+      end
+    end
+    
+    # Zip files
+    `mkdir -p #{Rails.root}/tmp/downloads/`
+    zipfile_name = "#{Rails.root}/tmp/downloads/#{sanitize_str @assignment.name}_#{sanitize_str Time.now}.zip"
 
     unless File.exists?(zipfile_name)
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
