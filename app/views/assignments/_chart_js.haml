@@ -17,6 +17,25 @@
     ctx_submissions = $("#submissions-chart").get(0).getContext("2d");
     ctx_comments = $("#comments-chart").get(0).getContext("2d");
     assignment_id = $("#assignment-name").attr("assignment-id");
+    
+    // Tabs
+    $('#submission-tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
+    
+    // Datatables
+    var tableoptions = {
+      "searching": true,
+      "order" : [],
+      "pageLength": 100,
+      "pagingType": "full_numbers",
+      "dom": '<<"top"lf><"top-pagination"p><t>ip>'
+    }
+    
+    $('#allsubmissions-table').DataTable(tableoptions);
+    $('#finalised-table').DataTable(tableoptions);
+    
     $.get("/assignments/data/" + assignment_id, function(data) {
       var chart, chartdata, date, dates, k, l, labels, values, _i, _len;
       
@@ -190,24 +209,6 @@
       $("#group-data").height("auto");
       $("#group-data th").fadeIn();
     });
-    
-    // Tabs
-    $('#submission-tabs a').click(function (e) {
-      e.preventDefault()
-      $(this).tab('show')
-    })
-    
-    // Datatables
-    var tableoptions = {
-      "searching": true,
-      "order" : [],
-      "pageLength": 100,
-      "pagingType": "full_numbers",
-      "dom": '<<"top"lf><"top-pagination"p><t>ip>'
-    }
-    
-    $('#allsubmissions-table').DataTable(tableoptions);
-    $('#finalised-table').DataTable(tableoptions);
   };
 
   $(document).ready(ready);

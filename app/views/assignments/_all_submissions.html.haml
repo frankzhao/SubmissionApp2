@@ -48,4 +48,4 @@
                     Assigned
             - if @assignment.kind == "plaintext"
               %td.hidden
-                = s.plaintext
+                = @submission_hash[s.id].first.plaintext

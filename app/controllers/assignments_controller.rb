@@ -102,6 +102,7 @@ class AssignmentsController < ApplicationController
       @submissions = current_user.submissions_for(@assignment)
       if current_user.is_staff?
         @all_submissions = Submission.where(assignment_id: @assignment.id).order(created_at: :desc)
+        @submission_hash = @all_submissions.group_by(&:id).to_h
         @finalised_submissions = @all_submissions.select{|s| s.finalised?}.group_by(&:user_id)
         @submissions_by_id = @all_submissions.group_by(&:user_id)
         @comments = @all_submissions.map(&:comments).flatten.group_by(&:submission_id)
