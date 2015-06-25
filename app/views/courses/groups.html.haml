@@ -10,7 +10,7 @@
   - else
     .panel-group
       - for group in Group.all
-        .panel.panel-primary
+        .panel.panel-default
           .panel-heading
             %span{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
               %h4.panel-title

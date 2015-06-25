@@ -54,7 +54,7 @@
     %h3 Your Assignments
     .panel-group
       - @courses.each do |course|
-        .panel.panel-primary
+        .panel.panel-default
           .panel-heading
             %span{"data-toggle" => "collapse", "data-target" => "#course" + course.id.to_s, href: "#course" + course.id.to_s}
               %h4.panel-title
