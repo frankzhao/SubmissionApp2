@@ -241,6 +241,10 @@ input[type="checkbox"] {
   border: none;
 }
 
+.panel-heading {
+  cursor: pointer;
+}
+
 // Spinner
 .spinner {
   width: 40px;

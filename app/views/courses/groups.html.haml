@@ -8,12 +8,12 @@
   - if Group.all.empty?
     There are no groups.
   - else
-    - for group in Group.all
-      .panel-group{id: "accordion"}
-        .panel.panel-default{id: group.id}
+    .panel-group
+      - for group in Group.all
+        .panel.panel-primary
           .panel-heading
-            %h4.panel-title
-              %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+            %span{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
+              %h4.panel-title
                 #{group.name}
           .panel-collapse.collapse.in{id: "group" + group.id.to_s}
             .panel-body
