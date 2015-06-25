@@ -18,35 +18,40 @@ module Devise
             uid = params[:user][:uid]
             pass = params[:user][:password]
 
-            if AnuLdap.authenticate(uid, pass)
-              ldap_user = AnuLdap.find_by_uni_id(uid)
-              
-              if ldap_user.nil?
-                fail()
-                return
-              end
-
-              # Create and update first time users
-              if not User.find_by_uid(ldap_user[:uni_id])
-                fail()
-                return
-              else
-                u = User.find_by_uid(ldap_user[:uni_id])
-                if !u.has_logged_in_once
-                  u.update_attribute(:has_logged_in_once, true)
-                  u.update_attribute(:firstname, ldap_user[:given_name])
-                  u.update_attribute(:surname,   ldap_user[:surname])
-                  u.update_attribute(:full_name, ldap_user[:full_name])
+            begin
+              if AnuLdap.authenticate(uid, pass)
+                ldap_user = AnuLdap.find_by_uni_id(uid)
+                
+                if ldap_user.nil?
+                  fail()
+                  return
                 end
+
+                # Create and update first time users
+                if not User.find_by_uid(ldap_user[:uni_id])
+                  fail()
+                  return
+                else
+                  u = User.find_by_uid(ldap_user[:uni_id])
+                  if !u.has_logged_in_once
+                    u.update_attribute(:has_logged_in_once, true)
+                    u.update_attribute(:firstname, ldap_user[:given_name])
+                    u.update_attribute(:surname,   ldap_user[:surname])
+                    u.update_attribute(:full_name, ldap_user[:full_name])
+                  end
+                end
+
+                u.password = pass
+                u.save
+
+                logmsg "AUTHENTICATED " + uid + " " + ldap_user[:full_name]
+                success!(u)
+              else
+                fail("Could not log you in with LDAP!")
               end
-
-              u.password = pass
-              u.save
-
-              logmsg "AUTHENTICATED " + uid + " " + ldap_user[:full_name]
-              success!(u)
-            else
-              fail("Could not log you in!")
+            rescue => e
+              logger.error "LDAP is unreachable. Falling back to database authentication."
+              fail("LDAP is unreachable.")
             end
           end
         end
