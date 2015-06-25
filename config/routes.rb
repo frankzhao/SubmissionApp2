@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "admin/index"
   resources :comments
   resources :submissions
   resources :assignments
@@ -7,6 +6,8 @@ Rails.application.routes.draw do
   resources :groups, except: [:edit]
   resources :assignment_extensions, only: [:create, :destroy]
 
+  get "admin/index"
+  
   get "users/notifications" => "notifications#list"
   delete "users/notifications" => "notifications#dismiss"
   get "users/:id", :to => "users#show", :as => "user"
