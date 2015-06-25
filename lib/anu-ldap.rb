@@ -45,7 +45,11 @@ module AnuLdap
       ldap = get_new_ldap()
       ldap.auth "uid=#{uni_id}, ou=people, o=anu.edu.au", password
 
-      ldap.bind
+      begin
+        ldap.bind
+      rescue
+        return false
+      end
     end
   end
 
