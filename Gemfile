@@ -50,6 +50,7 @@ gem 'activerecord-session_store'
 # Asynchronous jobs
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'websocket-rails'
 
 # Date NLP
 gem 'chronic'

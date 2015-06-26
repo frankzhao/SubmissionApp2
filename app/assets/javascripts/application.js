@@ -5,6 +5,7 @@
 //= require bootstrap.min
 //= require date
 //= require chart.min
+//= require websocket_rails/main
 //= require_self
 //= require_tree .
 
@@ -36,3 +37,4 @@ ready = function () {
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
