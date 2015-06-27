@@ -1,4 +1,4 @@
-dispatcher = new WebSocketRails('localhost:3000/websocket')
+dispatcher = new WebSocketRails('/websocket')
 # dispatcher.on_open = (data) ->
 #   alert('Connection established ' + data)
 	
