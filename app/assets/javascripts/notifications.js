@@ -10,7 +10,7 @@ function NotificationUpdate()
 		var list = data.list;
     
     if (list == null) {
-      return;
+      return
     }
 
 		if(list.length === 0) {

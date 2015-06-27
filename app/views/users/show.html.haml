@@ -75,7 +75,7 @@
                     %tr
                       %td= link_to a.course.code, course_path(a.course)
                       %td= link_to a.name, assignment_path(a)
-                      %td= a.due_date.strftime('%d/%m/%Y %I:%M%p')
+                      %td= a.due_date.nil? ? "No due date" : a.due_date.strftime('%d/%m/%Y %I:%M%p')
                       %td{style: "line-height: 2em;"}
                         - if @user.submissions_for(a).empty?
                           %span.glyphicon.glyphicon-exclamation-sign.warn
