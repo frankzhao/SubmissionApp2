@@ -13,6 +13,8 @@
         .alert.alert-warning{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-time>
           Due at #{@assignment.due_date.strftime('%d/%m/%Y %I:%M%p')}
+    %p.italic
+      Language: #{@assignment.lang}
     %p= @assignment.description
     
     - if current_user.is_staff? && !@all_submissions.empty?

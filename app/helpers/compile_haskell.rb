@@ -6,7 +6,7 @@ module CompileHaskell
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
     # write file
     folder = "#{Rails.root}/tmp/compilations"
-    libraries = "#{Rails.root}/Library"
+    libraries = "#{Rails.root}/Library/Haskell"
     
     `mkdir -p #{folder}`
     File.open("#{folder}/#{hash}.hs","w") { |f| f.write(submission.plaintext.gsub("\r\n","\n").gsub("\r","\n") + "\nmain = undefined\n") }

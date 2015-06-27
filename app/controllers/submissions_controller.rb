@@ -51,7 +51,11 @@ class SubmissionsController < ApplicationController
       
       # Run tests
       unless @assignment.disable_compilation
-        out = @submission.compile_haskell
+        if @assignment.lang = "Haskell"
+          out = @submission.compile_haskell
+        elsif @assignment.lang = "Ada"
+          out = @submission.compile_ada
+        end
       end
       
     elsif @assignment.kind == 'zipfile'

@@ -1,7 +1,7 @@
 - if current_user.is_owner_or_staff?(@submission)
-  = title "#{@submission.user.full_name} | #{@assignment.name}"
+  = title "#{@submission.user.full_name} - #{@assignment.name}"
 - else
-  = title "Peer review | #{@assignment.name}"
+  = title "Peer review - #{@assignment.name}"
 = content_for :head do
   = javascript_include_tag 'submissions/submissions'
 .row

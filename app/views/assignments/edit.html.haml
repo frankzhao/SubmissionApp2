@@ -17,10 +17,13 @@
             .input-group
               .controls
                 %input#date_due.form-control{:name => "date_due", :placeholder => "dd/mm/yyyy hh:mm, three hours from now, tomorrow 5pm...", :type => "text", :value => @assignment.due_date}
-            %label.control-label{:for => "type"} Submission type
             .input-group
+              = f.label :lang, "Language", class: "control-label"
               .controls
-                = f.select :kind, ["zip", "plaintext"], {}, :class => "form-control", disabled: true
+                = f.select :lang, Assignment::SUPPORTED_LANGUAGES, {}, class: "form-control"
+              = f.label :kind, "Submission type"
+              .controls
+                = f.select :kind, Submission::SUPPORTED_TYPES, {}, class: "form-control", disabled: true
             %label.control-label{:for => "text"} Submission instructions
             .input-group
               .controls

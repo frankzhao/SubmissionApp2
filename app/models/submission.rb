@@ -5,6 +5,9 @@ class Submission < ActiveRecord::Base
   has_one :test_result
   
   include CompileHaskell
+  include CompileAda
+  
+  SUPPORTED_TYPES = ["plaintext","zip"]
   
   def zipfile_path
     file_path + ".zip"
@@ -44,15 +47,6 @@ class Submission < ActiveRecord::Base
     read_attribute(:plaintext).force_encoding("UTF-8")
   end
   
-  def compile_haskell
-    if self.assignment.tests
-      tests = self.assignment.tests.split("\n")
-    end
-
-    run(self, tests)
-  end
-  handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
-  
   def peer_reviewed?
     return false unless !self.peer_review_user_id.nil?
     user = User.find(self.peer_review_user_id)
@@ -66,6 +60,24 @@ class Submission < ActiveRecord::Base
   def comments_by(user)
     self.comments.select{|c| c.user ==  user}
   end
+  
+  # Compilation tests ---
+  def compile_haskell
+    if self.assignment.tests
+      tests = self.assignment.tests.split("\n")
+    end
+
+    run(self, tests)
+  end
+  handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
+  
+  def compile_ada
+    tests = self.assignment.tests
+    run(self, tests)
+  end
+  handle_asynchronously :compile_ada, :run_at => Proc.new { Time.now }
+  
+  # PDF and other output formats ---
   
   def make_pdf
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")

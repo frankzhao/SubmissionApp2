@@ -19,7 +19,6 @@ class AssignmentsController < ApplicationController
     course = params[:course_id]
     name = params[:assignment_name]
     date_due = params[:date_due]
-    type = params[:type]
     text = params[:text]
     tests = params[:tests]
     peer_review = params[:assignment][:peer_review_enabled]
@@ -31,16 +30,21 @@ class AssignmentsController < ApplicationController
       # Parse due date
       date_due = Chronic.parse(date_due, :endian_precedence => [:little, :median])
       assignment = Assignment.create(:name => name, :due_date => date_due,
-                                   :description => text, :kind => type, :tests => tests,
-                                   :peer_review_enabled => peer_review, :copy_path => copy_path,
-                                   :disable_compilation => params[:assignment][:disable_compilation])
+                                   :description => text, :kind => params[:assignment][:kind],
+                                   :tests => tests, :peer_review_enabled => peer_review, :copy_path => copy_path,
+                                   :disable_compilation => params[:assignment][:disable_compilation],
+                                   :lang => params[:assignment][:lang])
       # Add assignment to the course
       Course.find(course).assignments << assignment
       
       # Distribute and notify assignment to users in the course
-      notification = Notification.create_and_distribute("New assignment: " + assignment.name, assignment_path(assignment), c.users)
-      for u in c.users
-        u.assignments << assignment
+      if assignment
+        notification = Notification.create_and_distribute("New assignment: " + assignment.name, assignment_path(assignment), c.users)
+        for u in c.users
+          u.assignments << assignment
+        end
+      else
+        flash_message :error, "Could not create the course. Please check the input fields."
       end
     else
       flash_message :error, "Could not find course with ID=" + course.to_s
@@ -89,7 +93,8 @@ class AssignmentsController < ApplicationController
       :tests => params[:tests],
       :peer_review_enabled => params[:assignment][:peer_review_enabled],
       :copy_path => params[:assignment][:copy_path],
-      :disable_compilation => params[:assignment][:disable_compilation]
+      :disable_compilation => params[:assignment][:disable_compilation],
+      :lang => params[:assignment][:lang]
     )
     
     redirect_to assignment_path(@assignment)

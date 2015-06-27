@@ -58,5 +58,3 @@ vendor/cache
 /* Ignore uploaded submissions */
 public/uploads
 
-/* Ignore Libraries */
-Library

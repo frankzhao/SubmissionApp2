@@ -5,6 +5,9 @@ class Assignment < ActiveRecord::Base
   has_and_belongs_to_many :users
 
   validates :name, presence: true
+  validates :lang, presence: true
+  
+  SUPPORTED_LANGUAGES = ["Haskell", "Ada", "Chapel"]
   
   def latest_extension_for(user)
     self.assignment_extensions.select{|x| x.user == user}.last
