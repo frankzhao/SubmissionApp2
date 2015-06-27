@@ -107,6 +107,7 @@ class SubmissionsController < ApplicationController
           sleep(1)
         end
         WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}
+        ActiveRecord::Base.connection.close
       end
     end
   end
