@@ -51,9 +51,9 @@ class SubmissionsController < ApplicationController
       
       # Run tests
       unless @assignment.disable_compilation
-        if @assignment.lang = "Haskell"
+        if @assignment.lang == "Haskell" || @assignment.lang.nil?
           out = @submission.compile_haskell
-        elsif @assignment.lang = "Ada"
+        elsif @assignment.lang == "Ada"
           out = @submission.compile_ada
         end
       end
@@ -95,7 +95,8 @@ class SubmissionsController < ApplicationController
       end
     end
     
-    @plaintext = Pygments.highlight(@submission.plaintext, lexer: 'haskell', options: {linenos: 'table'})
+    @plaintext = Pygments.highlight(@submission.plaintext, lexer: (@assignment.lang.nil? ? "Haskell" : @assignment.lang.downcase),
+      options: {linenos: 'table'})
     @comment = Comment.new
     
     if @submission.test_result.nil?

@@ -4,8 +4,8 @@ class Submission < ActiveRecord::Base
   has_many :comments
   has_one :test_result
   
-  include CompileHaskell
-  include CompileAda
+  # include CompileHaskell
+  # include CompileAda
   
   SUPPORTED_TYPES = ["plaintext","zip"]
   
@@ -67,13 +67,16 @@ class Submission < ActiveRecord::Base
       tests = self.assignment.tests.split("\n")
     end
 
-    run(self, tests)
+    CompileHaskell.run(self, tests)
   end
   handle_asynchronously :compile_haskell, :run_at => Proc.new { Time.now }
   
   def compile_ada
-    tests = self.assignment.tests
-    run(self, tests)
+    if self.assignment.tests
+      tests = self.assignment.tests.split("\n")
+    end
+    
+    CompileAda.run(self, tests)
   end
   handle_asynchronously :compile_ada, :run_at => Proc.new { Time.now }
   

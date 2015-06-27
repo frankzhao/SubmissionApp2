@@ -1,4 +1,5 @@
 module CompileAda
+  module_function
   def run(submission, tests)
     comments = ""
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
@@ -22,47 +23,20 @@ module CompileAda
       comments += "<span class=\"warn\">Your submission did not compile successfully.</span>\n\n#{gnat_result}"
     end
     
-    if result && !tests.nil?
-      comments += "Running tests...\n"
-      command = "timeout 3 #{folder}/#{hash} 2>&1"
+    if result && !tests.empty?
+      comments += "Running tests...\n<ol>"
+      
+      for test in tests
+        command = "timeout 3 #{folder}/#{hash} #{test} 2>&1"
+        gnat_result = `#{command}`
+        comments += "<li>" + test.strip + ": " + gnat_result.strip + "</li>"
+      end
+      comments += "</ol>"
+    else
+      command = "timeout 3 #{folder}/#{hash} #{test} 2>&1"
       gnat_result = `#{command}`
-      comments += "Program output: \n#{gnat_result.strip}"
+      comments += "Program output: " + gnat_result.strip
     end
-    
-    # # check compilation, include files in /Library
-    # command = "ghc -XSafe #{folder}/#{hash}.hs -i.:#{libraries} 2>&1"
-    # ghc_result = `#{command}`
-    #
-    # result = File.exist?("#{folder}/#{hash}")
-    #
-    # if result
-    #   comments += "<span class=\"glyphicon glyphicon-ok good\"></span><span class=\"good\">Your submission compiled successfully.</span>\n\n"
-    # else
-    #   comments += "<span class=\"warn\">Your submission did not compile successfully.</span>\n\n#{ghc_result}"
-    # end
-    #
-    # # run tests
-    # if result && !tests.nil?
-    #   comments += "Running tests...\n<ol>"
-    #   for test in tests
-    #     command = "timeout 3 ghc -i.:#{libraries}" + " #{folder}/#{hash}.hs 2>&1 -e " + "\"#{test.gsub('"','\"')}\""
-    #     ghc_result = `#{command}`
-    #     comments += "<li>" + test.strip + ": " + ghc_result.strip + "</li>"
-    #
-    #     # Score
-    #     if ghc_result.strip == "True"
-    #       score += 1
-    #     end
-    #   end
-    #   comments += "</ol>"
-    #   comments += "Your submission passed #{score}/#{tests.length} tests.\n"
-    #
-    #   if score == tests.length
-    #     comments += "<span class=\"glyphicon glyphicon-star good\"></span><span class=\"good\">All tests passed. Well done!</span>"
-    #   else
-    #     comments += "</span><span class=\"warn\">Your submission did not pass all test cases. Please try again.</span>"
-    #   end
-    # end
     
     testresult = TestResult.create(submission_id: submission.id, result: comments)
     

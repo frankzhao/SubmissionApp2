@@ -1,4 +1,5 @@
 module CompileHaskell
+  module_function
   def run(submission, tests)
     comments = ""
     score = 0
