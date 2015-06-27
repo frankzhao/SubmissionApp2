@@ -32,11 +32,11 @@ class User < ActiveRecord::Base
   end
   
   def firstname
-    read_attribute(:firstname).encode("ISO-8859-1")
+    read_attribute(:firstname).to_s.encode("ISO-8859-1")
   end
   
   def surname
-    read_attribute(:surname).encode("ISO-8859-1")
+    read_attribute(:surname).to_s.encode("ISO-8859-1")
   end
 
   def is_admin?
