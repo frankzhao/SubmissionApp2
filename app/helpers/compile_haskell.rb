@@ -1,4 +1,8 @@
 module CompileHaskell
+  # Haskell compilation module
+  # Unit tests can be specified using boolean expressions
+  # e.g "size_of_tree example_tree == 10"
+  
   module_function
   def run(submission, tests)
     comments = ""

@@ -1,4 +1,8 @@
 module CompileAda
+  # Ada compilation module
+  # Unit tests can be specified with the "shouldbe" keyword
+  # e.g "commandline_param shouldbe 6"
+  
   module_function
   def run(submission, tests)
     comments = ""
