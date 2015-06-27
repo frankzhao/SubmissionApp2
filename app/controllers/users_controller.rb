@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     else
       @courses = @user.courses
       @course_assignments = @user.assignments.group_by(&:course)
-      @assignments = @user.assignments
+      @assignments = @user.assignments.uniq
     end
   end
 end

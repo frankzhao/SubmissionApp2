@@ -37,7 +37,7 @@
               - c.assignments.each do |a|
                 = link_to a.name, assignment_path(a)
                 %br
-    %h3 Your groups
+    %h3 Your Groups
     %table.table.table-hover.table-striped
       - if !@courses.empty?
         %tr
@@ -125,10 +125,4 @@
                 - else
                   %span.label.label-danger
                     Not Reviewed
-                  
-      - else
-        - @assignments.each do |a|
-          - for s in a.peer_review_submissions_for(@user)
-            %tr
-              %td= link_to "View", submission_path(s)
   = render 'sidebar_show'

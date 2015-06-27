@@ -15,6 +15,6 @@ class Assignment < ActiveRecord::Base
   end
   
   def peer_review_submissions_for(user)
-    self.submissions.select{|s| s.peer_review_user_id == user.id}
+    Submission.where(peer_review_user_id: user.id, assignment_id: self.id)
   end
 end
