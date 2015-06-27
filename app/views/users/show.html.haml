@@ -1,3 +1,4 @@
+= title "#{@user.full_name} | SubmissionApp2"
 .row
   #content.col-md-9
     %h1.page-header
@@ -107,7 +108,7 @@
         %th Date Submitted
         %th Review Status
       - if current_user
-        - Assignment.all.each do |a|
+        - @assignments.each do |a|
           - for s in a.peer_review_submissions_for(@user)
             %tr
               %td
@@ -126,7 +127,7 @@
                     Not Reviewed
                   
       - else
-        - @user.assignments.each do |a|
+        - @assignments.each do |a|
           - for s in a.peer_review_submissions_for(@user)
             %tr
               %td= link_to "View", submission_path(s)

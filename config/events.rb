@@ -12,9 +12,4 @@ WebsocketRails::EventMap.describe do
   #   end
   # The above will handle an event triggered on the client like `product.new`.
   
-  namespace :submissions do
-    subscribe :new, :to => SubmissionsController, :with_method => :new
-  end
-  
-  subscribe :event, :to => WebsocketController, :with_method => :testevent
 end

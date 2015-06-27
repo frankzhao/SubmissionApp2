@@ -16,9 +16,11 @@ class UsersController < ApplicationController
     if current_user.is_admin?
       @courses = Course.all
       @course_assignments = Assignment.all.group_by(&:course)
+      @assignments = Assignment.all
     else
       @courses = @user.courses
       @course_assignments = @user.assignments.group_by(&:course)
+      @assignments = @user.assignments
     end
   end
 end

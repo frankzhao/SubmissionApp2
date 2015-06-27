@@ -1,3 +1,6 @@
+= title "#{@submission.user.full_name} | #{@assignment.name}"
+= content_for :head do
+  = javascript_include_tag 'submissions/submissions'
 .row
   .col-md-9#content
     %h1.page-header
@@ -61,11 +64,13 @@
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else
-          %p Reload this page in a few seconds to see your results.
-          :javascript
-            setTimeout(function(){
-              window.location.reload();
-            }, 2000);
+          %p Compiling...
+          .compile-spinner
+            .rect1
+            .rect2
+            .rect3
+            .rect4
+            .rect5
     
     - if current_user.is_admin?
       %h3 Admin actions

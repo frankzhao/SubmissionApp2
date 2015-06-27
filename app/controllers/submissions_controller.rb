@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   include SubmissionsHelper
+  include ActionView::Helpers::TextHelper
 
   before_filter :require_logged_in
   respond_to :html
@@ -92,6 +93,17 @@ class SubmissionsController < ApplicationController
     
     @plaintext = Pygments.highlight(@submission.plaintext, lexer: 'haskell', options: {linenos: 'table'})
     @comment = Comment.new
+    
+    if @submission.test_result.nil?
+      render
+      Thread.new do
+        while @submission.test_result.nil?
+          @submission = Submission.find(@submission.id)
+          sleep(1)
+        end
+        WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}
+      end
+    end
   end
   
   def update
