@@ -41,7 +41,7 @@ class Submission < ActiveRecord::Base
   end
   
   def plaintext
-    read_attribute(:plaintext).force_encoding("ISO-8859-1")
+    read_attribute(:plaintext).force_encoding("UTF-8")
   end
   
   def compile_haskell

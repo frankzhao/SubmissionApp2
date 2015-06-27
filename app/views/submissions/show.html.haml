@@ -40,7 +40,7 @@
         = link_to submission_path(@submission) + "/download" do
           %span.glyphicon.glyphicon-floppy-save
     - if @assignment.kind == "plaintext"
-      = (preserve @plaintext).html_safe
+      = (preserve @plaintext.force_encoding("ISO-8859-1")).html_safe
 
     - elsif @assignment.kind == 'zip'
       /# ZIP submissions ---
