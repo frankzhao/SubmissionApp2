@@ -1,11 +1,11 @@
 function NotificationSetup()
 {
 	//setInterval(NotificationUpdate, 60000);
-	NotificationUpdate();
+	NotificationUpdate(false);
 }
 
-function NotificationUpdate()
-{
+function NotificationUpdate(link)
+{ 
 	$.get( "/users/notifications", function(data) {
 		var list = data.list;
     
@@ -32,7 +32,6 @@ function NotificationUpdate()
 			link.onclick = function(e) {
         e.preventDefault();
 				NotificationDismiss(this);
-        window.location = link.href;
 			};
 
 			container.appendChild(link);
@@ -48,6 +47,7 @@ function NotificationUpdate()
 function NotificationDismiss(e)
 {
 	var id = parseInt(e.id.match(/(\d)+/igm)[0]);
+  var link = e.href
 
 	$.ajax({
 		url: "/users/notifications",
@@ -55,10 +55,12 @@ function NotificationDismiss(e)
 		data: {
 			"id" : id,
 			"authenticity_token" : AUTH_TOKEN
-		}
+		},
+    success: function(data) {
+      window.location = data.link;
+    }
 	});
-  
-  NotificationUpdate();
+  NotificationUpdate(link);
 }
 
 NotificationSetup();

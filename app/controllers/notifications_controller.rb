@@ -9,7 +9,7 @@ class NotificationsController < ApplicationController
   	if !notification.nil?
       current_user.notifications.delete(notification)
       notification.destroy
-  		render :json => "", :status => 200
+  		render :json => {link: notification.link}, :status => 200
   	else
   		render :json => { :error => "Unable to find Notification"}, :status => 404
   	end
