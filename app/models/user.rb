@@ -28,7 +28,15 @@ class User < ActiveRecord::Base
   # == Helper methods ==
 
   def full_name
-    self.firstname.to_s + " " + self.surname.to_s
+    (self.firstname.to_s + " " + self.surname.to_s).encode("ISO-8859-1")
+  end
+  
+  def firstname
+    read_attribute(:firstname).encode("ISO-8859-1")
+  end
+  
+  def surname
+    read_attribute(:surname).encode("ISO-8859-1")
   end
 
   def is_admin?

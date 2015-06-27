@@ -185,7 +185,7 @@ class AssignmentsController < ApplicationController
       group_data["enrolled"] = enrolled.to_i
       group_data["finalised"] = finalised_count
       group_data["submissions"] = submission_count
-      group_data["tutor"] = group.tutor.present? ? group.tutor.full_name.to_s : "None"
+      group_data["tutor"] = group.tutor.present? ? URI::escape(group.tutor.full_name.to_s) : "None"
       group_data["group_url"] = group_path(group)
       group_data["group_submissions_url"] = "/assignments/#{assignment.id}/group/#{group.id}"
       

@@ -40,6 +40,10 @@ class Submission < ActiveRecord::Base
     sanitize_str(timestamp)
   end
   
+  def plaintext
+    read_attribute(:plaintext).force_encoding("ISO-8859-1")
+  end
+  
   def compile_haskell
     if self.assignment.tests
       tests = self.assignment.tests.split("\n")
@@ -245,7 +249,7 @@ FILE
   private
   
   def to_utf8(str)
-    str = str.force_encoding("UTF-8")
+    str = str.encode("UTF-8")
     return str if str.valid_encoding?
     str = str.force_encoding("BINARY")
     str.encode("UTF-8", invalid: :replace, undef: :replace)
