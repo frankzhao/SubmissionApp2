@@ -68,6 +68,7 @@ class CoursesController < ApplicationController
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
       @all_students = @course.students
+      @population = @all_students.count
       @all_assignments = @course.assignments
       @groups = @course.groups
       if !@course.users.include?(current_user) && !current_user.is_staff?

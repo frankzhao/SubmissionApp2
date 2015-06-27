@@ -11,7 +11,7 @@ class Assignment < ActiveRecord::Base
   end
   
   def finalised_submissions
-    self.submissions.select{|s| s.finalised}
+    Submission.where(assignment_id: self.id, finalised: true)
   end
   
   def peer_review_submissions_for(user)

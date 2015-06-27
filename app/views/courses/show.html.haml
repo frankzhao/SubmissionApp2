@@ -17,8 +17,8 @@
         %tr
           %th Assignment
           %th Deadline (dd/mm/yyyy)
-          %th Finalised Submissions
-          %th Unique Submissions
+          / %th Finalised Submissions
+          / %th Unique Submissions
           %th Total Submissions
         - if current_user.is_staff?
           - @all_assignments.each do |a|
@@ -29,8 +29,8 @@
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else
                 %td No due date
-              %td= a.submissions.select{|s| (s.user.type == "Student") && s.finalised}.map(&:user).uniq.length.to_s + " of " + @all_students.count.to_s
-              %td= a.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count.to_s + " of " + @all_students.count.to_s
+              /%td= a.finalised_submissions.map(&:user).uniq.length.to_s + " of " + @population.to_s
+              /%td= a.submissions.map(&:user).uniq.count.to_s + " of " + @population.to_s
               %td= a.submissions.count.to_s
         - else
           - @all_assignments.each do |a|
@@ -84,31 +84,7 @@
                   - else
                     - group = s.groups.select{|g| g.course == @course}.first
                     = link_to group.name, group_path(group)
-      %h3#groups Groups
-      - if @groups.empty?
-        %p This course currently has no groups.
-        - if current_user.is_admin_or_convenor?
-          = link_to 'Create one', new_group_path
-      - else
-        - for group in @groups
-          .panel.panel-default
-            .panel-heading
-              %h4.panel-title
-                = link_to group.name + "(#{group.users.length} enrolled)", group_path(group)
-                - if group.tutor
-                  %span.uid_heading{style: "font-size: 80%; padding-left: 10px"}
-                    Tutor: #{group.tutor.full_name}
-            .panel-body
-              %table.table.table-hover.table-striped
-                %tr
-                  %th ID
-                  %th Name
-                  %th Role
-                - for u in group.users
-                  %tr
-                    %td= link_to u.uid, user_path(u)
-                    %td= link_to u.firstname + " " + u.surname, user_path(u)
-                    %td= u.type
+
   = render 'sidebar_show'
   - if current_user.is_staff?
     = render 'courses_js'
