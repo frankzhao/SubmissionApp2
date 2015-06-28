@@ -41,16 +41,17 @@
               %canvas#comments-chart{width: "150", height: "150"}
               .legend#comments-chart-legend
       
-      %h3 Submissions by group
-      .spinner#groups-spinner
-        .double-bounce1
-        .double-bounce2
-      %table.table.table-hover.table-striped#group-data
-        %tr
-          %th Group
-          %th Tutor
-          %th Finalised submissions
-          %th Unique submissions
+      - if !@course.groups.empty?
+        %h3 Submissions by group
+        .spinner#groups-spinner
+          .double-bounce1
+          .double-bounce2
+        %table.table.table-hover.table-striped#group-data
+          %tr
+            %th Group
+            %th Tutor
+            %th Finalised submissions
+            %th Unique submissions
 
     - if current_user.is_admin_or_convenor?
       %h3 Extensions
