@@ -1,7 +1,7 @@
 SubmissionApp2
 ===
 
-The second iteration of the original [SubmissionApp](https://github.com/bshlgrs/SubmissionApp). This application provides a system of accepting submissions from students. Designed for Haskell plaintext submissions or archive files, but can be extended to other types. Currently plaintext submission compilation and unit testing is only implemented for Haskell.
+The second iteration of the original [SubmissionApp](https://github.com/bshlgrs/SubmissionApp). This application provides a system of accepting submissions from students. Designed for Haskell plaintext submissions or archive files, but can be extended to other types. Currently plaintext submission compilation and unit testing is implemented for Haskell, Ada and Chapel.
 
 ![Screenshot of data visualisation options](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/charts.png)
 
