@@ -1,1 +1,1 @@
-Dependencies for Haskell compilation go here
+Dependencies for compilation modules can be included here in the corresponding directories.
