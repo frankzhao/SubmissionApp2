@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get "submissions/:id/download" => "submissions#download"
   get "submissions/:id/pdf" => "submissions#pdf"
   get "submissions/:id/pdf_comments" => "submissions#pdf_comments"
+  post "submissions/check_result" => "submissions#check_result"
   
   get "/admin/become/:id" => "admin#become"
   get "/admin" => "admin#index"

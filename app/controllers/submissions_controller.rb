@@ -189,6 +189,24 @@ class SubmissionsController < ApplicationController
     send_file @submission.make_pdf_with_comments, :type=>"application/pdf", :x_sendfile=>true
   end
   
+  # Check for compilation results
+  def check_result
+    Submission.uncached do
+      @submission = Submission.find(params[:id])
+      if @submission.test_result.nil?
+        count = 0
+        while @submission.test_result.nil? && count < 100
+          @submission = Submission.find(@submission.id)
+          count = count + 1
+          sleep(1)
+        end
+        render :json => @submission.test_result.to_json, :status => 200
+      else
+        render :json => {result: false}, :status => 200
+      end
+    end
+  end
+  
   private
   
   def submission_params

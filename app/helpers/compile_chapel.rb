@@ -25,7 +25,7 @@ module CompileChapel
       comments += "<span class=\"warn\">Your submission did not compile successfully.</span>\n\n#{gnat_result}"
     end
     
-    comments += "Running tests...\n<ol>"
+    comments += "Running tests...\n"
     
     command = "timeout 3 #{folder}/#{hash} 2>&1"
     chpl_result = `#{command}`
