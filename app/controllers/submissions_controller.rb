@@ -55,6 +55,8 @@ class SubmissionsController < ApplicationController
           out = @submission.compile_haskell
         elsif @assignment.lang == "Ada"
           out = @submission.compile_ada
+        elsif @assignment.lang == "Chapel"
+          out = @submission.compile_chapel
         end
       end
       
@@ -102,8 +104,10 @@ class SubmissionsController < ApplicationController
     if @submission.test_result.nil?
       render
       Thread.new do
-        while @submission.test_result.nil?
+        count = 0
+        while @submission.test_result.nil? && count < 100
           @submission = Submission.find(@submission.id)
+          count = count + 1
           sleep(1)
         end
         WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}

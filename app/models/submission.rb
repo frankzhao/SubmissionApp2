@@ -4,9 +4,6 @@ class Submission < ActiveRecord::Base
   has_many :comments
   has_one :test_result
   
-  # include CompileHaskell
-  # include CompileAda
-  
   SUPPORTED_TYPES = ["plaintext","zip"]
   
   def zipfile_path
@@ -81,6 +78,12 @@ class Submission < ActiveRecord::Base
     CompileAda.run(self, tests)
   end
   handle_asynchronously :compile_ada, :run_at => Proc.new { Time.now }
+  
+  def compile_chapel
+    tests = self.assignment.tests
+    CompileChapel.run(self, tests)
+  end
+  handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
   
   # PDF and other output formats ---
   
