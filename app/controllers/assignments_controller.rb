@@ -35,7 +35,7 @@ class AssignmentsController < ApplicationController
                                    :disable_compilation => params[:assignment][:disable_compilation],
                                    :lang => params[:assignment][:lang])
       # Add assignment to the course
-      Course.find(course).assignments << assignment
+      c.assignments << assignment
       
       # Distribute and notify assignment to users in the course
       if assignment

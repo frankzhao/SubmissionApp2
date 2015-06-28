@@ -32,7 +32,7 @@
           <tr>
             <td><%= link_to a.course.code, course_path(a)%></td>
             <td><%= link_to a.name, assignment_path(a)%></td>
-            <td><%= a.due_date.strftime('%d/%m/%Y %I:%M%p') %></td>
+            <td><%= a.due_date.present? ? a.due_date.strftime('%d/%m/%Y %I:%M%p') : "No due date" %></td>
             <td>
               <% if current_user.submissions_for(a).empty? %>
                 <span class="glyphicon glyphicon-warning-sign warn"></span><span class="warn">No submissions found.</span><br><%= link_to "Add submission", new_submission_path %>
