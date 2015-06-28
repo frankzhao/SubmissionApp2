@@ -24,7 +24,7 @@ Dependencies marked in *italic* are currently using system installations on vare
 - SQLite3 (sqlite3, libsqlite-dev)
 - OpenSSL ( *openssl*, libopenssl-dev)
 - *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
-- Haskell platform (ghc, runhaskell, ghci).
+- *Haskell platform (ghc, runhaskell, ghci)*
 - *GNAT 2015 (gnatmake)*
 - Chapel 1.11.0
 
