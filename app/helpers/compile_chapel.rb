@@ -25,11 +25,39 @@ module CompileChapel
       comments += "<span class=\"warn\">Your submission did not compile successfully.</span>\n\n#{gnat_result}"
     end
     
-    comments += "Running tests...\n"
+    # Parse the tests
+    test_array = []
+    for test in tests
+      test_array << test.split("shouldbe").map(&:strip)
+    end
     
-    command = "timeout 3 #{folder}/#{hash} 2>&1"
-    chpl_result = `#{command}`
-    comments += chpl_result.strip
+    score = 0
+    if result && !tests.empty?
+      comments += "Running tests...\n<ol>"
+      
+      for test in test_array
+        command = "timeout 3 #{folder}/#{hash} #{test.first} 2>&1"
+        chpl_result = `#{command}`
+        comments += "<li>" + test.first + ": " + chpl_result.strip + "</li>"
+        
+        # Score
+        if test.last.strip == chpl_result.strip
+          score = score + 1
+        end
+      end
+      comments += "</ol>"
+      comments += "Your submission passed #{score}/#{test_array.length} tests.\n"
+      
+      if score == test_array.length
+        comments += "<span class=\"glyphicon glyphicon-star good\"></span><span class=\"good\">All tests passed. Well done!</span>"
+      else
+        comments += "</span><span class=\"warn\">Your submission did not pass all test cases. Please try again.</span>"
+      end
+    else
+      command = "timeout 3 #{folder}/#{hash} #{test} 2>&1"
+      chpl_result = `#{command}`
+      comments += "Program output: " + chpl_result.strip
+    end
     
     testresult = TestResult.create(submission_id: submission.id, result: comments)
     

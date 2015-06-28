@@ -80,7 +80,12 @@ class Submission < ActiveRecord::Base
   handle_asynchronously :compile_ada, :run_at => Proc.new { Time.now }
   
   def compile_chapel
-    tests = self.assignment.tests
+    if self.assignment.tests
+      tests = self.assignment.tests
+      tests = tests.gsub("should be", "shouldbe")
+      tests = tests.split("\n")
+    end
+    
     CompileChapel.run(self, tests)
   end
   handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
