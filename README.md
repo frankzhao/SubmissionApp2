@@ -25,6 +25,8 @@ Dependencies marked in *italic* are currently using system installations on vare
 - OpenSSL ( *openssl*, libopenssl-dev)
 - *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
 - Haskell platform (ghc, runhaskell, ghci).
+- *GNAT 2015 (gnatmake)*
+- Chapel 1.11.0
 
 Manual Restart/Shutdown
 ===
@@ -38,6 +40,40 @@ bin/delayed_job stop
 ```
 
 To start the server manually, run the restart script. Errors involving non existent PIDs can be ignored.
+
+Modules
+===
+
+SubmissionApp2 allows for the addition of language modules for compilation and unit testing. There are 3 modules currently implemented, for Haskell, Ada and Chapel. Tests for execution can be specified during assignment creation. Multiple tests can be specified with newline seperation.
+
+##Haskell
+The Haskell compilation module runs units tests using the GHC compiler. Tests can be using boolean expressions. Haskell syntax and function calls are permitted.
+
+Example:
+```
+size_of_tree example_tree == 10
+depth_of_tree example_tree == depth_of_tree reverse(example_tree)
+```
+
+##Ada
+The Ada compilation module runs on GNAT 2015. Simple command line unit tests are supported to compare executing with specific command line arguments with `stdout`. The compare operator is `shouldbe`.
+
+Example:
+```
+param shouldbe Hello World!
+```
+
+This will execute `./filename param` and check that the program output is equal to "Hello World!"
+
+##Chapel
+The Chapel compilation module runs on `chpl` v1.11.0. Like the Ada module, the compare operator is `shouldbe`, and will be passed as command line parameters.
+
+Example:
+```
+--var=param shouldbe Hello World!
+```
+
+This will execute `./filename --var=param` and check that the program output is equal to "Hello World!"
 
 Notes
 ===
