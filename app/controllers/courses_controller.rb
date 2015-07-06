@@ -16,10 +16,9 @@ class CoursesController < ApplicationController
     tutors      = sanitize_uids(params[:tutors])
     convenors   = sanitize_uids(params[:convenors])
 
-  if current_user.is_convenor?
-    convenors << current_user.uid
-  end
-
+    if current_user.is_convenor?
+      convenors << current_user.uid
+    end
 
     # Create the course
     c = Course.create(
@@ -189,11 +188,10 @@ class CoursesController < ApplicationController
         # Remove spaces
         conv.gsub!(/\s+/, "")
 
-        if !Convenor.find_by_uid(conv).nil?
-          conv = Convenor.find_by_uid(conv)
+        conv = Convenor.find_by_uid(conv)
+        if conv
           if !c.convenors.include?(conv)
             c.convenors << conv
-            conv.courses << c
             counter += 1
           end
         else
@@ -202,7 +200,6 @@ class CoursesController < ApplicationController
           if !ldap_user.nil?
             conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.convenors << conv
-            #conv.courses << c
             counter += 1
           else
             flash_message :error, "The convenor <#{conv}> could not be found on the LDAP server."
