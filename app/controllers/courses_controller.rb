@@ -183,6 +183,7 @@ class CoursesController < ApplicationController
     end
 
     if not convenors.empty?
+      c.convenors = []
       counter = 0
       convenors.each do |conv|
         # Remove spaces
