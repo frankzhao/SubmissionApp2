@@ -2,7 +2,7 @@
   <div class="col-md-9" id="content">
     <h1 class="page-header">Your assignments<div class="menu-icon-container hidden"><span class="glyphicon glyphicon-tasks menu-icon"></span></div></h1>
     <table class="table table-hover table-striped">
-      <% if current_user.is_convenor_of_course?(@course) && !current_user.courses.empty? %>
+      <% if current_user.is_convenor_for_course?(@course) && !current_user.courses.empty? %>
         <tr>
           <th>Course Code</th>
           <th>Assignment</th>

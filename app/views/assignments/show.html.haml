@@ -17,7 +17,7 @@
       Language: #{@assignment.lang}
     %p= @assignment.description
     
-    - if current_user.is_staff? && !@all_submissions.empty?
+    - if current_user.is_staff_for_course?(@course) && !@all_submissions.empty?
       - if @all_submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
         .spinner#chart-spinner
           .double-bounce1
@@ -116,8 +116,10 @@
                   .alert.alert-danger
                     %span.glyphicon.glyphicon-warning-sign
                     Your submission is late. Unless you have been granted an exception your assignment may not be marked.
+                - else
+                  - # pass
             %td= link_to "View Submission", submission_path(s), class: "btn btn-sm btn-primary"
-    - if current_user.is_staff?
+    - if current_user.is_staff_for_course?(@course)
       .tabs
         -# Tabs
         %ul.nav.nav-tabs#submission-tabs

@@ -20,7 +20,7 @@
           / %th Finalised Submissions
           / %th Unique Submissions
           %th Total Submissions
-        - if current_user.is_staff?
+        - if current_user.is_staff_for_course?(@course)
           - @all_assignments.each do |a|
             %tr
               %td
@@ -60,7 +60,7 @@
                 - else
                   %span.glyphicon.glyphicon-exclamation-sign.warn
                   %span.warn No submission
-    - if current_user.is_staff?
+    - if current_user.is_staff_for_course?(@course)
       %h3#enrolments Enrolments
       %table.table.table-hover.table-striped.dataTable#enrolments-table
         - if @all_students.nil?
@@ -86,5 +86,5 @@
                     = link_to group.name, group_path(group)
 
   = render 'sidebar_show'
-  - if current_user.is_staff?
+  - if current_user.is_staff_for_course?(@course)
     = render 'courses_js'

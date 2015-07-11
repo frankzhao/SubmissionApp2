@@ -46,15 +46,15 @@ class User < ActiveRecord::Base
   end
   
   def is_tutor?(course)
-    self.type == "Tutor" || self.role.to_h[course.id] == "Tutor"
+    self.role.to_h[course.id.to_s] == "Tutor"
   end
 
   def is_convenor?
     self.type == "Convenor" || self.role.to_h.values.include?("Convenor")
   end
   
-  def is_convenor_of_course?(course)
-    self.type == "Convenor" || self.role.to_h[course.id] == "Convenor"
+  def is_convenor_for_course?(course)
+    self.type == "Convenor" || self.role.to_h[course.id.to_s] == "Convenor"
   end
 
   def is_admin_or_convenor?
@@ -63,6 +63,10 @@ class User < ActiveRecord::Base
 
   def is_staff?
     (self.is_admin_or_convenor? or self.type == "Tutor")  || self.role.to_h.values.include?("Tutor")
+  end
+  
+  def is_staff_for_course?(course)
+    self.is_admin_or_convenor? || self.is_tutor?(course)
   end
   
   def is_owner_or_staff?(resource)

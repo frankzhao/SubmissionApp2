@@ -199,6 +199,10 @@ class CoursesController < ApplicationController
     end
     
     if not convenors.empty?
+      old_convenors = User.select{|u| u.role["#{c.id}"] == "Convenor" unless u.role.nil?}.uniq
+      for convenor in old_convenors
+        convenor.update_attributes(role: convenor.role.delete(c.id))
+      end
       c.convenors = []
       counter = 0
       convenors.each do |conv_id|
