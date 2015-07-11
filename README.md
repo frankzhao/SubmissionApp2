@@ -56,21 +56,21 @@ depth_of_tree example_tree == depth_of_tree reverse(example_tree)
 ```
 
 ##Ada
-The Ada compilation module runs on GNAT 2015. Simple command line unit tests are supported to compare executing with specific command line arguments with `stdout`. The compare operator is `shouldbe`.
+The Ada compilation module runs on GNAT 2015. Simple command line unit tests are supported to compare executing with specific command line arguments with `stdout`. The compare operator is `==`.
 
 Example:
 ```
-param shouldbe Hello World!
+param == Hello World!
 ```
 
 This will execute `./filename param` and check that the program output is equal to "Hello World!"
 
 ##Chapel
-The Chapel compilation module runs on `chpl` v1.11.0. Like the Ada module, the compare operator is `shouldbe`, and will be passed as command line parameters.
+The Chapel compilation module runs on `chpl` v1.11.0. Like the Ada module, the compare operator is `==`, and will be passed as command line parameters.
 
 Example:
 ```
---var=param shouldbe Hello World!
+--var=param == Hello World!
 ```
 
 This will execute `./filename --var=param` and check that the program output is equal to "Hello World!"

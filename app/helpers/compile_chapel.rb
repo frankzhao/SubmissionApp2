@@ -28,7 +28,7 @@ module CompileChapel
     # Parse the tests
     test_array = []
     for test in tests
-      test_array << test.split("shouldbe").map(&:strip)
+      test_array << test.split("==").map(&:strip)
     end
     
     score = 0

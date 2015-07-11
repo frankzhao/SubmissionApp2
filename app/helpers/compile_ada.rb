@@ -1,7 +1,7 @@
 module CompileAda
   # Ada compilation module
-  # Unit tests can be specified with the "shouldbe" keyword
-  # e.g "commandline_param shouldbe 6"
+  # Unit tests can be specified with the "==" keyword
+  # e.g "commandline_param == 6"
   
   module_function
   def run(submission, tests)
@@ -30,7 +30,7 @@ module CompileAda
     # Parse the tests
     test_array = []
     for test in tests
-      test_array << test.split("shouldbe").map(&:strip)
+      test_array << test.split("==").map(&:strip)
     end
     
     score = 0

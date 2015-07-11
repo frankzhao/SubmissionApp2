@@ -71,7 +71,6 @@ class Submission < ActiveRecord::Base
   def compile_ada
     if self.assignment.tests
       tests = self.assignment.tests
-      tests = tests.gsub("should be", "shouldbe")
       tests = tests.split("\n")
     end
     
@@ -82,7 +81,6 @@ class Submission < ActiveRecord::Base
   def compile_chapel
     if self.assignment.tests
       tests = self.assignment.tests
-      tests = tests.gsub("should be", "shouldbe")
       tests = tests.split("\n")
     end
     
