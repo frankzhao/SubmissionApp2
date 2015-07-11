@@ -140,7 +140,8 @@ class AssignmentsController < ApplicationController
     end
     assignment = Assignment.find(params[:id])
     submissions = assignment.submissions
-    hourly_data = submissions.group("strftime('%Y%m%d %H', created_at)").count.to_a.last(24*7).to_h
+    hourly_data = submissions.group("strftime('%Y%m%d %H', created_at)").count.to_a.last(24*7)
+    hourly_data = Hash[*hourly_data.flatten]
     daily_data = submissions.group("strftime('%Y%m%d', created_at)").count
     
     unique_submission_users = submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq
@@ -151,6 +152,7 @@ class AssignmentsController < ApplicationController
     nonsubmissions = (assignment.course.students.count - unique_submission_users.count)
     commented_submissions = assignment.submissions.select{|s| (s.user.type == "Student" && s.comments.present?)}.map(&:user).uniq.count
     uncommented_submissions = (submission_count - commented_submissions)
+    
     render :json => {
       hourly_data: hourly_data,
       daily_data: daily_data,
