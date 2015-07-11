@@ -181,15 +181,15 @@ class CoursesController < ApplicationController
       end
       flash_message :success, "Sucessfully enrolled #{counter} tutors." unless counter == 0
     end
-
+    
     if not convenors.empty?
       c.convenors = []
       counter = 0
-      convenors.each do |conv|
+      convenors.each do |conv_id|
         # Remove spaces
-        conv.gsub!(/\s+/, "")
+        conv_id.gsub!(/\s+/, "")
 
-        conv = Convenor.find_by_uid(conv)
+        conv = Convenor.find_by_uid(conv_id)
         if conv
           if !c.convenors.include?(conv)
             c.convenors << conv
@@ -197,13 +197,13 @@ class CoursesController < ApplicationController
           end
         else
           # Look up user details
-          ldap_user = AnuLdap.find_by_uni_id(conv)
-          if !ldap_user.nil?
-            conv = Convenor.create(:uid => conv, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+          ldap_user = AnuLdap.find_by_uni_id(conv_id)
+          if ldap_user
+            conv = Convenor.create(:uid => conv_id, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
             c.convenors << conv
             counter += 1
           else
-            flash_message :error, "The convenor <#{conv}> could not be found on the LDAP server."
+            flash_message :error, "The convenor <#{conv_id}> could not be found on the LDAP server."
           end
         end
       end
