@@ -108,10 +108,11 @@ class SubmissionsController < ApplicationController
         while @submission.test_result.nil? && count < 100
           @submission = Submission.find(@submission.id)
           count = count + 1
-          sleep(1)
+          sleep(2)
         end
         WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}
-        ActiveRecord::Base.connection.close
+        ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
+        ActiveRecord::Base.clear_active_connections!
       end
     end
   end
