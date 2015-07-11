@@ -86,8 +86,8 @@ class GroupsController < ApplicationController
     uid.gsub!(/\s+/, "") # remove spaces
 
     # Check if the group exists
-    group = Group.find_by_name(g)
     c = Course.find(c)
+    group = c.groups.find_by_name(g)
     if !group
       new_group = Group.create(:name => g, :course => c)
       c.groups << new_group
@@ -117,9 +117,9 @@ class GroupsController < ApplicationController
           flash_message :error, "The #{type} <#{uid}> is not enrolled in #{c.code}."
         end
       elsif type == "tutor"
-        t = Tutor.find_by_uid(uid)
+        t = User.find_by_uid(uid)
         if t && !(group.tutor == t)
-          group.tutor = t
+          group.user = t
           group.save!
           t.groups << group
           counter += 1

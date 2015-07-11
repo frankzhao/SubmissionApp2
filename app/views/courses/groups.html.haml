@@ -6,16 +6,18 @@
     = @course.code + ": " + @course.name
 
 - if current_user.is_admin?
-  - if Group.all.empty?
+  - if @course.groups.empty?
     There are no groups.
   - else
     .panel-group
-      - for group in Group.all
+      - for group in @course.groups
         .panel.panel-default
           .panel-heading
             %span{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
               %h4.panel-title
                 #{group.name}
+              .light
+                = (group.user ? group.user.full_name : group.tutor.full_name) unless group.user.nil? && group.tutor.nil?
           .panel-collapse.collapse.in{id: "group" + group.id.to_s}
             .panel-body
               - if group.users.select{|u| u.type == "Student"}.empty?

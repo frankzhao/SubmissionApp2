@@ -18,15 +18,15 @@ class Course < ActiveRecord::Base
   end
 
   def students_to_csv
-    users_to_csv self.students
+    users_to_csv (self.students + User.select{|u| u.role["#{self.id}"] == "Student" unless u.role.nil?}).uniq
   end
 
   def tutors_to_csv
-    users_to_csv self.tutors
+    users_to_csv (self.tutors + User.select{|u| u.role["#{self.id}"] == "Tutor" unless u.role.nil?}).uniq
   end
 
   def convenors_to_csv
-    users_to_csv self.convenors
+    users_to_csv (self.convenors + User.select{|u| u.role["#{self.id}"] == "Convenor" unless u.role.nil?}).uniq
   end
 
 end

@@ -47,7 +47,7 @@ RSpec.describe User, :type => :model do
     it "should not have additional privileges" do
       s = Student.first
       expect !s.is_admin_or_convenor?
-      expect !s.is_tutor?
+      expect !s.is_tutor? && !s.role.to_h.keys.include?("Tutor")
       expect !s.is_staff?
     end
     

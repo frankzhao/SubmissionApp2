@@ -5,10 +5,14 @@
       = @group.course.code + ": " + @group.name
       .menu-icon-container.hidden
         %span.glyphicon.glyphicon-tasks.menu-icon
-      - if @group.tutor
-        %span.uid_heading
-          Tutor:
-          = link_to @group.tutor.full_name, user_path(@group.tutor)
+    - if @group.tutor
+      %span.uid_heading
+        Tutor:
+        = link_to @group.tutor.full_name, user_path(@group.tutor)
+    - elsif @group.user
+      %span.uid_heading
+        Tutor:
+        = link_to @group.user.full_name, user_path(@group.user)
     %h3 Enrolments
     %table.table.table-hover.table-striped
       - if @group.students.empty?

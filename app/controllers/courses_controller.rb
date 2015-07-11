@@ -100,7 +100,7 @@ class CoursesController < ApplicationController
   
   def groups
     @course = Course.find(params[:id])
-    respond_with @course
+    @groups = @course.groups
   end
   
   private
@@ -113,12 +113,20 @@ class CoursesController < ApplicationController
         # Remove spaces
         s.gsub!(/\s+/, "")
         student_list << s
+        
+        user = User.find_by_uid(s)
+        if user
+          hash = {}
+          hash["#{c.id}"] = "Student"
+          user.update_attributes(role: user.role.to_h.merge(hash))
+          user.courses << c unless user.courses.include?(c)
+        end
 
         if !Student.find_by_uid(s).nil?
           s = Student.find_by_uid(s)
           if !c.students.include?(s)
             c.students << s
-            s.courses << c
+            s.courses << c unless s.courses.include?(c)
             counter += 1
           end
         else
@@ -158,12 +166,20 @@ class CoursesController < ApplicationController
       tutors.each do |t|
         # Remove spaces
         t.gsub!(/\s+/, "")
+        
+        user = User.find_by_uid(t)
+        if user
+          hash = {}
+          hash["#{c.id}"] = "Tutor"
+          user.update_attributes(role: user.role.to_h.merge(hash))
+          user.courses << c unless user.courses.include?(c)
+        end
 
         if !Tutor.find_by_uid(t).nil?
           t = Tutor.find_by_uid(t)
           if !c.tutors.include?(t)
             c.tutors << t
-            t.courses << c
+            t.courses << c unless t.courses.include?(c)
             counter += 1
           end
         else
@@ -189,21 +205,29 @@ class CoursesController < ApplicationController
         # Remove spaces
         conv_id.gsub!(/\s+/, "")
 
-        conv = Convenor.find_by_uid(conv_id)
-        if conv
-          if !c.convenors.include?(conv)
-            c.convenors << conv
-            counter += 1
-          end
+        user = User.find_by_uid(conv_id)
+        if user
+          hash = {}
+          hash["#{c.id}"] = "Convenor"
+          user.update_attributes(role: user.role.to_h.merge(hash))
+          user.courses << c unless user.courses.include?(c)
         else
-          # Look up user details
-          ldap_user = AnuLdap.find_by_uni_id(conv_id)
-          if ldap_user
-            conv = Convenor.create(:uid => conv_id, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
-            c.convenors << conv
-            counter += 1
+          conv = Convenor.find_by_uid(conv_id)
+          if conv
+            if !c.convenors.include?(conv)
+              c.convenors << conv
+              counter += 1
+            end
           else
-            flash_message :error, "The convenor <#{conv_id}> could not be found on the LDAP server."
+            # Look up user details
+            ldap_user = AnuLdap.find_by_uni_id(conv_id)
+            if ldap_user
+              conv = Convenor.create(:uid => conv_id, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+              c.convenors << conv unless c.convenors.include?(conv)
+              counter += 1
+            else
+              flash_message :error, "The convenor <#{conv_id}> could not be found on the LDAP server."
+            end
           end
         end
       end

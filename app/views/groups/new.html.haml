@@ -19,7 +19,7 @@
       .input-group
         .controls
           %textarea#tutors.form-control{:cols => "50", :name => "tutors", :placeholder => "Paste newline seperated tutor IDs and group names. e.g: uxxxxxxx, Tuesday 9-11", :rows => "10"}
-            = render 'group_users', groups: @course.groups
+            = render 'group_users', f: f, groups: @course.groups
  
       .input-group
         .controls

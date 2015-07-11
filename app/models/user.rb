@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :notifications
   has_many :extensions
   has_and_belongs_to_many :assignments
+  
+  serialize :role
 
   validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
@@ -43,20 +45,24 @@ class User < ActiveRecord::Base
     self.type == "Admin"
   end
   
-  def is_tutor?
-    self.type == "Tutor"
+  def is_tutor?(course)
+    self.type == "Tutor" || self.role.to_h[course.id] == "Tutor"
   end
 
   def is_convenor?
-    self.type == "Convenor"
+    self.type == "Convenor" || self.role.to_h.values.include?("Convenor")
+  end
+  
+  def is_convenor_of_course?(course)
+    self.type == "Convenor" || self.role.to_h[course.id] == "Convenor"
   end
 
   def is_admin_or_convenor?
-    self.type == "Admin" or self.type == "Convenor"
+    self.type == "Admin" or self.is_convenor?
   end
 
   def is_staff?
-    self.is_admin_or_convenor? or self.type == "Tutor"
+    (self.is_admin_or_convenor? or self.type == "Tutor")  || self.role.to_h.values.include?("Tutor")
   end
   
   def is_owner_or_staff?(resource)

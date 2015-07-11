@@ -1,5 +1,8 @@
 <%- for group in groups %>
   <%- unless group.tutor.nil? %>
-<%= "#{group.tutor.uid}, #{group.name}" %>
+    <%= "#{group.tutor.uid}, #{group.name}" %>
+  <% end %>
+  <%- unless group.user.nil? %>
+    <%= "#{group.user.uid}, #{group.name}" %>
   <% end %>
 <% end %>
