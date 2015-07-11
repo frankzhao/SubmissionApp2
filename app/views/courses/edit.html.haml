@@ -26,8 +26,8 @@
       %label.control-label{:for => "students"} Students
       .input-group
         .controls
-          %textarea#students.form-control{:name => "students", :placeholder => "Paste newline seperated student IDs, or upload a CSV below. e.g: uxxxxxxx", :rows => "8"}= @course.students_to_csv
-          = f.file_field :csv
+          %textarea#students.form-control{:name => "students", :placeholder => "Paste newline seperated student IDs below. e.g: uxxxxxxx", :rows => "8"}= @course.students_to_csv
+          / = f.file_field :csv
       %label.control-label{:for => "tutors"} Tutors
       .input-group
         .controls
