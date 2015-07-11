@@ -160,7 +160,12 @@ class CoursesController < ApplicationController
       
       flash_message :success, "Sucessfully enrolled #{counter} students." unless counter == 0
     end
-
+    
+    c.tutors = []
+    old_tutors = User.select{|u| u.role["#{c.id}"] == "Tutor" unless u.role.nil?}.uniq
+    for tutor in old_tutors
+      tutor.update_attributes(role: tutor.role.delete(c.id))
+    end
     if not tutors.empty?
       counter = 0
       tutors.each do |t|
@@ -198,12 +203,12 @@ class CoursesController < ApplicationController
       flash_message :success, "Sucessfully enrolled #{counter} tutors." unless counter == 0
     end
     
+    old_convenors = User.select{|u| u.role["#{c.id}"] == "Convenor" unless u.role.nil?}.uniq
+    for convenor in old_convenors
+      convenor.update_attributes(role: convenor.role.delete(c.id))
+    end
+    c.convenors = []
     if not convenors.empty?
-      old_convenors = User.select{|u| u.role["#{c.id}"] == "Convenor" unless u.role.nil?}.uniq
-      for convenor in old_convenors
-        convenor.update_attributes(role: convenor.role.delete(c.id))
-      end
-      c.convenors = []
       counter = 0
       convenors.each do |conv_id|
         # Remove spaces
