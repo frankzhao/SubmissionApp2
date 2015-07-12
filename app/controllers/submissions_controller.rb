@@ -97,11 +97,13 @@ class SubmissionsController < ApplicationController
       end
     end
     
-    @plaintext = Pygments.highlight(@submission.plaintext, lexer: (@assignment.lang.nil? ? "Haskell" : @assignment.lang.downcase),
-      options: {linenos: 'table'})
+    if @submission.kind == "plaintext"
+      @plaintext = Pygments.highlight(@submission.plaintext, lexer: (@assignment.lang.nil? ? "Haskell" : @assignment.lang.downcase),
+        options: {linenos: 'table'})
+    end
     @comment = Comment.new
     
-    if @submission.test_result.nil?
+    if (@submission.kind == "plaintext") && @submission.test_result.nil?
       render
       Thread.new do
         count = 0
@@ -194,13 +196,15 @@ class SubmissionsController < ApplicationController
   def check_result
     Submission.uncached do
       @submission = Submission.find(params[:id])
-      if @submission.test_result.nil?
+      if (@submission.kind == "plaintext") && @submission.test_result.nil?
         count = 0
         while @submission.test_result.nil? && count < 100
           @submission = Submission.find(@submission.id)
           count = count + 1
-          sleep(1)
+          sleep(2)
         end
+        ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
+        ActiveRecord::Base.clear_active_connections!
         render :json => @submission.test_result.to_json, :status => 200
       else
         render :json => {result: false}, :status => 200
