@@ -134,6 +134,11 @@ input[type="checkbox"] {
   }
 }
 
+.btn a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* Add some more aliases to bootstrap styles for devise */
 .alert-notice {
   margin-bottom: 2px !important;

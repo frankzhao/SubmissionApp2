@@ -100,12 +100,20 @@ class Submission < ActiveRecord::Base
     hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
     system "mkdir -p /tmp/pdf/#{hash}"
     count = 0
+    
+    regex = self.assignment.zip_regex
+    if regex.nil?
+      regex = Regexp.new("^$")
+    else
+      regex = Regexp.new(regex)
+    end
+    
     if self.kind == "zipfile"
       puts "Creating PDF of ZIP submission"
       begin
         Zip::File.open(self.zipfile_path) do |zipfile|
           for file in zipfile.sort
-            if (file.name =~ /\/\./ || file.name =~ /MACOSX/) || file.name !~ Regexp.new(self.assignment.pdf_regex)
+            if (file.name =~ /\/\./ || file.name =~ /MACOSX/) || file.name !~ Regexp.new(regex)
               puts "Skipping: " + file.name
               next
             end

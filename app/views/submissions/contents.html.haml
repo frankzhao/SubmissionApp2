@@ -1,0 +1,57 @@
+- if current_user.is_owner_or_staff?(@submission)
+  = title "#{@submission.user.full_name} - #{@assignment.name}"
+- else
+  = title "Peer review - #{@assignment.name}"
+= content_for :head do
+  = javascript_include_tag 'submissions/submissions'
+  #submission-id.hidden
+    = @submission.id
+.row
+  .col-md-9#content
+    %h1.page-header
+      = "Submission for " + @assignment.name
+      %span.btn.btn-xs.btn-default
+        = link_to "View submission", submission_path(@submission)
+      .menu-icon-container.hidden
+        %span.glyphicon.glyphicon-tasks.menu-icon
+    %p
+      - if @submission.finalised
+        .alert.alert-success{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-check
+          This submission has been finalised.
+      - else
+        .alert.alert-warning{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-warning-sign
+          This submission is not finalised.
+
+      - if is_late_with_extension(@submission, @assignment)
+        .alert.alert-warning{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-warning-sign
+          Your submission is late, but you have an extension granted until #{@assignment.latest_extension_for(@submission.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+      - elsif is_late(@submission, @assignment) || is_late_without_extension(@submission, @assignment)
+        .alert.alert-danger{:style => "font-weight: 600"}
+          %span.glyphicon.glyphicon-warning-sign
+          Your submission is late. Unless you have been granted an exception your assignment may not be marked.
+    
+    .meta
+      - if current_user.is_owner_or_staff?(@submission)
+        = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
+        = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
+        .actions
+          %a{:href => "/submissions/#{@submission.id}/finalise"}
+            %span.glyphicon.glyphicon-check
+        = link_to submission_path(@submission) + "/download" do
+          %span.glyphicon.glyphicon-floppy-save
+    
+    .panel-group
+      - @contents.keys.each_with_index do |filename, i|
+        .panel.panel-default
+          .panel-heading
+            %span{"data-toggle" => "collapse", "data-target" => "#file" + i.to_s, href: "#file" + i.to_s}
+              .panel-title
+                = filename
+          .panel-collapse.collapse{id: "file" + i.to_s}
+            .panel-body
+              = (preserve @contents[filename]).html_safe
+
+  = render 'sidebar_show'

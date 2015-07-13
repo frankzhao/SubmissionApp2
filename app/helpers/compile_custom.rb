@@ -32,15 +32,4 @@ module CompileCustom
     # Clean up files
     `rm -rf #{folder} 2>/dev/null`
   end
-  
-  def unzip (file, dest)
-    Zip::File.open(file) do |zip_file|
-     zip_file.each do |f|
-       path = File.join(dest, f.name)
-       FileUtils.mkdir_p(File.dirname(path))
-       zip_file.extract(f, path) unless File.exist?(path)
-     end
-   end
-   
-  end
 end

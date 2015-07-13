@@ -220,6 +220,32 @@ class SubmissionsController < ApplicationController
     end
   end
   
+  def contents
+    @submission = Submission.find(params[:id])
+    @assignment = @submission.assignment
+    
+    if @assignment.kind != "zip"
+      flash_message :error, "Submission type is incompatible with viewer."
+      redirect_to :back
+      return
+    end
+    regex = @assignment.zip_regex
+    if regex.nil?
+      regex = Regexp.new("^$")
+    else
+      regex = Regexp.new(regex)
+    end
+    @files = unzip_to_hash(@submission.zipfile_path, regex)
+    @contents = {}
+    for filename in @files.keys
+      @contents[filename] = Pygments.highlight(
+        @files[filename].force_encoding("UTF-8"),
+        lexer: (@assignment.lang.nil? ? "Haskell" : @assignment.lang.downcase),
+        options: {linenos: 'table'}
+      )
+    end
+  end
+  
   private
   
   def submission_params

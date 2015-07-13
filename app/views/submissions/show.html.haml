@@ -51,7 +51,10 @@
           %span.glyphicon.glyphicon-warning-sign
           No files were found in your archive.
       - else
-        %h3 Submitted files
+        %h3
+          Submitted files
+          %span.btn.btn-xs.btn-default
+            = link_to "View details", submission_contents_path(@submission)
         %p If these files do not look correct, please try re-zipping and creating a new submission. Files marked with a red cross should be removed before finalising your submission.
         %ul.list-group
           - for file in @contents.sort

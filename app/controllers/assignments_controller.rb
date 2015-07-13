@@ -40,7 +40,9 @@ class AssignmentsController < ApplicationController
         :disable_compilation => params[:assignment][:disable_compilation],
         :lang => params[:assignment][:lang],
         :custom_compilation => params[:assignment][:custom_compilation],
-        :custom_command => params[:assignment][:custom_command]
+        :custom_command => params[:assignment][:custom_command],
+        :pdf_regex => params[:assignment][:pdf_regex],
+        :zip_regex => params[:assignment][:zip_regex]
       )
       # Add assignment to the course
       c.assignments << assignment
@@ -104,7 +106,9 @@ class AssignmentsController < ApplicationController
       :disable_compilation => params[:assignment][:disable_compilation],
       :lang => params[:assignment][:lang],
       :custom_compilation => params[:assignment][:custom_compilation],
-      :custom_command => params[:assignment][:custom_command]
+      :custom_command => params[:assignment][:custom_command],
+      :pdf_regex => params[:assignment][:pdf_regex],
+      :zip_regex => params[:assignment][:zip_regex]
     )
     
     redirect_to assignment_path(@assignment)
