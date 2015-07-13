@@ -101,7 +101,7 @@ class Submission < ActiveRecord::Base
     system "mkdir -p /tmp/pdf/#{hash}"
     count = 0
     
-    regex = self.assignment.zip_regex
+    regex = self.assignment.pdf_regex
     if regex.nil?
       regex = Regexp.new("^$")
     else
@@ -113,7 +113,7 @@ class Submission < ActiveRecord::Base
       begin
         Zip::File.open(self.zipfile_path) do |zipfile|
           for file in zipfile.sort
-            if (file.name =~ /\/\./ || file.name =~ /MACOSX/) || file.name !~ Regexp.new(regex)
+            if (file.name =~ /\/\./ || file.name =~ /MACOSX|DS_Store/) || file.name =~ Regexp.new(regex)
               puts "Skipping: " + file.name
               next
             end
