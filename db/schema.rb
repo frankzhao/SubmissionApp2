@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150711061110) do
+ActiveRecord::Schema.define(version: 20150713114022) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -40,6 +40,10 @@ ActiveRecord::Schema.define(version: 20150711061110) do
     t.string   "copy_path"
     t.boolean  "disable_compilation", default: false
     t.string   "lang"
+    t.string   "pdf_regex"
+    t.string   "zip_regex"
+    t.string   "custom_command"
+    t.boolean  "custom_compilation",  default: false
   end
 
   create_table "assignments_users", force: true do |t|

@@ -24,6 +24,17 @@
               = f.label :kind, "Submission type"
               .controls
                 = f.select :kind, Submission::SUPPORTED_TYPES, {}, class: "form-control", disabled: true
+              .controls
+                = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
+                %span.small.light
+                  (Options: $filename)
+                = f.check_box :custom_compilation
+              - if @assignment.custom_compilation
+                #custom-command-field.controls
+                  = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
+              - else
+                #custom-command-field.controls.hidden
+                  = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
             %label.control-label{:for => "text"} Submission instructions
             .input-group
               .controls

@@ -63,9 +63,9 @@
                   %span.glyphicon.glyphicon-ok.good
                 = file
           
-    - unless @assignment.kind == 'zip' || @assignment.disable_compilation
+    - unless @assignment.disable_compilation || !@assignment.custom_compilation
       %h3 Results
-      .results
+      .results.well
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else

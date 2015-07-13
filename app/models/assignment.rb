@@ -7,7 +7,7 @@ class Assignment < ActiveRecord::Base
   validates :name, presence: true
   validates :lang, presence: true
   
-  SUPPORTED_LANGUAGES = ["Haskell", "Ada", "Chapel"]
+  SUPPORTED_LANGUAGES = ["Haskell", "Ada", "Chapel", "Custom"]
   
   def latest_extension_for(user)
     self.assignment_extensions.select{|x| x.user == user}.last

@@ -51,12 +51,16 @@ class SubmissionsController < ApplicationController
       
       # Run tests
       unless @assignment.disable_compilation
-        if @assignment.lang == "Haskell" || @assignment.lang.nil?
-          out = @submission.compile_haskell
-        elsif @assignment.lang == "Ada"
-          out = @submission.compile_ada
-        elsif @assignment.lang == "Chapel"
-          out = @submission.compile_chapel
+        if @assignment.custom_compilation
+          out = @submission.compile_custom
+        else
+          if @assignment.lang == "Haskell" || @assignment.lang.nil?
+            out = @submission.compile_haskell
+          elsif @assignment.lang == "Ada"
+            out = @submission.compile_ada
+          elsif @assignment.lang == "Chapel"
+            out = @submission.compile_chapel
+          end
         end
       end
       

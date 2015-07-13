@@ -26,15 +26,23 @@
               = f.label :kind, "Submission type"
               .controls
                 = f.select :kind, Submission::SUPPORTED_TYPES, {}, class: "form-control"
+              .controls
+                = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
+                %span.small.light
+                  (Options: $filename)
+                = f.check_box :custom_compilation
+                #custom-command-field.controls.hidden
+                  = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
 
             %label.control-label{:for => "text"} Submission instructions
             .input-group
               .controls
                 %textarea#text.form-control{:name => "text", :rows => "8"}
-            %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
-            .input-group
-              .controls
-                %textarea#text.form-control{:name => "tests", :rows => "8"}
+            #compilation-tests
+              %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
+              .input-group
+                .controls
+                  %textarea#text.form-control{:name => "tests", :rows => "8"}
             .input-group
               .controls
                 = f.label :peer_review_enabled, "Enable peer review", style: "padding: 0 !important"

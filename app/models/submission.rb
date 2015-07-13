@@ -88,6 +88,12 @@ class Submission < ActiveRecord::Base
   end
   handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
   
+  def compile_custom
+    tests = nil
+    CompileCustom.run(self, tests)
+  end
+  handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
+  
   # PDF and other output formats ---
   
   def make_pdf

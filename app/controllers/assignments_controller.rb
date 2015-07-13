@@ -29,11 +29,19 @@ class AssignmentsController < ApplicationController
 
       # Parse due date
       date_due = Chronic.parse(date_due, :endian_precedence => [:little, :median])
-      assignment = Assignment.create(:name => name, :due_date => date_due,
-                                   :description => text, :kind => params[:assignment][:kind],
-                                   :tests => tests, :peer_review_enabled => peer_review, :copy_path => copy_path,
-                                   :disable_compilation => params[:assignment][:disable_compilation],
-                                   :lang => params[:assignment][:lang])
+      assignment = Assignment.create(
+        :name => name,
+        :due_date => date_due,
+        :description => text,
+        :kind => params[:assignment][:kind],
+        :tests => tests,
+        :peer_review_enabled => peer_review,
+        :copy_path => copy_path,
+        :disable_compilation => params[:assignment][:disable_compilation],
+        :lang => params[:assignment][:lang],
+        :custom_compilation => params[:assignment][:custom_compilation],
+        :custom_command => params[:assignment][:custom_command]
+      )
       # Add assignment to the course
       c.assignments << assignment
       
@@ -94,7 +102,9 @@ class AssignmentsController < ApplicationController
       :peer_review_enabled => params[:assignment][:peer_review_enabled],
       :copy_path => params[:assignment][:copy_path],
       :disable_compilation => params[:assignment][:disable_compilation],
-      :lang => params[:assignment][:lang]
+      :lang => params[:assignment][:lang],
+      :custom_compilation => params[:assignment][:custom_compilation],
+      :custom_command => params[:assignment][:custom_command]
     )
     
     redirect_to assignment_path(@assignment)
