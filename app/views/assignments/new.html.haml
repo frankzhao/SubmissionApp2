@@ -25,17 +25,11 @@
                 = f.select :lang, Assignment::SUPPORTED_LANGUAGES, {}, class: "form-control"
               = f.label :kind, "Submission type"
               .controls
-              = f.select :kind, Submission::SUPPORTED_TYPES, {}, class: "form-control"
-            .input-group
-              - if @assignment.kind == "zip"
+                = f.select :kind, Submission::SUPPORTED_TYPES, {}, class: "form-control"
+              .input-group
                 = f.label :zip_regex, "Files to ignore in ZIP submission preview"
                 .controls
                   = f.text_field :zip_regex, placeholder: "Example: \\.o|\\.png", class: "form-control"
-              - else
-                = f.label :zip_regex, "Files to ignore in ZIP submission preview", class: "hidden"
-                .controls.hidden
-                  = f.text_field :zip_regex, placeholder: "Example: \\.o|\\.png", class: "form-control"
-            .input-group
               .controls
                 = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
                 %span.small.light
