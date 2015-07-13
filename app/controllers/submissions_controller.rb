@@ -71,6 +71,10 @@ class SubmissionsController < ApplicationController
       File.open(zip_path, 'wb') do |file|
         file.write(uploaded_zip.read)
       end
+      
+      if @assignment.custom_compilation
+        out = @submission.compile_custom
+      end
     end
     
     # Copy if path is specified

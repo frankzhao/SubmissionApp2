@@ -27,7 +27,7 @@
               .controls
                 = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
                 %span.small.light
-                  (Options: $filename)
+                  (Options: $filename, $folder, $filepath)
                 = f.check_box :custom_compilation
               - if @assignment.custom_compilation
                 #custom-command-field.controls
@@ -40,11 +40,12 @@
               .controls
                 %textarea#text.form-control{:name => "text", :rows => "8"}
                   = @assignment.description
-            %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
-            .input-group
-              .controls
-                %textarea#text.form-control{:name => "tests", :rows => "8"}
-                  = @assignment.tests
+            = if !@assignment.custom_command
+              %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
+              .input-group
+                .controls
+                  %textarea#text.form-control{:name => "tests", :rows => "8"}
+                    = @assignment.tests
             .input-group
               .controls
                 = f.label :peer_review_enabled, "Enable peer review", style: "padding: 0 !important"
