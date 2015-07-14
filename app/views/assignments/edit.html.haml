@@ -49,8 +49,9 @@
               .controls
                 %textarea#text.form-control{:name => "text", :rows => "8"}
                   = @assignment.description
-            = if !@assignment.custom_command
-              %label.control-label{:for => "tests"} Compilation tests (separate each boolean expression with a newline)
+            - if !@assignment.custom_command
+              %label.control-label{:for => "tests"}
+                Compilation tests (separate each boolean expression with a newline)
               .input-group
                 .controls
                   %textarea#text.form-control{:name => "tests", :rows => "8"}
