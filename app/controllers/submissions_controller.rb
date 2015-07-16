@@ -231,7 +231,7 @@ class SubmissionsController < ApplicationController
     end
     regex = @assignment.zip_regex
     if regex.nil?
-      regex = Regexp.new("^$")
+      regex = Regexp.new("$^")
     else
       regex = Regexp.new(regex)
     end
