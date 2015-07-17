@@ -37,6 +37,8 @@
                 = f.check_box :custom_compilation
                 #custom-command-field.controls.hidden
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
+                .controls
+                  #custom-command-well.well.hidden
 
             %label.control-label{:for => "text"} Submission instructions
             .input-group

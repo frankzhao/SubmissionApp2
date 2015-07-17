@@ -41,6 +41,8 @@
               - if @assignment.custom_compilation
                 #custom-command-field.controls
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
+                .controls
+                  #custom-command-well.well.hidden
               - else
                 #custom-command-field.controls.hidden
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"

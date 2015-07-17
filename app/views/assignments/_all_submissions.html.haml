@@ -48,4 +48,4 @@
                     Assigned
             - if @assignment.kind == "plaintext"
               %td.hidden
-                = @submission_hash[s.id].first.plaintext
+                = @submission_hash[s.id].first.plaintext.force_encoding("ISO-8859-1")
