@@ -94,10 +94,20 @@ class SubmissionsController < ApplicationController
     if @assignment.kind == 'zip'
       # Retrieve file list
       @contents = []
+
+      regex = @assignment.zip_regex
+      if regex.to_s.empty?
+        regex = Regexp.new("$^")
+      else
+        regex = Regexp.new(regex)
+      end
+
       begin
         Zip::File.open(@submission.zipfile_path) do |zipfile|
           for file in zipfile
-            @contents << file.name
+            if (file.name !~ /MACOSX|DS_Store/) && (file.name !~ regex)
+              @contents << file.name
+            end
           end
         end
       rescue
