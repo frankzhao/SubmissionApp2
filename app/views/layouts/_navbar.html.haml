@@ -1,0 +1,95 @@
+%nav.navbar.navbar-inverse.navbar-fixed-top{:role => "navigation"}
+  .navbar-header
+    - if current_user
+      %button.navbar-toggle{"data-target" => "#nav", "data-toggle" => "collapse", :type => "button"} ☰
+    %a.navbar-brand{:href => "/"} CECS Submissions
+  - if current_user
+    #nav.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            Courses
+            %b.caret
+          %ul.dropdown-menu.scrollable-menu
+            %li= link_to 'Course index', courses_url
+            %li.divider
+            - if current_user.is_admin?
+              - Course.all.each do |course|
+                %li= link_to course.code, course_path(course)
+            - else
+              - current_user.courses.each do |course|
+                %li= link_to course.code, course_path(course)
+        %li
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            Assignments
+            %b.caret
+          - unless current_user.is_admin_or_convenor?
+            - if current_user.assignments.empty?
+              %ul.dropdown-menu
+                %li
+                  %a You have no assignments.
+            - else
+              %ul.dropdown-menu.scrollable-menu
+                - current_user.assignments.uniq.each do |assignment|
+                  %li= link_to assignment.name, assignment_path(assignment)
+          - if current_user.is_admin?
+            %ul.dropdown-menu.scrollable-menu
+              - Assignment.all.each do |a|
+                %li= link_to a.name, assignment_path(a)
+          - if current_user.is_convenor?
+            %ul.dropdown-menu.scrollable-menu
+              - for course in Course.all.select{|c| c.convenors.include?(current_user)}
+                - for a in course.assignments
+                  %li= link_to a.name, assignment_path(a)
+                %li.divider
+        - unless !current_user.is_staff? || current_user.is_admin_or_convenor?
+          - unless current_user.groups.empty?
+            %li
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                Groups
+                %b.caret
+              %ul.dropdown-menu.scrollable-menu
+                - current_user.groups.each do |group|
+                  %li= link_to group.name, group_path(group)
+        - if current_user.is_convenor? && !current_user.courses.empty?
+          - unless current_user.courses.empty?
+            %li
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                Groups
+                %b.caret
+              %ul.dropdown-menu.scrollable-menu
+                - current_user.courses.each do |course|
+                  - course.groups.each do |group|
+                    %li= link_to group.name, group_path(group)
+                  %li.divider
+        - if current_user.is_admin?
+          %li
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Groups
+              %b.caret
+            %ul.dropdown-menu.scrollable-menu
+              - for c in Course.all
+                - if !c.groups.empty?
+                  %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                  - for group in c.groups.order(name: :asc)
+                    %li= link_to group.name, group_path(group)
+        / Add peer review here
+      %ul.nav.navbar-nav.navbar-right
+        - if current_user.is_admin?
+          %li
+            %a{:href => "/admin"} Admin Dashboard
+        %li
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            / <span class="glyphicon glyphicon-exclamation-sign"></span>
+            Notifications
+            %span#notification-badge.badge.hidden
+            %b.caret
+          %ul#notification-list.dropdown-menu.scrollable-menu
+        %li
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            = current_user.firstname.to_s + " " + current_user.surname.to_s
+            %b.caret
+          %ul.dropdown-menu
+            %li= link_to 'Profile', user_path(current_user)
+            %li.divider
+            %li= link_to "Log Out", destroy_user_session_path, :method => :delete

@@ -250,6 +250,15 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
+.groups-course-divider {
+//  border-top: 1px dashed #eee;
+  border-bottom: 1px dashed #eee;
+  font-weight: bold !important;
+  text-transform: uppercase;
+  font-size: 90%;
+  background-color: #00BFFF !important;
+}
+
 // Spinner
 .spinner {
   width: 40px;
