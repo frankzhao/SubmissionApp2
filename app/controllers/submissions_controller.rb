@@ -125,7 +125,7 @@ class SubmissionsController < ApplicationController
       render
       Thread.new do
         count = 0
-        while @submission.test_result.nil? && count < 100
+        while @submission.test_result.nil? && count < 15
           @submission = Submission.find(@submission.id)
           count = count + 1
           sleep(2)
@@ -216,7 +216,7 @@ class SubmissionsController < ApplicationController
       @submission = Submission.find(params[:id])
       if (@submission.kind == "plaintext") && @submission.test_result.nil?
         count = 0
-        while @submission.test_result.nil? && count < 100
+        while @submission.test_result.nil? && count < 15
           @submission = Submission.find(@submission.id)
           count = count + 1
           sleep(2)

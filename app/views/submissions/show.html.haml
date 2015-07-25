@@ -65,7 +65,7 @@
                 %span.glyphicon.glyphicon-ok.good
               = file
           
-    - unless @assignment.disable_compilation || !@assignment.custom_compilation
+    - unless @assignment.disable_compilation
       %h3 Results
       .results.well
         - if @submission.test_result

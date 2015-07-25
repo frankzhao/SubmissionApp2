@@ -3,7 +3,14 @@ SubmissionApp2
 
 The second iteration of the original [SubmissionApp](https://github.com/bshlgrs/SubmissionApp). This application provides a system of accepting submissions from students. Designed for Haskell plaintext submissions or archive files, but can be extended to other types. Currently plaintext submission compilation and unit testing is implemented for Haskell, Ada and Chapel.
 
+## Features
+
+### Statistics
+Charts and statistics for assessment aloows you to view class participation at a glance. Data is also available for individual class groups.
+
 ![Screenshot of data visualisation options](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/charts.png)
+
+
 
 Setup
 ===
@@ -74,6 +81,9 @@ Example:
 ```
 
 This will execute `./filename --var=param` and check that the program output is equal to "Hello World!"
+
+## Custom
+There is also a custom compilation module that allows specification of a custom compilation command. This is particularly powerful as it allows for solutions such as remote execution and hooks.
 
 Notes
 ===
