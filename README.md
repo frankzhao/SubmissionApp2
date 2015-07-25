@@ -5,12 +5,23 @@ The second iteration of the original [SubmissionApp](https://github.com/bshlgrs/
 
 ## Features
 
-### Statistics
-Charts and statistics for assessment aloows you to view class participation at a glance. Data is also available for individual class groups.
+#### Statistics
+Charts and statistics for assessment allows you to view class participation at a glance. Data is also available for individual class groups.
 
 ![Screenshot of data visualisation options](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/charts.png)
 
+#### Compilation
+Automatic compilation of submissions allows for instant feedback and easier marking.
 
+![Screenshot of compilation example](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/compilation.png)
+
+#### Syntax Highlighting
+Built in syntax highlighting for plaintext submissions.
+
+![Screenshot of syntax highlighting](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/sytax-highlight.png)
+
+#### File Export and Preview
+Submissions can be exported to PDF files, or zip archives, both configurable with file blacklists. Ability to combine zip archives by groups is also included. Online previews of files contained in zip submissions is also possible.
 
 Setup
 ===
