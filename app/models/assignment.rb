@@ -20,4 +20,8 @@ class Assignment < ActiveRecord::Base
   def peer_review_submissions_for(user)
     Submission.where(peer_review_user_id: user.id, assignment_id: self.id)
   end
+  
+  def students
+    (read_attribute(:students) + User.all.select{|u| u.role.to_h[@course.id.to_s] == "Student"}).uniq
+  end
 end

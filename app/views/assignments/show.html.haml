@@ -16,7 +16,7 @@
     %p.italic
       Language: #{@assignment.lang}
     %p= @assignment.description
-    
+
     - if current_user.is_staff_for_course?(@course) && !@all_submissions.empty?
       - if @all_submissions.group("strftime('%Y%m%d %H', created_at)").length > 1
         .spinner#chart-spinner
@@ -40,7 +40,7 @@
                 Comments
               %canvas#comments-chart{width: "150", height: "150"}
               .legend#comments-chart-legend
-      
+
       - if !@course.groups.empty?
         %h3 Submissions by group
         .spinner#groups-spinner
