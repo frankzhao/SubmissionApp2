@@ -58,11 +58,15 @@ module AnuLdap
   # Find all ANU LDAP entries with a given key-value pair.
   def self.find_by(key_name, key_value)
     filter = Net::LDAP::Filter.eq(key_name, key_value)
-
-    entries = get_new_ldap().search(:base       => "ou=people,o=anu.edu.au",
-                                    :filter     => filter,
-                                    :attributes => ["uid", "mail",
-                                                    "givenName", "sn", "cn"])
+    
+    begin
+      entries = get_new_ldap().search(:base       => "ou=people,o=anu.edu.au",
+                                      :filter     => filter,
+                                      :attributes => ["uid", "mail",
+                                                      "givenName", "sn", "cn"])
+    rescue
+      entries = []
+    end
 
     entries.map { |e| make_user_hash(e) }
   end
