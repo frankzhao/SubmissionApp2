@@ -33,7 +33,7 @@
               .controls
                 = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
                 %span.small.light
-                  (Options: $filename, $folder, $filepath)
+                  (Options: $filename, $folder, $filepath, $uid)
                 = f.check_box :custom_compilation
                 #custom-command-field.controls.hidden
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"

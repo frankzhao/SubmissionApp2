@@ -36,7 +36,7 @@
               .controls
                 = f.label :custom_compilation, "Use custom compilation", style: "padding: 0 !important"
                 %span.small.light
-                  (Options: $filename, $folder, $filepath)
+                  (Options: $filename, $folder, $filepath, $uid)
                 = f.check_box :custom_compilation
               - if @assignment.custom_compilation
                 #custom-command-field.controls
