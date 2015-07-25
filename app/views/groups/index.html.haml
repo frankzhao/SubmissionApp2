@@ -15,7 +15,7 @@
             %th ID
             %th Name
             %th Role
-          - for u in group.users
+          - for u in group.get_student_roles
             %tr
               %td= link_to u.uid, user_path(u)
               %td= link_to u.firstname + " " + u.surname, user_path(u)

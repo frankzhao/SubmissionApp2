@@ -48,14 +48,14 @@
             %p.small Tutor: #{group.tutor.full_name}
         .panel-collapse.collapse.in{id: "group" + group.id.to_s}
           .panel-body
-            - if group.students.select.empty?
+            - if group.get_student_roles.empty?
               This group currently has no students.
             - else
               %table.table.table-hover.table-striped
                 %tr
                   %th Name
                   %th Student ID
-                - for student in group.students
+                - for student in group.get_student_roles
                   %tr
                     %td
                       = link_to student.full_name, user_path(student)

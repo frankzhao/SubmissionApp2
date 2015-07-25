@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   end
 
   def students_to_csv
-    users_to_csv (self.students + User.select{|u| u.role["#{self.id}"] == "Student" unless u.role.nil?}).uniq
+    users_to_csv self.get_student_roles
   end
 
   def tutors_to_csv
@@ -27,6 +27,10 @@ class Course < ActiveRecord::Base
 
   def convenors_to_csv
     users_to_csv (self.convenors + User.select{|u| u.role["#{self.id}"] == "Convenor" unless u.role.nil?}).uniq
+  end
+  
+  def get_student_roles
+    (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}).uniq
   end
 
 end

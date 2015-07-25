@@ -22,6 +22,6 @@ class Assignment < ActiveRecord::Base
   end
   
   def students
-    (read_attribute(:students) + User.all.select{|u| u.role.to_h[@course.id.to_s] == "Student"}).uniq
+    (read_attribute(:students) + User.all.select{|u| u.role.to_h[self.course.id.to_s] == "Student"}).uniq
   end
 end

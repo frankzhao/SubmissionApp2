@@ -66,7 +66,7 @@ class CoursesController < ApplicationController
   def show
     if params[:id] && Course.find_by_id(params[:id])
       @course = Course.find_by_id(params[:id])
-      @all_students = @course.students
+      @all_students = @course.get_student_roles
       @population = @all_students.count
       @all_assignments = @course.assignments
       @groups = @course.groups
