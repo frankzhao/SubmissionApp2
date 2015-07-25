@@ -40,9 +40,12 @@
                 = f.check_box :custom_compilation
               - if @assignment.custom_compilation
                 #custom-command-field.controls
+                  .controls
+                    = f.label :timeout, style: "padding: 0 !important; margin-right: 10px"
+                    = f.text_field :timeout, value: @assignment.timeout ? @assignment.timeout.to_s : 3, size: 4, style: "padding: 0 5px 0 5px"
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"
-                .controls
-                  #custom-command-well.well.hidden
+                  .controls
+                    #custom-command-well.well.hidden
               - else
                 #custom-command-field.controls.hidden
                   = f.text_field :custom_command, class: "form-control", placeholder: "Enter a custom compilation command here"

@@ -42,7 +42,8 @@ class AssignmentsController < ApplicationController
         :custom_compilation => params[:assignment][:custom_compilation],
         :custom_command => params[:assignment][:custom_command],
         :pdf_regex => params[:assignment][:pdf_regex],
-        :zip_regex => params[:assignment][:zip_regex]
+        :zip_regex => params[:assignment][:zip_regex],
+        :timeout => params[:assignment][:timeout]
       )
       # Add assignment to the course
       c.assignments << assignment
@@ -108,7 +109,8 @@ class AssignmentsController < ApplicationController
       :custom_compilation => params[:assignment][:custom_compilation],
       :custom_command => params[:assignment][:custom_command],
       :pdf_regex => params[:assignment][:pdf_regex],
-      :zip_regex => params[:assignment][:zip_regex]
+      :zip_regex => params[:assignment][:zip_regex],
+      :timeout => params[:assignment][:timeout]
     )
     
     redirect_to assignment_path(@assignment)
