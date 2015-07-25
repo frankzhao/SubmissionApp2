@@ -30,18 +30,25 @@
                   %a You have no assignments.
             - else
               %ul.dropdown-menu.scrollable-menu
-                - current_user.assignments.uniq.each do |assignment|
-                  %li= link_to assignment.name, assignment_path(assignment)
+                - for c in current_user.courses
+                  - if !c.assignments.empty?
+                    %li= link_to c.code, course_path(c), class: "nav-course-divider"
+                    - for a in c.assignments.order(created_at: :asc)
+                      %li= link_to a.name, assignment_path(a)
           - if current_user.is_admin?
             %ul.dropdown-menu.scrollable-menu
-              - Assignment.all.each do |a|
-                %li= link_to a.name, assignment_path(a)
+              - for c in Course.all
+                - if !c.assignments.empty?
+                  %li= link_to c.code, course_path(c), class: "nav-course-divider"
+                  - for a in c.assignments.order(created_at: :asc)
+                    %li= link_to a.name, assignment_path(a)
           - if current_user.is_convenor?
             %ul.dropdown-menu.scrollable-menu
-              - for course in Course.all.select{|c| c.convenors.include?(current_user)}
-                - for a in course.assignments
-                  %li= link_to a.name, assignment_path(a)
-                %li.divider
+              - for c in current_user.courses
+                - if !c.assignments.empty?
+                  %li= link_to c.code, course_path(c), class: "nav-course-divider"
+                  - for a in c.assignments.order(created_at: :asc)
+                    %li= link_to a.name, assignment_path(a)
         - unless !current_user.is_staff? || current_user.is_admin_or_convenor?
           - unless current_user.groups.empty?
             %li
@@ -51,7 +58,7 @@
               %ul.dropdown-menu.scrollable-menu
                 - for c in current_user.courses
                   - if !c.groups.empty?
-                    %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                    %li= link_to c.code, course_path(c), class: "nav-course-divider"
                     - for group in c.groups.order(name: :asc)
                       %li= link_to group.name, group_path(group)
         - if current_user.is_convenor? && !current_user.courses.empty?
@@ -63,7 +70,7 @@
               %ul.dropdown-menu.scrollable-menu
                 - for c in current_user.courses
                   - if !c.groups.empty?
-                    %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                    %li= link_to c.code, course_path(c), class: "nav-course-divider"
                     - for group in c.groups.order(name: :asc)
                       %li= link_to group.name, group_path(group)
         - if current_user.is_admin?
@@ -74,7 +81,7 @@
             %ul.dropdown-menu.scrollable-menu
               - for c in Course.all
                 - if !c.groups.empty?
-                  %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                  %li= link_to c.code, course_path(c), class: "nav-course-divider"
                   - for group in c.groups.order(name: :asc)
                     %li= link_to group.name, group_path(group)
         / Add peer review here
