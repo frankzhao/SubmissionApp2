@@ -18,7 +18,7 @@ Automatic compilation of submissions allows for instant feedback and easier mark
 #### Syntax Highlighting
 Built in syntax highlighting for plaintext submissions.
 
-![Screenshot of syntax highlighting](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/sytax-highlight.png)
+![Screenshot of syntax highlighting](https://github.com/frankzhao/SubmissionApp2/raw/master/doc/syntax-highlight.png)
 
 #### File Export and Preview
 Submissions can be exported to PDF files, or zip archives, both configurable with file blacklists. Ability to combine zip archives by groups is also included. Online previews of files contained in zip submissions is also possible.
