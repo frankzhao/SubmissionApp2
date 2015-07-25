@@ -23,6 +23,9 @@ Built in syntax highlighting for plaintext submissions.
 #### File Export and Preview
 Submissions can be exported to PDF files, or zip archives, both configurable with file blacklists. Ability to combine zip archives by groups is also included. Online previews of files contained in zip submissions is also possible.
 
+### ...and more!
+Additional features include full text search of submissions, group management, notifications, individial user profiles, user roles, assessment extensions, admin dashboard...
+
 Setup
 ===
 
