@@ -12,6 +12,7 @@ module CompileCustom
     command = submission.assignment.custom_command
     command = command.gsub("$folder","#{folder}")
     command = command.gsub("$filepath","#{folder}/#{hash}.sub")
+    command = command.gsub("$uid", submission.user.uid)
     
     if submission.kind == "plaintext"
       command = command.gsub("$filename","#{hash}.sub")
