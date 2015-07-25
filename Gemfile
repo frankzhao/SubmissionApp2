@@ -67,6 +67,9 @@ gem 'jquery-datatables-rails', '~> 3.3.0'
 # Syntax highlighting
 gem 'pygments.rb', :require => 'pygments'
 
+# Encoding
+gem 'unidecoder'    # TODO ISO-8859-1 compatibility
+
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'

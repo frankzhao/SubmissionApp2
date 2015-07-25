@@ -49,8 +49,11 @@
                 Groups
                 %b.caret
               %ul.dropdown-menu.scrollable-menu
-                - current_user.groups.each do |group|
-                  %li= link_to group.name, group_path(group)
+                - for c in current_user.courses
+                  - if !c.groups.empty?
+                    %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                    - for group in c.groups.order(name: :asc)
+                      %li= link_to group.name, group_path(group)
         - if current_user.is_convenor? && !current_user.courses.empty?
           - unless current_user.courses.empty?
             %li
@@ -58,10 +61,11 @@
                 Groups
                 %b.caret
               %ul.dropdown-menu.scrollable-menu
-                - current_user.courses.each do |course|
-                  - course.groups.each do |group|
-                    %li= link_to group.name, group_path(group)
-                  %li.divider
+                - for c in current_user.courses
+                  - if !c.groups.empty?
+                    %li= link_to c.code, course_path(c), class: "groups-course-divider"
+                    - for group in c.groups.order(name: :asc)
+                      %li= link_to group.name, group_path(group)
         - if current_user.is_admin?
           %li
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
