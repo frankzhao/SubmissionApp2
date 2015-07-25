@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--Info -->
+    <title><%= "SubmissionApp2 | Error 500" %></title>
+
+    <!--Styling -->
+    <style>
+      
+		html {
+			height: 100%;
+			background: #fff;
+		}
+		
+		body {
+			font-family: Helvetica, Arial, Sans-Serif;
+			font-size: 14px;
+		}
+    
+    h1 {
+      font-size: 150%;
+      color: #f00;
+      line-height: 1.5em;
+      margin-bottom: 0;
+      padding-bottom: 0.5em;
+    }
+    
+		.error_container {
+			display: block;
+			margin: auto;
+			margin: 4em auto 0 auto;
+			width: 45%;
+		}
+		
+		.error_container .error {
+			display: block;
+			text-align: center;
+		}
+		
+		.error_container .error img.alert {
+			display: block;
+			margin: 0 auto 25px auto;
+      border-radius: 50%;
+      box-shadow: 0 0px 5px rgba(50, 50, 50, 0.17);
+		}
+		
+		.error_container .message > * {
+			display: block;
+		}
+		
+		.error_container .message strong {
+			font-weight: bold;
+			font-size: 1.5em;
+			color: #666;
+			margin: 15px 0 0;
+		}
+
+		.error_container .message span {
+			margin: 5px auto 0;
+			font-size: 0.75em;
+			color: gray;
+		}
+    
+    .error_container .message {
+      border-top: solid 4px red;
+      border-radius: 3px 3px 0 0;
+      padding-bottom: 1em;
+      box-shadow: 0 0px 5px rgba(50, 50, 50, 0.17);
+    }
+		
+		.error_container .contact {
+			display: block;
+			text-align: center;
+			margin: 20px 0 0 0;
+		}
+		
+		.error_container .contact a {
+			display: inline-block;
+			margin: 0 -1px;
+			opacity: 0.4;
+			transition: opacity 0.15s ease;
+		}
+
+		.error_container .contact a img {
+			display: block;
+			width: 38px;
+			height: 38px;
+		}
+		
+		.error_container .contact a:hover {
+			opacity: 0.8;
+		}
+
+    </style>
+  </head>
+  
+  <!--Body -->
+  <body>
+    <div class="error_container">
+      <%= yield %>
+    </div>
+  </body>
+
+</html>

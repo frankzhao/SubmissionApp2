@@ -70,6 +70,9 @@ gem 'pygments.rb', :require => 'pygments'
 # Encoding
 gem 'unidecoder'    # TODO ISO-8859-1 compatibility
 
+# Exceptions
+gem 'exception_handler'
+
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'

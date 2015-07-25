@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713114022) do
+ActiveRecord::Schema.define(version: 20150725062754) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -109,6 +109,20 @@ ActiveRecord::Schema.define(version: 20150713114022) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+
+  create_table "errors", force: true do |t|
+    t.string   "usable_type"
+    t.integer  "usable_id"
+    t.text     "class_name"
+    t.text     "message"
+    t.text     "trace"
+    t.text     "target_url"
+    t.text     "referer_url"
+    t.text     "params"
+    t.text     "user_agent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "extensions", force: true do |t|
     t.datetime "created_at"
