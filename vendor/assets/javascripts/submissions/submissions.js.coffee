@@ -1,19 +1,19 @@
 # Websocket code for submissions (if websocket compatible)
 # Otherwise this will fall back to AJAX
 
-dispatcher = new WebSocketRails('/websocket')
-	
-success = (response) ->
-  alert 'Success: ' + response.message
-
-failure = (response) ->
-  alert 'Failure: ' + response.message
-
-channel = dispatcher.subscribe('submissions')
-channel.bind('compile', (log) ->
-  result = log.result.replace(/\n/g,"<br/>")
-  $('.results').html(result)
-)
+# dispatcher = new WebSocketRails('/websocket')
+#
+# success = (response) ->
+#   alert 'Success: ' + response.message
+#
+# failure = (response) ->
+#   alert 'Failure: ' + response.message
+#
+# channel = dispatcher.subscribe('submissions')
+# channel.bind('compile', (log) ->
+#   result = log.result.replace(/\n/g,"<br/>")
+#   $('.results').html(result)
+# )
 
 compilationResults = ->
   id = parseInt($("#submission-id").text())

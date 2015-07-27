@@ -24,7 +24,7 @@ module CompileCustom
     end
     
     # Compile
-    timeout = submission.assignment.timeout ? submission.assignment.timeout.to_s : 3
+    timeout = submission.assignment.timeout ? submission.assignment.timeout.to_s : "3"
     result = `timeout #{timeout} bash -c \'#{command} 2>&1\'`
     
     comments += "#{result}"
