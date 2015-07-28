@@ -124,15 +124,15 @@ class SubmissionsController < ApplicationController
     if (@submission.kind == "plaintext") && @submission.test_result.nil?
       render
       Thread.new do
-        count = 0
-        while @submission.test_result.nil? && count < 15
-          @submission = Submission.find(@submission.id)
-          count = count + 1
-          sleep(2)
+        ActiveRecord::Base.connection_pool.with_connection do
+          count = 0
+          while @submission.test_result.nil? && count < 15
+            @submission = Submission.find(@submission.id)
+            count = count + 1
+            sleep(2)
+          end
+          WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}
         end
-        WebsocketRails[:submissions].trigger 'compile', {result: (@submission.test_result.result)}
-        ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
-        ActiveRecord::Base.clear_active_connections!
       end
     end
   end
@@ -212,21 +212,21 @@ class SubmissionsController < ApplicationController
   
   # Check for compilation results
   def check_result
-    Submission.uncached do
-      @submission = Submission.find(params[:id])
-      if (@submission.kind == "plaintext") && @submission.test_result.nil?
-        count = 0
-        while @submission.test_result.nil? && count < 10
-          @submission = Submission.find(@submission.id)
-          count = count + 1
-          sleep(2)
+    ActiveRecord::Base.connection_pool.with_connection do
+      Submission.uncached do
+        @submission = Submission.find(params[:id])
+        if (@submission.kind == "plaintext") && @submission.test_result.nil?
+          count = 0
+          while @submission.test_result.nil? && count < 10
+            @submission = Submission.find(@submission.id)
+            count = count + 1
+            sleep(2)
+          end
+          render :json => @submission.test_result.to_json, :status => 200
+        else
+          render :json => {result: false}, :status => 200
         end
-        render :json => @submission.test_result.to_json, :status => 200
-      else
-        render :json => {result: false}, :status => 200
       end
-      ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
-      ActiveRecord::Base.clear_active_connections!
     end
   end
   
