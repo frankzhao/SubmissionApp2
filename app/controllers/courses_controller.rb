@@ -107,59 +107,61 @@ class CoursesController < ApplicationController
   
   def enroll_users(c, students, tutors, convenors)
     student_list = Array.new
-    if not students.empty?
-      counter = 0
-      students.each do |s|
-        # Remove spaces
-        s.gsub!(/\s+/, "")
-        student_list << s
-        
-        user = User.find_by_uid(s)
-        if user
-          hash = {}
-          hash["#{c.id}"] = "Student"
-          user.update_attributes(role: user.role.to_h.merge(hash))
-          user.courses << c unless user.courses.include?(c)
-        end
+    counter = 0
+    students.each do |s|
+      # Remove spaces
+      s.gsub!(/\s+/, "")
+      student_list << s
+      
+      user = User.find_by_uid(s)
+      if user
+        hash = {}
+        hash["#{c.id}"] = "Student"
+        user.update_attributes(role: user.role.to_h.merge(hash))
+        user.courses << c unless user.courses.include?(c)
+      end
 
-        if !Student.find_by_uid(s).nil?
-          s = Student.find_by_uid(s)
-          if !c.students.include?(s)
-            c.students << s
-            s.courses << c unless s.courses.include?(c)
-            counter += 1
-          end
+      if !Student.find_by_uid(s).nil?
+        s = Student.find_by_uid(s)
+        if !c.students.include?(s)
+          c.students << s
+          s.courses << c unless s.courses.include?(c)
+          counter += 1
+        end
+      else
+        # Look up student details
+        ldap_user = AnuLdap.find_by_uni_id(s)
+        if !ldap_user.nil?
+          s = Student.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+          c.students << s
+          s.courses << c
+          counter += 1
         else
-          # Look up student details
-          ldap_user = AnuLdap.find_by_uni_id(s)
-          if !ldap_user.nil?
-            s = Student.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
-            c.students << s
-            s.courses << c
-            counter += 1
-          else
-            flash_message :error, "The student <#{s}> could not be found on the LDAP server."
-          end
+          flash_message :error, "The student <#{s}> could not be found on the LDAP server."
         end
       end
-      
-      for s in c.students
-        if !student_list.include?(s.uid)
-          # Remove from course
-          s.courses.delete(c)
-          c.students.delete(s)
-          # Remove from groups
-          for g in s.groups
-            if g.course == c
-              s.groups.delete(g)
-              g.students.delete(s)
-            end
-          end
-        end
-      end
-      
-      flash_message :success, "Sucessfully enrolled #{counter} students." unless counter == 0
     end
+    
+    for s in c.get_student_roles
+      if !student_list.include?(s.uid)
+        # Remove from course
+        s.courses.delete(c)
+        c.students.delete(s)
+        role_hash = s.role.to_h
+        role_hash.delete(c.id.to_s)
+        s.role = role_hash
+        s.save
+        # Remove from groups
+        for g in s.groups
+          if g.course == c
+            s.groups.delete(g)
+            g.students.delete(s)
+          end
+        end
+      end
+    end
+    
+    flash_message :success, "Sucessfully enrolled #{counter} students." unless counter == 0
     
     c.tutors = []
     old_tutors = User.select{|u| u.role["#{c.id}"] == "Tutor" unless u.role.nil?}.uniq
