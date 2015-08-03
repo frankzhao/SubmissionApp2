@@ -166,15 +166,13 @@ class SubmissionsController < ApplicationController
     @assignment = @submission.assignment
 
     # Peer reviews
-    unless @assignment.kind == "zip"
-      if @assignment.peer_review_enabled && @assignment.finalised_submissions.length > 1
-        peer_submission = @assignment.finalised_submissions.select{|s| (s.user != current_user) && (s.peer_review_user_id.nil?)}.last
-        if peer_submission
-          peer_submission.peer_review_user_id = current_user.id
-          peer_submission.save
-          # Notify
-          Notification.create_and_distribute("New submission to review for " + @assignment.name, submission_path(peer_submission), [current_user])
-        end
+    if @assignment.peer_review_enabled && @assignment.finalised_submissions.length > 1
+      peer_submission = @assignment.finalised_submissions.select{|s| (s.user != current_user) && (s.peer_review_user_id.nil?)}.last
+      if peer_submission
+        peer_submission.peer_review_user_id = current_user.id
+        peer_submission.save
+        # Notify
+        Notification.create_and_distribute("New submission to review for " + @assignment.name, submission_path(peer_submission), [current_user])
       end
     end
     
