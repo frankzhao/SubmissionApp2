@@ -10,6 +10,9 @@
   }
 
   ready = function() {
+    var date = new Date();
+    console.log(date)
+    
     $(".label").tooltip();
     var assignment_id, ctx, options;
     ctx = $("#chart").get(0).getContext("2d");
@@ -23,18 +26,6 @@
       e.preventDefault()
       $(this).tab('show')
     })
-    
-    // Datatables
-    var tableoptions = {
-      "searching": true,
-      "order" : [],
-      "pageLength": 100,
-      "pagingType": "full_numbers",
-      "dom": '<<"top"lf><"top-pagination"p><t>ip>'
-    }
-    
-    $('#allsubmissions-table').DataTable(tableoptions);
-    $('#finalised-table').DataTable(tableoptions);
     
     $.get("/assignments/data/" + assignment_id, function(data) {
       var chart, chartdata, date, dates, k, l, labels, values, _i, _len;
@@ -210,6 +201,11 @@
       $("#group-data th").fadeIn();
     });
   };
+  
+  var datatables_init;
+  datatables_init = function() {
+    $("#allsubmissions-table").destroy();
+  }
 
   $(document).ready(ready);
-  $(document).on('page:load', ready);
+  $(document).on('page:change', datatables_init);

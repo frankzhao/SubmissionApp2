@@ -132,6 +132,18 @@
         .tab-content
           = render 'all_submissions'
           = render 'final_submissions'
+          :javascript
+            // Datatables
+            var tableoptions = {
+              "searching": true,
+              "order" : [],
+              "pageLength": 100,
+              "pagingType": "full_numbers",
+              "dom": '<<"top"lf><"top-pagination"p><t>ip>'
+            }
+
+            $('#allsubmissions-table').DataTable(tableoptions);
+            $('#finalised-table').DataTable(tableoptions);
   = render 'sidebar_show'
 
 -# Chart

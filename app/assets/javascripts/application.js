@@ -1,17 +1,24 @@
 //= require jquery
 //= require jquery_ujs
+//= require turbolinks
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require bootstrap.min
 //= require date
 //= require chart.min
 //= require websocket_rails/main
+//= require nprogress
+//= require nprogress-turbolinks
 //= require_self
 //= require_tree .
 
 function hide (e) {
   $(e).fadeOut(200);
 }
+
+NProgress.configure({
+  showSpinner: false
+});
 
 ready = function () {
   /* Hide sidebar */

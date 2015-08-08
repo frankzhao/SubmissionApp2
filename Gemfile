@@ -73,6 +73,9 @@ gem 'unidecoder'    # TODO ISO-8859-1 compatibility
 # Exceptions
 gem 'exception_handler'
 
+# History.js
+gem "nprogress-rails"
+
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'

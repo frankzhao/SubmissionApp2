@@ -106,6 +106,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.10.1)
     net-ldap (0.9.0)
+    nprogress-rails (0.1.6.7)
     orm_adapter (0.5.0)
     polyglot (0.3.5)
     posix-spawn (0.3.9)
@@ -227,6 +228,7 @@ DEPENDENCIES
   jquery-datatables-rails (~> 3.3.0)
   jquery-rails
   net-ldap
+  nprogress-rails
   pygments.rb
   rack-ssl
   rails (= 4.0.2)
