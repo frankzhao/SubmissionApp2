@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
   
   def is_tutor?(course)
-    self.role.to_h[course.id.to_s] == "Tutor" || self.type == "Tutor"
+    self.role.to_h[course.id.to_s] == "Tutor" #|| self.type == "Tutor"
   end
 
   def is_convenor?
