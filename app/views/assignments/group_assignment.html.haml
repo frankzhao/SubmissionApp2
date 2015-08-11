@@ -9,7 +9,7 @@
     
     %h3 Submissions
     %table.table.table-hover.table-striped
-      - if @group.students.empty?
+      - if @group.users.empty?
         %p No students are currently enrolled in this group.
       - else
         %tr
@@ -17,7 +17,7 @@
           %th Student ID
           %th Submissions
           %th Comment
-        - @group.students.each do |s|
+        - @group.users.each do |s|
           %tr
             %td= link_to s.full_name, user_path(s)
             %td= link_to s.uid, user_path(s)
