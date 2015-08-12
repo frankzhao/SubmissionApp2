@@ -195,12 +195,12 @@ class AssignmentsController < ApplicationController
     
     groups_hash = Hash.new
     for group in groups
-      groups_hash[group.id] = group.students
+      groups_hash[group.id] = group.users
     end
     
     for group in groups
       group_data = Hash.new
-      enrolled = group.students.length
+      enrolled = group.users.length
       finalised_count = finalised.select{|s| groups_hash[group.id].include?(s.user)}.map(&:user).uniq.count
       submission_count = submissions.select{|s| (s.user.type == "Student") && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
       
@@ -227,7 +227,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
     @submissions = @assignment.submissions.select{
-      |s| s.user.type == "Student" && @group.students.include?(s.user)
+      |s| @group.users.include?(s.user)
     }
     @comment = Comment.new
     
@@ -275,7 +275,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
     group_submissions = Array.new
-    for s in @group.students
+    for s in @group.users
       student_submissions = s.submissions_for(@assignment)
       group_submissions << student_submissions.last unless student_submissions.empty?
     end
@@ -361,7 +361,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     
     group_submissions = []
-    for s in @group.students
+    for s in @group.users
       student_submissions = s.submissions_for(@assignment)
       group_submissions << student_submissions.last unless student_submissions.empty?
     end
