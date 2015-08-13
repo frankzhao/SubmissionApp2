@@ -32,5 +32,9 @@ class Course < ActiveRecord::Base
   def get_student_roles
     (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}).uniq
   end
+  
+  def get_tutor_roles
+    (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}).uniq
+  end
 
 end

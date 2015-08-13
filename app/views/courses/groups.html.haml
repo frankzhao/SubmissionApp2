@@ -16,18 +16,19 @@
             %span{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
               %h4.panel-title
                 #{group.name}
-              .light
-                = (group.user ? group.user.full_name : group.tutor.full_name) unless group.user.nil? && group.tutor.nil?
+              %span.uid_heading
+                Tutor:
+                = (group.user ? group.user.full_name : group.user.full_name) unless group.user.nil? && group.user.nil?
           .panel-collapse.collapse.in{id: "group" + group.id.to_s}
             .panel-body
-              - if group.users.select{|u| u.type == "Student"}.empty?
+              - if group.get_student_roles.empty?
                 This group currently has no students.
               - else
                 %table.table.table-hover.table-striped
                   %tr
                     %th Name
                     %th Student ID
-                  - for student in group.users.select{|u| u.type == "Student"}
+                  - for student in group.users
                     %tr
                       %td
                         = link_to student.full_name, user_path(student)
@@ -44,8 +45,9 @@
           %h4.panel-title
             %a{"data-toggle" => "collapse", "data-target" => "#group" + group.id.to_s, href: "#group" + group.id.to_s}
               #{group.name}
-          - if group.tutor
-            %p.small Tutor: #{group.tutor.full_name}
+          - if group.user
+            %span.uid_heading
+              Tutor: #{group.user.full_name}
         .panel-collapse.collapse.in{id: "group" + group.id.to_s}
           .panel-body
             - if group.get_student_roles.empty?

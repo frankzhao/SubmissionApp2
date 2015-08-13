@@ -121,10 +121,12 @@ class CoursesController < ApplicationController
         user.courses << c unless user.courses.include?(c)
       end
 
-      if !Student.find_by_uid(s).nil?
-        s = Student.find_by_uid(s)
-        if !c.students.include?(s)
-          c.students << s
+      if !User.find_by_uid(s).nil?
+        s = User.find_by_uid(s)
+        if !c.get_student_roles.include?(s)
+          hash = {}
+          hash["#{c.id}"] = "Student"
+          s.update_attributes(role: s.role.to_h.merge(hash))
           s.courses << c unless s.courses.include?(c)
           counter += 1
         end
@@ -132,9 +134,11 @@ class CoursesController < ApplicationController
         # Look up student details
         ldap_user = AnuLdap.find_by_uni_id(s)
         if !ldap_user.nil?
-          s = Student.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
-          c.students << s
-          s.courses << c
+          s = User.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+          hash = {}
+          hash["#{c.id}"] = "Student"
+          s.update_attributes(role: s.role.to_h.merge(hash))
+          s.courses << c unless s.courses.include?(c)
           counter += 1
         else
           flash_message :error, "The student <#{s}> could not be found on the LDAP server."
@@ -182,9 +186,9 @@ class CoursesController < ApplicationController
           user.courses << c unless user.courses.include?(c)
         end
 
-        if !Tutor.find_by_uid(t).nil?
-          t = Tutor.find_by_uid(t)
-          if !c.tutors.include?(t)
+        if !User.find_by_uid(t).nil?
+          t = User.find_by_uid(t)
+          if !c.get_tutor_roles.include?(t)
             c.tutors << t
             t.courses << c unless t.courses.include?(c)
             counter += 1
@@ -193,9 +197,11 @@ class CoursesController < ApplicationController
           # Look up user details
           ldap_user = AnuLdap.find_by_uni_id(t)
           if !ldap_user.nil?
-            t = Tutor.create(:uid => t, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
-            c.tutors << t
-            t.courses << c
+            t = User.create(:uid => t, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+            hash = {}
+            hash["#{c.id}"] = "Tutor"
+            t.update_attributes(role: t.role.to_h.merge(hash))
+            t.courses << c unless t.courses.include?(c)
             counter += 1
           else
             flash_message :error, "The tutor <#{t}> could not be found on the LDAP server."
