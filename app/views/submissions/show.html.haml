@@ -63,7 +63,7 @@
                 %span.glyphicon.glyphicon-remove.warn
               - else
                 %span.glyphicon.glyphicon-ok.good
-              = file
+              = file.encode('UTF-8', :invalid => :replace, :undef => :replace)
           
     - unless @assignment.disable_compilation
       %h3 Results
