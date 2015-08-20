@@ -155,18 +155,19 @@ class AssignmentsController < ApplicationController
       redirect_to '/'
     end
     assignment = Assignment.find(params[:id])
+    course = assignment.course
     submissions = assignment.submissions
     hourly_data = submissions.group("strftime('%Y%m%d %H', created_at)").count.to_a.last(24*7)
     hourly_data = Hash[*hourly_data.flatten]
     daily_data = submissions.group("strftime('%Y%m%d', created_at)").count
     
-    unique_submission_users = submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq
+    unique_submission_users = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq
     finalised = submissions.where(finalised: true)
     finalised_count = finalised.map(&:user).uniq.count
-    submission_count = assignment.submissions.select{|s| (s.user.type == "Student")}.map(&:user).uniq.count
+    submission_count = assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq.count
     notfinalised = submission_count - finalised_count
-    nonsubmissions = (assignment.course.students.count - unique_submission_users.count)
-    commented_submissions = assignment.submissions.select{|s| (s.user.type == "Student" && s.comments.present?)}.map(&:user).uniq.count
+    nonsubmissions = (assignment.course.get_student_roles.count - unique_submission_users.count)
+    commented_submissions = assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student" && s.comments.present?)}.map(&:user).uniq.count
     uncommented_submissions = (submission_count - commented_submissions)
     
     render :json => {
@@ -202,7 +203,7 @@ class AssignmentsController < ApplicationController
       group_data = Hash.new
       enrolled = group.users.length
       finalised_count = finalised.select{|s| groups_hash[group.id].include?(s.user)}.map(&:user).uniq.count
-      submission_count = submissions.select{|s| (s.user.type == "Student") && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
+      submission_count = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student") && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
       
       group_data["name"] = group.name.to_s
       group_data["enrolled"] = enrolled.to_i
@@ -318,7 +319,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @course = @assignment.course
     final_submissions = []
-    for s in @course.students
+    for s in @course.get_student_roles
       student_submissions = s.submissions_for(@assignment)
       final_submissions << student_submissions.last unless student_submissions.empty?
     end
