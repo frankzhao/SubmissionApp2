@@ -5,6 +5,10 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 .DS_Store
+public
+*.gem
+*.tar.*
+._*
 
 # Ignore bundler config.
 /.bundle
@@ -58,3 +62,5 @@ vendor/cache
 /* Ignore uploaded submissions */
 public/uploads
 
+/* Ignore Libraries */
+Library

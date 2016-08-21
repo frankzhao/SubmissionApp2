@@ -1,0 +1,46 @@
+.row
+  #content.col-md-9
+    %h1.page-header
+      = @group.course.code + ": " + @group.name
+      .menu-icon-container.hidden
+        %span.glyphicon.glyphicon-tasks.menu-icon
+    
+    %p Viewing submissions for "#{@assignment.name}" from group "#{@group.name}"
+    
+    %h3 Submissions
+    %table.table.table-hover.table-striped
+      - if @group.students.empty?
+        %p No students are currently enrolled in this group.
+      - else
+        %tr
+          %th Name
+          %th Student ID
+          %th Submissions
+          %th Comment
+        - @group.students.each do |s|
+          %tr
+            %td= link_to s.full_name, user_path(s)
+            %td= link_to s.uid, user_path(s)
+            %td
+              - user_submission = @submissions.select{ |x| x.user == s}.last
+              - if user_submission && user_submission.finalised
+                = link_to submission_path(user_submission), class: "good" do
+                  %span.glyphicon.glyphicon-thumbs-up
+                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+              - elsif user_submission
+                = link_to submission_path(user_submission) do
+                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+            %td
+              .comment-form
+              - if user_submission && user_submission.comments_by(current_user).empty?
+                = form_for @comment do |f|
+                  = f.text_field :no_redirect, value: "true", class: "hidden"
+                  = f.text_field :submission_id, value: user_submission.id, class: "hidden"
+                  = f.text_field :user_id, value: current_user.id, class: "hidden"
+                  = f.text_area :text, placeholder: "Comment", class: "form-control"
+                  = f.file_field :attachment
+                  = f.submit "Add comment", class: "btn btn-xs btn-primary"
+              - else
+                %span.good
+                  Commented
+  = render 'sidebar_show_group'

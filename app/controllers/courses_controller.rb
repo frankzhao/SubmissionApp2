@@ -150,16 +150,18 @@ class CoursesController < ApplicationController
       if !student_list.include?(s.uid)
         # Remove from course
         s.courses.delete(c)
-        c.students.delete(s)
-        role_hash = s.role.to_h
-        role_hash.delete(c.id.to_s)
-        s.role = role_hash
-        s.save
+        begin
+          c.students.delete(s)
+        rescue
+        end
+        s.role.delete(c.id.to_s)
+        s.update_attributes(role: s.role)
+
         # Remove from groups
         for g in s.groups
           if g.course == c
             s.groups.delete(g)
-            g.students.delete(s)
+            g.users.delete(s)
           end
         end
       end
