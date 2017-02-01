@@ -5,7 +5,7 @@ student = Student.create(:firstname => "Thomas", :surname => "Jenkins", :passwor
 c = Course.create(code: "COMP1100", name: "Introduction to Programming and Algorithms",
              description: "A truly great course")
 assignment = Assignment.create(name: "Test assignment", due_date: "2421-02-11 14:00:00",
-                     description: "Submission instructions here", kind: "plaintext")
+                     description: "Submission instructions here", kind: "plaintext", lang: "haskell")
 group = Group.create(name: "Tuesday 9-11")
 
 # Enrolments

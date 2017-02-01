@@ -13,12 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150725124654) do
 
-  create_table "admins", force: true do |t|
+  create_table "admins", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "assignment_extensions", force: true do |t|
+  create_table "assignment_extensions", force: :cascade do |t|
     t.datetime "due_date"
     t.integer  "assignment_id"
     t.integer  "user_id"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-  create_table "assignments", force: true do |t|
+  create_table "assignments", force: :cascade do |t|
     t.string   "name",                                null: false
     t.datetime "due_date"
     t.text     "description"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer  "timeout",             default: 3
   end
 
-  create_table "assignments_users", force: true do |t|
+  create_table "assignments_users", force: :cascade do |t|
     t.integer "user_id"
     t.integer "assignment_id"
   end
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   add_index "assignments_users", ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id"
   add_index "assignments_users", ["user_id"], name: "index_assignments_users_on_user_id"
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.integer  "submission_id"
     t.integer  "user_id"
     t.text     "text",                          null: false
@@ -68,12 +68,12 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.boolean  "visible",       default: true
   end
 
-  create_table "convenors", force: true do |t|
+  create_table "convenors", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "courses", force: true do |t|
+  create_table "courses", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "code",        null: false
     t.text     "description"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-  create_table "courses_users", id: false, force: true do |t|
+  create_table "courses_users", id: false, force: :cascade do |t|
     t.integer "course_id"
     t.integer "user_id"
     t.integer "convenor_id"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   add_index "courses_users", ["student_id"], name: "index_courses_users_on_student_id"
   add_index "courses_users", ["user_id"], name: "index_courses_users_on_user_id"
 
-  create_table "delayed_jobs", force: true do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
     t.text     "handler",                null: false
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
-  create_table "errors", force: true do |t|
+  create_table "errors", force: :cascade do |t|
     t.string   "usable_type"
     t.integer  "usable_id"
     t.text     "class_name"
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-  create_table "extensions", force: true do |t|
+  create_table "extensions", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
 # Could not dump table "groups" because of following NoMethodError
 #   undefined method `[]' for nil:NilClass
 
-  create_table "groups_users", id: false, force: true do |t|
+  create_table "groups_users", id: false, force: :cascade do |t|
     t.integer "group_id"
     t.integer "user_id"
     t.integer "student_id"
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   add_index "groups_users", ["tutor_id"], name: "index_groups_users_on_tutor_id"
   add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id"
 
-  create_table "notifications", force: true do |t|
+  create_table "notifications", force: :cascade do |t|
     t.text     "text"
     t.string   "link"
     t.integer  "user_id"
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-  create_table "sessions", force: true do |t|
+  create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
     t.text     "data"
     t.datetime "created_at"
@@ -168,12 +168,12 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
-  create_table "students", force: true do |t|
+  create_table "students", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "submissions", force: true do |t|
+  create_table "submissions", force: :cascade do |t|
     t.text     "kind"
     t.text     "plaintext"
     t.integer  "user_id"
@@ -184,19 +184,19 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-  create_table "test_results", force: true do |t|
+  create_table "test_results", force: :cascade do |t|
     t.integer  "submission_id"
     t.text     "result"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "tutors", force: true do |t|
+  create_table "tutors", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "uid",                    default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
