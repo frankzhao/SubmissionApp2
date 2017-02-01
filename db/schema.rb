@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -50,10 +49,9 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   create_table "assignments_users", force: :cascade do |t|
     t.integer "user_id"
     t.integer "assignment_id"
+    t.index ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id"
+    t.index ["user_id"], name: "index_assignments_users_on_user_id"
   end
-
-  add_index "assignments_users", ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id"
-  add_index "assignments_users", ["user_id"], name: "index_assignments_users_on_user_id"
 
   create_table "comments", force: :cascade do |t|
     t.integer  "submission_id"
@@ -86,14 +84,13 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer "user_id"
     t.integer "convenor_id"
     t.integer "student_id"
+    t.index ["convenor_id"], name: "index_courses_users_on_convenor_id"
+    t.index ["course_id", "convenor_id"], name: "index_courses_users_on_course_id_and_convenor_id"
+    t.index ["course_id", "student_id"], name: "index_courses_users_on_course_id_and_student_id"
+    t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
+    t.index ["student_id"], name: "index_courses_users_on_student_id"
+    t.index ["user_id"], name: "index_courses_users_on_user_id"
   end
-
-  add_index "courses_users", ["convenor_id"], name: "index_courses_users_on_convenor_id"
-  add_index "courses_users", ["course_id", "convenor_id"], name: "index_courses_users_on_course_id_and_convenor_id"
-  add_index "courses_users", ["course_id", "student_id"], name: "index_courses_users_on_course_id_and_student_id"
-  add_index "courses_users", ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
-  add_index "courses_users", ["student_id"], name: "index_courses_users_on_student_id"
-  add_index "courses_users", ["user_id"], name: "index_courses_users_on_user_id"
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -107,9 +104,8 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "errors", force: :cascade do |t|
     t.string   "usable_type"
@@ -130,8 +126,14 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "groups" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "groups", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "course_id"
+    t.integer  "tutor_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.         "user_id"
+  end
 
   create_table "groups_users", id: false, force: :cascade do |t|
     t.integer "group_id"
@@ -139,16 +141,15 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer "student_id"
     t.integer "convenor_id"
     t.integer "tutor_id"
+    t.index ["convenor_id"], name: "index_groups_users_on_convenor_id"
+    t.index ["group_id", "convenor_id"], name: "index_groups_users_on_group_id_and_convenor_id"
+    t.index ["group_id", "student_id"], name: "index_groups_users_on_group_id_and_student_id"
+    t.index ["group_id", "tutor_id"], name: "index_groups_users_on_group_id_and_tutor_id"
+    t.index ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
+    t.index ["student_id"], name: "index_groups_users_on_student_id"
+    t.index ["tutor_id"], name: "index_groups_users_on_tutor_id"
+    t.index ["user_id"], name: "index_groups_users_on_user_id"
   end
-
-  add_index "groups_users", ["convenor_id"], name: "index_groups_users_on_convenor_id"
-  add_index "groups_users", ["group_id", "convenor_id"], name: "index_groups_users_on_group_id_and_convenor_id"
-  add_index "groups_users", ["group_id", "student_id"], name: "index_groups_users_on_group_id_and_student_id"
-  add_index "groups_users", ["group_id", "tutor_id"], name: "index_groups_users_on_group_id_and_tutor_id"
-  add_index "groups_users", ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
-  add_index "groups_users", ["student_id"], name: "index_groups_users_on_student_id"
-  add_index "groups_users", ["tutor_id"], name: "index_groups_users_on_tutor_id"
-  add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id"
 
   create_table "notifications", force: :cascade do |t|
     t.text     "text"
@@ -163,10 +164,9 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
-
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
   create_table "students", force: :cascade do |t|
     t.datetime "created_at"
@@ -218,10 +218,9 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.boolean  "has_logged_in_once",     default: false
     t.integer  "assignment_id"
     t.text     "role"
+    t.index ["assignment_id"], name: "index_users_on_assignment_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid"], name: "index_users_on_uid", unique: true
   end
-
-  add_index "users", ["assignment_id"], name: "index_users_on_assignment_id"
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["uid"], name: "index_users_on_uid", unique: true
 
 end

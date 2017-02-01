@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.4.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.0.1'
@@ -75,6 +76,10 @@ gem 'unidecoder'    # TODO ISO-8859-1 compatibility
 
 # History.js
 gem "nprogress-rails"
+
+# Faster json
+gem "oj"
+gem "oj_mimic_json"
 
 #group :development, :test do
 #  gem 'better_errors'
