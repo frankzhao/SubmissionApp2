@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   include ApplicationHelper
-  before_filter :configure_permitted_paramaters, if: :devise_controller?
+  before_action :configure_permitted_paramaters, if: :devise_controller?
   
   def after_sign_in_path_for(resource)
     user_path(resource)

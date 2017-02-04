@@ -2,7 +2,7 @@ class SubmissionsController < ApplicationController
   include SubmissionsHelper
   include ActionView::Helpers::TextHelper
 
-  before_filter :require_logged_in
+  before_action :require_logged_in
   respond_to :html
   
   require 'zip'

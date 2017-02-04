@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :only => [:new, :create, :destroy, :edit]
+  before_action :require_logged_in
+  before_action :require_convenor_or_admin, :only => [:new, :create, :destroy, :edit]
 
   respond_to :html
 

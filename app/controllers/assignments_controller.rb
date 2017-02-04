@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives, :download_group_archives, :download_all_finals]
-  before_filter :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives, :download_all_finals]
+  before_action :require_logged_in
+  before_action :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives, :download_group_archives, :download_all_finals]
+  before_action :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives, :download_all_finals]
 
   require 'zip'
   

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter :require_logged_in
+  before_action :require_logged_in
 
   def create
     submission = Submission.find(params[:comment][:submission_id])

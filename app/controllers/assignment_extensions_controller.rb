@@ -1,6 +1,6 @@
 class AssignmentExtensionsController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :require_convenor_or_admin
+  before_action :require_logged_in
+  before_action :require_convenor_or_admin
   
   def new
     @assignment = Assignment.find(params[:assignment_id])

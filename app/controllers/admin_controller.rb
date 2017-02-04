@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :require_admin
+  before_action :require_logged_in
+  before_action :require_admin
 
   def index
     log = File.join(Rails.root, "log", "#{ Rails.env }.log")
