@@ -1,3 +1,3 @@
-class TestResult < ActiveRecord::Base
+class TestResult < ApplicationRecord
   belongs_to :submission
 end

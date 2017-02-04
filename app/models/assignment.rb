@@ -1,4 +1,4 @@
-class Assignment < ActiveRecord::Base
+class Assignment < ApplicationRecord
   belongs_to :course
   has_many :submissions
   has_many :assignment_extensions, dependent: :destroy
