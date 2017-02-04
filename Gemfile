@@ -81,9 +81,9 @@ gem "nprogress-rails"
 gem "oj"
 gem "oj_mimic_json"
 
-#group :development, :test do
-#  gem 'better_errors'
-#  gem 'binding_of_caller'
-#  gem 'rspec-rails'
-#end
+group :development, :test do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'rspec-rails'
+end
 
