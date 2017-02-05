@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20150725124654) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -49,8 +52,8 @@ ActiveRecord::Schema.define(version: 20150725124654) do
   create_table "assignments_users", force: :cascade do |t|
     t.integer "user_id"
     t.integer "assignment_id"
-    t.index ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id"
-    t.index ["user_id"], name: "index_assignments_users_on_user_id"
+    t.index ["assignment_id", "user_id"], name: "index_assignments_users_on_assignment_id_and_user_id", using: :btree
+    t.index ["user_id"], name: "index_assignments_users_on_user_id", using: :btree
   end
 
   create_table "comments", force: :cascade do |t|
@@ -84,12 +87,12 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer "user_id"
     t.integer "convenor_id"
     t.integer "student_id"
-    t.index ["convenor_id"], name: "index_courses_users_on_convenor_id"
-    t.index ["course_id", "convenor_id"], name: "index_courses_users_on_course_id_and_convenor_id"
-    t.index ["course_id", "student_id"], name: "index_courses_users_on_course_id_and_student_id"
-    t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id"
-    t.index ["student_id"], name: "index_courses_users_on_student_id"
-    t.index ["user_id"], name: "index_courses_users_on_user_id"
+    t.index ["convenor_id"], name: "index_courses_users_on_convenor_id", using: :btree
+    t.index ["course_id", "convenor_id"], name: "index_courses_users_on_course_id_and_convenor_id", using: :btree
+    t.index ["course_id", "student_id"], name: "index_courses_users_on_course_id_and_student_id", using: :btree
+    t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id", using: :btree
+    t.index ["student_id"], name: "index_courses_users_on_student_id", using: :btree
+    t.index ["user_id"], name: "index_courses_users_on_user_id", using: :btree
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -104,7 +107,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
   create_table "errors", force: :cascade do |t|
@@ -132,7 +135,7 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer  "tutor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.         "user_id"
+    t.integer  "user_id"
   end
 
   create_table "groups_users", id: false, force: :cascade do |t|
@@ -141,14 +144,14 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.integer "student_id"
     t.integer "convenor_id"
     t.integer "tutor_id"
-    t.index ["convenor_id"], name: "index_groups_users_on_convenor_id"
-    t.index ["group_id", "convenor_id"], name: "index_groups_users_on_group_id_and_convenor_id"
-    t.index ["group_id", "student_id"], name: "index_groups_users_on_group_id_and_student_id"
-    t.index ["group_id", "tutor_id"], name: "index_groups_users_on_group_id_and_tutor_id"
-    t.index ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
-    t.index ["student_id"], name: "index_groups_users_on_student_id"
-    t.index ["tutor_id"], name: "index_groups_users_on_tutor_id"
-    t.index ["user_id"], name: "index_groups_users_on_user_id"
+    t.index ["convenor_id"], name: "index_groups_users_on_convenor_id", using: :btree
+    t.index ["group_id", "convenor_id"], name: "index_groups_users_on_group_id_and_convenor_id", using: :btree
+    t.index ["group_id", "student_id"], name: "index_groups_users_on_group_id_and_student_id", using: :btree
+    t.index ["group_id", "tutor_id"], name: "index_groups_users_on_group_id_and_tutor_id", using: :btree
+    t.index ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id", using: :btree
+    t.index ["student_id"], name: "index_groups_users_on_student_id", using: :btree
+    t.index ["tutor_id"], name: "index_groups_users_on_tutor_id", using: :btree
+    t.index ["user_id"], name: "index_groups_users_on_user_id", using: :btree
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -164,8 +167,8 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
-    t.index ["updated_at"], name: "index_sessions_on_updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+    t.index ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
   end
 
   create_table "students", force: :cascade do |t|
@@ -218,9 +221,9 @@ ActiveRecord::Schema.define(version: 20150725124654) do
     t.boolean  "has_logged_in_once",     default: false
     t.integer  "assignment_id"
     t.text     "role"
-    t.index ["assignment_id"], name: "index_users_on_assignment_id"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["uid"], name: "index_users_on_uid", unique: true
+    t.index ["assignment_id"], name: "index_users_on_assignment_id", using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["uid"], name: "index_users_on_uid", unique: true, using: :btree
   end
 
 end
