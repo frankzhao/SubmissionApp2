@@ -64,6 +64,9 @@ gem 'carrierwave'
 # ZIPs
 gem 'rubyzip'
 
+# application monitoring
+gem "skylight"
+
 # Tables
 gem 'jquery-datatables-rails'
 
