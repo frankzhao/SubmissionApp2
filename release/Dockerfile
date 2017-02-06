@@ -1,6 +1,6 @@
 FROM ruby:2.4.0-slim
 
-LABEL VERSION=0.0.1
+LABEL VERSION=0.1.0-dev
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
