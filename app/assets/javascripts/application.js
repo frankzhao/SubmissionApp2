@@ -6,7 +6,7 @@
 //= require bootstrap.min
 //= require date
 //= require chart.min
-//= require websocket_rails/main
+// require websocket_rails/main
 //= require nprogress
 //= require nprogress-turbolinks
 //= require_self
