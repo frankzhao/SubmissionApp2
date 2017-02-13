@@ -1,22 +1,30 @@
-rails_env = ENV['RAILS_ENV'] || 'production'
-dev_root = '/Users/frank/dev/submissionapp2'
-
-if rails_env == 'development'
-  app_root = dev_root
-elsif rails_env == 'production'
-  app_root = '/home/comp1100/submissionapp2'
+# config/unicorn.rb
+if Rails.env.development?
+  worker_processes 1
+  timeout 60
+else
+  worker_processes 6
+  timeout 60
+  preload_app true
 end
 
-STDOUT.write "Starting in " + rails_env + " from " + app_root
-
 listen 3000
-listen "127.0.0.1:3000"
-worker_processes 4
-timeout 60
 
-# PID
-pid "#{app_root}/tmp/pids/unicorn.pid"
+before_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
+    Process.kill 'QUIT', Process.pid
+  end
 
-# Log files
-stderr_path "#{app_root}/log/unicorn.stderr.log"
-stdout_path "#{app_root}/log/unicorn.stdout.log"
+  defined?(ActiveRecord::Base) and
+      ActiveRecord::Base.connection.disconnect!
+end
+
+after_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
+  end
+
+  defined?(ActiveRecord::Base) and
+      ActiveRecord::Base.establish_connection
+end
