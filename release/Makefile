@@ -1,7 +1,7 @@
 ROOT	:= $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 NAME	:= submissionapp2
 TAG 	:= docker.io/chickenmaru/$(NAME)
-VERSION := 0.1.0
+VERSION := 0.2.0-dev
 
 .PHONY: all build
 
