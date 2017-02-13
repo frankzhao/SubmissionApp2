@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby "2.4.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rails', '5.0.1'
 
 # postgresql support
@@ -85,6 +86,8 @@ gem "nprogress-rails"
 # Faster json
 gem "oj"
 gem "oj_mimic_json"
+
+gem 'bugsnag'
 
 group :development, :test do
   gem 'better_errors'
