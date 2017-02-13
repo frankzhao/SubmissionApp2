@@ -24,6 +24,7 @@ gem 'jbuilder'
 gem 'spring',        group: :development
 # use unicorn server
 gem 'unicorn'
+gem 'unicorn-rails'
 # Haml templates
 gem 'haml-rails'
 
@@ -42,7 +43,7 @@ gem 'activerecord-session_store'
 # Asynchronous jobs
 gem 'delayed_job_active_record'
 gem 'daemons'
-gem 'websocket-rails'
+# gem 'websocket-rails' # turned off temporarily
 
 # Date NLP
 gem 'chronic'
@@ -62,11 +63,8 @@ gem 'jquery-datatables-rails'
 # Syntax highlighting
 gem 'pygments.rb', :require => 'pygments'
 
-# Encoding 
+# Encoding
 gem 'unidecoder'    # TODO ISO-8859-1 compatibility
-
-# Exceptions
-#gem 'exception_handler'
 
 # History.js
 gem "nprogress-rails"
