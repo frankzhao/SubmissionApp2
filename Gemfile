@@ -87,6 +87,8 @@ gem "nprogress-rails"
 gem "oj"
 gem "oj_mimic_json"
 
+gem 'bugsnag'
+
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
