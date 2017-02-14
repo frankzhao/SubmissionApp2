@@ -1,4 +1,4 @@
-kill -9 `cat tmp/pids/unicorn.pid`
+kill -9 `pgrep unicorn`
 bin/delayed_job stop
 
 RAILS_ENV=production bundle exec rake assets:precompile
