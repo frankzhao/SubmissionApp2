@@ -95,3 +95,8 @@ psql -U <username> SubmissionApp_production < dump.sql
 
 A password prompt will appear if required. You may get a warning about the schema table, this can be safely ignored.
 
+### Nginx
+
+Nginx is the preferred reverse proxy of choice to handle connections to SubmissionApp. Sample configuration files can be found 
+in `install/conf/*.conf` for both HTTPS and HTTP configurations. Update file paths to the correct root path of the SubmissionApp directory, in addition to any SSL certificate paths. Then place the edited file into your nginx configuration directory (usually `/etc/nginx/conf.d/`).
+

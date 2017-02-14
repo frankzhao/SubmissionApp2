@@ -38,16 +38,16 @@ Setup
 Dependencies
 ===
 
-Dependencies marked in *italic* are currently using system installations on varese.
-
-- Ruby 2.1.0p0 (built with OpenSSL support)
-- *Rails 4.0.2*
-- SQLite3 (sqlite3, libsqlite-dev)
-- OpenSSL ( *openssl*, libopenssl-dev)
-- *Latex (pdflatex, gs)*, requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
-- *Haskell platform (ghc, runhaskell, ghci)*
-- *GNAT 2015 (gnatmake)*
+- Ruby 2.4.0
+- Rails 5.0.1
+- PostgreSQL (and libpq-dev)
+- OpenSSL ( openssl, libopenssl-dev)
+- Latex (pdflatex, gs), requires url.sty. Additional templates can be installed in ~/texmf if using texlive-latex-base.
+- Haskell platform (ghc, runhaskell, ghci)
+- GNAT 2015 (gnatmake)
 - Chapel 1.11.0
+- gcc-arm-none-eabi
+- nginx (preferred, or bring your own)
 
 Manual Restart/Shutdown
 ===
