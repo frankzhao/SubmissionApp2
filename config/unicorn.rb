@@ -1,4 +1,9 @@
 # config/unicorn.rb
+APP_ROOT = Rails.root.to_s
+
+working_directory APP_ROOT
+pid "#{APP_ROOT}/tmp/pids/unicorn.pid"
+
 if Rails.env.development?
   worker_processes 1
   timeout 60
@@ -9,6 +14,8 @@ else
 end
 
 listen 3000
+stdout_path "#{APP_ROOT}/log/unicorn.log"
+stderr_path "#{APP_ROOT}/log/unicorn.log"
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do
