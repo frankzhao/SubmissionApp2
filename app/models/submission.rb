@@ -88,6 +88,11 @@ class Submission < ApplicationRecord
   end
   handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
   
+  def compile_arm_gnu
+    CompileArmGnu.run(self, tests)
+  end
+  handle_asynchronously :compile_arm_gnu, :run_at => Proc.new { Time.now }
+  
   def compile_custom
     tests = nil
     CompileCustom.run(self, tests)

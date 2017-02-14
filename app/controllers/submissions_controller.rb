@@ -60,6 +60,8 @@ class SubmissionsController < ApplicationController
             out = @submission.compile_ada
           elsif @assignment.lang == "Chapel"
             out = @submission.compile_chapel
+          elsif @assignment.lang = "ARM GNU"
+            out = @submission.compile_arm_gnu
           end
         end
       end
@@ -116,7 +118,7 @@ class SubmissionsController < ApplicationController
     end
     
     if @submission.kind == "plaintext"
-      @plaintext = Pygments.highlight(@submission.plaintext, lexer: (@assignment.lang.nil? ? "Haskell" : @assignment.lang.downcase),
+      @plaintext = Pygments.highlight(@submission.plaintext, lexer: @assignment.lexer,
         options: {linenos: 'table'})
     end
     @comment = Comment.new

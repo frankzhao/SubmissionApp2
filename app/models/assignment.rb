@@ -7,7 +7,8 @@ class Assignment < ApplicationRecord
   validates :name, presence: true
   validates :lang, presence: true
   
-  SUPPORTED_LANGUAGES = ["Haskell", "Ada", "Chapel"]
+  SUPPORTED_LANGUAGES = ["Haskell", "Ada", "Chapel", "ARM GNU"]
+  LEXERS = ['haskell', 'ada', 'chapel', 'asm']
   
   def latest_extension_for(user)
     self.assignment_extensions.select{|x| x.user == user}.last
@@ -23,5 +24,14 @@ class Assignment < ApplicationRecord
   
   def students
     (read_attribute(:students) + User.all.select{|u| u.role.to_h[self.course.id.to_s] == "Student"}).uniq
+  end
+  
+  def lexer
+    if self.lang == nil
+      return 'plaintext'
+    else
+      return Hash[SUPPORTED_LANGUAGES.zip(LEXERS)][self.lang]
+    end
+
   end
 end
