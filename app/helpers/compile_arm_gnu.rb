@@ -20,8 +20,9 @@ module CompileArmGnu
     
     result = File.exist?("#{folder}/#{hash}")
 
-    if result
-      comments += "<span class=\"glyphicon glyphicon-ok good\"></span><span class=\"good\">Your submission compiled successfully.</span>\n\n"
+    if true # result
+      # comments += "<span class=\"glyphicon glyphicon-ok good\"></span><span class=\"good\">Your submission compiled successfully.</span>\n\n"
+      comments += "<span class=\"warn\">Compilation check has been turned off temporarily.</span>\n\n"
     else
       comments += "<span class=\"warn\">Your submission did not compile successfully.</span>\n\n#{compile_result}"
     end
