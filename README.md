@@ -29,6 +29,8 @@ Additional features include full text search of submissions, group management, n
 Setup
 ===
 
+For detailed installation instructions, see `doc/production_setup.md`.
+
 - `rake db:seed` will create admin user with uid 'u0000000' and password 'admin'
 - Seeding will also create demo users `u0000001` (convenor), and `u0000002` (student) with the password `pass`
 - Restart server using `./restart_server.sh`

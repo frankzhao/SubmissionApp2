@@ -100,3 +100,10 @@ A password prompt will appear if required. You may get a warning about the schem
 Nginx is the preferred reverse proxy of choice to handle connections to SubmissionApp. Sample configuration files can be found 
 in `install/conf/*.conf` for both HTTPS and HTTP configurations. Update file paths to the correct root path of the SubmissionApp directory, in addition to any SSL certificate paths. Then place the edited file into your nginx configuration directory (usually `/etc/nginx/conf.d/`).
 
+### LaTeX
+
+LaTeX is required for PDF generation of submissions. Specifically, pdflatex and gs is required, along with the `url.sty` package. The recommended LaTeX distribution for Ubuntu is `texlive-latex-base`.
+
+```
+apt-get install texlive-latex-base
+```
