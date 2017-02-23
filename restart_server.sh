@@ -3,6 +3,6 @@ bin/delayed_job stop
 
 RAILS_ENV=production bundle exec rake assets:precompile
 RAILS_ENV=production bundle exec rake db:migrate
-RAILS_ENV=production bundle exec unicorn -d 
+RAILS_ENV=production bundle exec unicorn -D 
 RAILS_ENV=production bin/delayed_job -n 4 start
 echo "Done."
