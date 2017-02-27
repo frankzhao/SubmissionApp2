@@ -1,5 +1,7 @@
 # config/unicorn.rb
 is_prod = ENV['RAILS_ENV'] == 'production'
+preload_app true if is_prod
+
 if is_prod
   APP_ROOT = ENV["APP_ROOT"]
 else
@@ -16,7 +18,6 @@ if !is_prod
 else
   worker_processes 6
   timeout 60
-  preload_app true
 end
 
 listen 3000
