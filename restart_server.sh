@@ -1,7 +1,7 @@
 export RAILS_ENV=production
 echo "Stopping Existing Servers"
 kill -9 `cat ./tmp/pids/unicorn.pid`
-kill -9 `cat ./tmp/pids_delayed_job.*`
+kill -9 `cat ./tmp/pids/delayed_job.*`
 
 echo "Running Startup"
 bundle exec rake assets:precompile

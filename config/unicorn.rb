@@ -3,7 +3,7 @@ is_prod = ENV['RAILS_ENV'] == 'production'
 preload_app true if is_prod
 
 if is_prod
-  APP_ROOT = ENV["APP_ROOT"]
+  APP_ROOT = '.'
 else
   APP_ROOT = Rails.root.to_s
 end
