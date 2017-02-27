@@ -1,8 +1,14 @@
-kill -9 `pgrep rails`
-bin/delayed_job stop
+export RAILS_ENV=production
+echo "Stopping Existing Servers"
+kill -9 `cat ./tmp/pids/unicorn.pid`
+kill -9 `cat ./tmp/pids_delayed_job.*`
 
-RAILS_ENV=production bundle exec rake assets:precompile
-RAILS_ENV=production bundle exec rake db:migrate
-RAILS_ENV=production rails s -d
-RAILS_ENV=production bin/delayed_job -n 4 start
+echo "Running Startup"
+bundle exec rake assets:precompile
+bundle exec rake db:migrate
+
+echo "Starting Servers"
+bundle exec unicorn -c config/unicorn.rb -E production -D
+bin/delayed_job -n 4 start
+
 echo "Done."

@@ -1,10 +1,16 @@
 # config/unicorn.rb
-APP_ROOT = Rails.root.to_s
+is_prod = ENV['RAILS_ENV'] == 'production'
+if is_prod
+  APP_ROOT = ENV["APP_ROOT"]
+else
+  APP_ROOT = Rails.root.to_s
+end
+
 
 working_directory APP_ROOT
 pid "#{APP_ROOT}/tmp/pids/unicorn.pid"
 
-if Rails.env.development?
+if !is_prod
   worker_processes 1
   timeout 60
 else
