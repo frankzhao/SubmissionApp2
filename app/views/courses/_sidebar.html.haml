@@ -1,0 +1,21 @@
+#sidebar.col-md-3.sidebar
+  %ul.nav.sidenav
+    %li
+      %h4
+        Actions
+        .menu-icon-container
+          %span.glyphicon.glyphicon-tasks.menu-icon
+    %hr/
+    - if current_user.is_admin_or_convenor?
+      %li.sidebar-item
+        %a{:href => url_prefix + "/courses/new"}
+          %span.glyphicon.glyphicon-plus>
+          New course
+    %li.sidebar-item
+      %a{:href => url_prefix + "/assignments"}
+        %span.glyphicon.glyphicon-tasks>
+        View Assignments
+    %li.sidebar-item
+      %a{:href => url_prefix + "#{user_path(current_user)}"}
+        %span.glyphicon.glyphicon-user>
+        Profile

@@ -81,7 +81,7 @@
                           %span.glyphicon.glyphicon-exclamation-sign.warn
                           %span.warn No submission
                           %br
-                          = link_to "Add submission", "/submissions/#{a.id}/new"
+                          = link_to "Add submission", url_prefix + "/submissions/#{a.id}/new"
                         - else
                           - @user.submissions_for(a).each do |s|
                             - if s.finalised

@@ -49,10 +49,18 @@ module ApplicationHelper
       redirect_to root_path
     end
   end
+
+  def url_prefix
+    if ENV['RAILS_RELATIVE_URL_ROOT'].strip == '/'
+      ''
+    else
+      ENV['RAILS_RELATIVE_URL_ROOT'].strip
+    end
+  end
   
   # Group assignment views
   def group_assignment_path(group, assignment)
-    "/assignments/#{assignment.id}/group/#{group.id}"
+    url_prefix + "/assignments/#{assignment.id}/group/#{group.id}"
   end
 
   # Multiple flash messages

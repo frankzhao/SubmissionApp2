@@ -28,7 +28,7 @@ class Assignment < ApplicationRecord
   
   def lexer
     if self.lang == nil
-      return 'plaintext'
+      return 'text'
     else
       return Hash[SUPPORTED_LANGUAGES.zip(LEXERS)][self.lang]
     end

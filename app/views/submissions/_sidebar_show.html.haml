@@ -7,12 +7,12 @@
           %span.glyphicon.glyphicon-tasks.menu-icon
     %hr
     %li.sidebar-item
-      %a{:href => "/submissions/#{@assignment.id}/new"}
+      %a{:href => url_prefix + "/submissions/#{@assignment.id}/new"}
         %span.glyphicon.glyphicon-plus
         New submission
     - if !@submission.finalised
       %li.sidebar-item
-        %a{:href => "/submissions/#{@submission.id}/finalise"}
+        %a{:href => url_prefix + "/submissions/#{@submission.id}/finalise"}
           %span.glyphicon.glyphicon-check
           Finalise submission
     %li.sidebar-item

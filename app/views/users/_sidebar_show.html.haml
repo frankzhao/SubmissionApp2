@@ -1,0 +1,16 @@
+.col-md-3.sidebar
+  %ul#sidebar.nav.sidenav
+    %li
+      %h4
+        Actions
+        .menu-icon-container
+          %span.glyphicon.glyphicon-tasks.menu-icon
+    %hr/
+    %li.sidebar-item
+      %a{:href => url_prefix + "/courses"}
+        %span.glyphicon.glyphicon-eye-open>
+        View courses
+    %li.sidebar-item
+      %a{:href => url_prefix + "/assignments"}
+        %span.glyphicon.glyphicon-eye-open>
+        View assignments

@@ -17,7 +17,7 @@
 
 compilationResults = ->
   id = parseInt($("#submission-id").text())
-  $.ajax "/submissions/check_result",
+  $.ajax URL_PREFIX + "/submissions/check_result",
     type: "POST"
     data:
       id: id

@@ -1,5 +1,5 @@
 %h3 Convenors
-= form_for :convenor, url: "/admin", :html => {:class => "form-horizontal"} do |f|
+= form_for :convenor, url: admin_path, :html => {:class => "form-horizontal"} do |f|
   .input
     Add convenor by Uni ID :
     = f.text_field :uid 

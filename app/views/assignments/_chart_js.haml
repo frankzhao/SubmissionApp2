@@ -27,7 +27,7 @@
       $(this).tab('show')
     })
     
-    $.get("/assignments/data/" + assignment_id, function(data) {
+    $.get(URL_PREFIX + "/assignments/data/" + assignment_id, function(data) {
       var chart, chartdata, date, dates, k, l, labels, values, _i, _len;
       
       // Hourly data
@@ -40,7 +40,7 @@
       dates = [];
       for (_i = 0, _len = labels.length; _i < _len; _i++) {
         l = labels[_i];
-        date = Date.parseExact(l, 'yyyMMdd HH');
+        date = Date.parse(l);
         dates.push(iso_zero(date.getDate()) + "/" + (iso_zero(date.getMonth()+1)) + " " + iso_zero(date.getHours()) + ":00");
       }
       
@@ -54,7 +54,7 @@
       daily_dates = [];
       for (_i = 0, _len = daily_labels.length; _i < _len; _i++) {
         l = daily_labels[_i];
-        date = Date.parseExact(l+" 00", 'yyyMMdd HH');
+        date = Date.parse(l)
         daily_dates.push(iso_zero(date.getDate()) + "/" + (iso_zero(date.getMonth()+1)));
       }
       
@@ -183,7 +183,7 @@
       $(".charts").height("auto");
     });
     
-    $.get("/assignments/group_data/"+assignment_id, function(data){
+    $.get(URL_PREFIX + "/assignments/group_data/"+assignment_id, function(data){
       for (var group in data.data) {
         var group_data = data.data[group]
         var group_url = group_data["group_url"]

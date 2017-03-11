@@ -2,7 +2,7 @@
   .navbar-header
     - if current_user
       %button.navbar-toggle{"data-target" => "#nav", "data-toggle" => "collapse", :type => "button"} ☰
-    %a.navbar-brand{:href => "/"} CECS Submissions
+    %a.navbar-brand{:href => root_path} CECS Submissions
   - if current_user
     #nav.collapse.navbar-collapse
       %ul.nav.navbar-nav
@@ -88,7 +88,7 @@
       %ul.nav.navbar-nav.navbar-right
         - if current_user.is_admin?
           %li
-            %a{:href => "/admin"} Admin Dashboard
+            %a{:href => admin_path} Admin Dashboard
         %li
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
             / <span class="glyphicon glyphicon-exclamation-sign"></span>

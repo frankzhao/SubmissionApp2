@@ -12,7 +12,7 @@
       - if @all_assignments.empty?
         %p There are currently no assignments for this course.
         - if current_user.is_admin_or_convenor?
-          %a{:href => "/assignments/new/#{@course.id}"} Create assignment
+          %a{:href => url_prefix + "/assignments/new/#{@course.id}"} Create assignment
       - else
         %tr
           %th Assignment
@@ -24,7 +24,7 @@
           - @all_assignments.each do |a|
             %tr
               %td
-                %a{:href => "/assignments/#{a.id.to_s}"}= a.name
+                %a{:href => url_prefix + "/assignments/#{a.id.to_s}"}= a.name
               - if !a.due_date.nil?
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else
@@ -36,7 +36,7 @@
           - @all_assignments.each do |a|
             %tr
               %td
-                %a{:href => "/assignments/#{a.id.to_s}"}= a.name
+                %a{:href => url_prefix + "/assignments/#{a.id.to_s}"}= a.name
               - if !a.due_date.nil?
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else

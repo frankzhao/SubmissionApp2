@@ -122,7 +122,7 @@ class AssignmentsController < ApplicationController
       @course = @assignment.course
       @submissions = current_user.submissions_for(@assignment)
       if current_user.is_staff_for_course?(@course)
-        @all_submissions = Submission.where(assignment_id: @assignment.id).order(created_at: :desc)
+        @all_submissions = Submission.where(assignment_id: @assignment.id)
         @submission_hash = @all_submissions.group_by(&:id).to_h
         @finalised_submissions = @all_submissions.select{|s| s.finalised?}.group_by(&:user_id)
         @submissions_by_id = @all_submissions.group_by(&:user_id)
@@ -157,9 +157,9 @@ class AssignmentsController < ApplicationController
     assignment = Assignment.find(params[:id])
     course = assignment.course
     submissions = assignment.submissions
-    hourly_data = submissions.group("strftime('%Y%m%d %H', created_at)").count.to_a.last(24*7)
+    hourly_data = submissions.select('created_at').group("date_trunc('hour', created_at)").count.to_a.last(24*7)
     hourly_data = Hash[*hourly_data.flatten]
-    daily_data = submissions.group("strftime('%Y%m%d', created_at)").count
+    daily_data = submissions.select('created_at').group("date_trunc('day', created_at)").count
     
     unique_submission_users = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq
     finalised = submissions.where(finalised: true)
