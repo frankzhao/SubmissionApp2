@@ -13,7 +13,7 @@ class AdminController < ApplicationController
   
   def form
     enroll_convenor(params[:convenor][:uid])
-    redirect_to '/admin'
+    redirect_to admin_path
   end
   
   def become

@@ -16,7 +16,7 @@ class AssignmentExtensionsController < ApplicationController
     assignment = Assignment.find(params[:assignment_id])
     if !due_date
       flash_message :error, "Incorrect format for due date."
-      redirect_to "/assignments/#{assignment.id}/extensions/new"
+      redirect_to new_assignment_extension_path(assignment.id)
     end
     
     AssignmentExtension.create(

@@ -130,7 +130,7 @@ class AssignmentsController < ApplicationController
       end
     else
       flash_message :error, "Could not find assignment with ID=" + params[:id]
-      redirect_to '/'
+      redirect_to root_path
     end
   end
 
@@ -146,13 +146,13 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     @assignment.destroy
     
-    redirect_to '/courses'
+    redirect_to root_path
   end
   
   def data
     if !current_user.is_staff?
       flash_message :error, "You don't have permission to access that."
-      redirect_to '/'
+      redirect_to root_path
     end
     assignment = Assignment.find(params[:id])
     course = assignment.course
@@ -184,7 +184,7 @@ class AssignmentsController < ApplicationController
   def group_data
     if !current_user.is_staff?
       flash_message :error, "You don't have permission to access that."
-      redirect_to '/'
+      redirect_to root_path
     end
     
     data = Hash.new
@@ -223,7 +223,7 @@ class AssignmentsController < ApplicationController
   def groups
     if !current_user.is_staff?
       flash_message :error, "You don't have permission to access that."
-      redirect_to '/'
+      redirect_to root_path
     end
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])

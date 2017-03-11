@@ -8,13 +8,13 @@ class UsersController < ApplicationController
       @user = User.find_by_id(params[:id])
       unless current_user.is_staff? or current_user == @user
         flash_message :error, "You don't have permission to access that."
-        redirect_to '/'
+        redirect_to root_path
         return
       end
 
       if @user.nil?
         flash_message :error, "User was not found"
-        redirect_to '/'
+        redirect_to root_path
         return
       end
     end
