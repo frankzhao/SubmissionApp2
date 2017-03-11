@@ -6,7 +6,7 @@ function NotificationSetup()
 
 function NotificationUpdate(link)
 { 
-  $.get( "/users/notifications", function(data) {
+  $.get( URL_PREFIX + "/users/notifications", function(data) {
     var list = data.list;
     
     if (list == null) {
@@ -50,7 +50,7 @@ function NotificationDismiss(e)
   var link = e.href
 
   $.ajax({
-    url: "/users/notifications",
+    url: URL_PREFIX + "/users/notifications",
     type: "DELETE",
     data: {
       "id" : id,
