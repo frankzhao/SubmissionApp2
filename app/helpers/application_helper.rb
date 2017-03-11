@@ -51,7 +51,7 @@ module ApplicationHelper
   end
 
   def url_prefix
-    if ENV['RAILS_RELATIVE_URL_ROOT'].strip == '/'
+    if ENV['RAILS_RELATIVE_URL_ROOT'].nil? || ENV['RAILS_RELATIVE_URL_ROOT'].strip == '/'
       ''
     else
       ENV['RAILS_RELATIVE_URL_ROOT'].strip
