@@ -30,11 +30,11 @@ class Course < ApplicationRecord
   end
   
   def get_student_roles
-    (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}).uniq
+    (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}.map{|u| u.becomes(Student)}).uniq
   end
   
   def get_tutor_roles
-    (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}).uniq
+    (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}.map {|u| u.becomes{Student}}).uniq
   end
 
 end
