@@ -105,5 +105,5 @@ in `install/conf/*.conf` for both HTTPS and HTTP configurations. Update file pat
 LaTeX is required for PDF generation of submissions. Specifically, pdflatex and gs is required, along with the `url.sty` package. The recommended LaTeX distribution for Ubuntu is `texlive-latex-base`.
 
 ```
-apt-get install texlive-latex-base
+apt-get install texlive-full
 ```
