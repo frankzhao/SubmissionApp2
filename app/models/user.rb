@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :extensions
   has_and_belongs_to_many :assignments
+
+	has_and_belongs_to_many :groups
   
   serialize :role
 
