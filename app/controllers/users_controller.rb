@@ -20,11 +20,11 @@ class UsersController < ApplicationController
     end
 
     if current_user.is_admin?
-      @courses = Course.all
+      @courses = Course.order(created_at: :desc)
       @course_assignments = Assignment.all.group_by(&:course)
       @assignments = Assignment.all
     else
-      @courses = @user.courses
+      @courses = @user.courses.order(created_at: :desc)
       @course_assignments = @user.assignments.group_by(&:course)
       @assignments = @user.assignments.uniq
     end
