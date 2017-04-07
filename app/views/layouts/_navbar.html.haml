@@ -50,7 +50,7 @@
                   - for a in c.assignments.order(created_at: :asc)
                     %li= link_to a.name, assignment_path(a)
         - unless !current_user.is_staff? || current_user.is_admin_or_convenor?
-          - unless current_user.groups.empty?
+          - unless current_user.courses.empty?
             %li
               %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
                 Groups
