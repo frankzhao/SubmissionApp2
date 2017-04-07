@@ -8,6 +8,6 @@ class Group < ApplicationRecord
   
   def get_student_roles
     course_id = self.course.id.to_s
-    (self.students + User.all.select{|u| u.role.to_h[course_id] == "Student" }).uniq
+    (self.students + User.all.select{|u| u.role.to_h[course_id] == "Student" && u.group_id == self.id }).uniq
   end
 end
