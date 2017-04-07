@@ -17,7 +17,13 @@ class User < ApplicationRecord
   validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
     
+    
+    
   include UserAssignmentRelations
+
+  def groups
+    Group.where(id: self.group_id)
+  end
 
   def submissions_for(a)
     Submission.where(user_id: self.id, assignment_id: a.id)
