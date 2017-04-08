@@ -187,7 +187,7 @@
       for (var group in data.data) {
         var group_data = data.data[group]
         var group_url = group_data["group_url"]
-        var group_submissions_url = group_data["group_submissions_url"]
+        var group_submissions_url = URL_PREFIX + group_data["group_submissions_url"]
         $("#group-data").append(
           '<tr><td><a href='+group_url+'>'+group_data.name+'</a></td>'+
           '<td><a href='+group_url+'>'+decodeURIComponent(group_data.tutor)+'</a></td>'+
