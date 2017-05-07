@@ -16,7 +16,7 @@
           %span.glyphicon.glyphicon-check
           Finalise submission
     %li.sidebar-item
-      = link_to submission_path(@submission) + "/download", download: true do
+      = link_to submission_path(@submission) + "/download", download: true,  data: { 'no-turbolink' => true } do
         %span.glyphicon.glyphicon-floppy-save
         Download submission
     - if current_user.is_owner_or_staff?(@submission)
