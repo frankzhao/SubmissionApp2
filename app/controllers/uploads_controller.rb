@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class UploadsController < ApplicationController
   before_action :require_logged_in
 
   def download
