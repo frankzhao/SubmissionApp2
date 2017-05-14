@@ -2,16 +2,14 @@ class UploadsController < ApplicationController
   before_action :require_logged_in
 
   def download
-    path = Rails.root.join('public', 'uploads', params[:path])
+    @file = Rails.root.join('public', 'uploads', params[:path])
     
     begin
-      child?(Rails.root.to_s, path.to_s)
+      child?(Rails.root.to_s, @file.to_s)
     rescue ArgumentError
       flash_message :error, "Unknown path foubd"
       return redirect_to root_path
     end
-    
-    @file = File.open(path).read
     
     send_file @file, type: "application/octet-stream", :x_sendfile=>true 
   end
