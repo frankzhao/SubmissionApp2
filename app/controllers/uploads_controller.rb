@@ -5,10 +5,10 @@ class UploadsController < ApplicationController
     path = Rails.root.join('public', 'uploads', params[:path])
     
     begin
-      child?(Rails.root, path)
+      child?(Rails.root.to_s, path.to_s)
     rescue ArgumentError
       flash_message :error, "Unknown path foubd"
-      return redirect_to :back
+      return redirect_to root_path
     end
     
     @file = File.open(path).read
