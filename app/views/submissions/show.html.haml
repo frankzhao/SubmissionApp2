@@ -105,7 +105,7 @@
             = comment.text
           - if comment.attachment?
             %p
-              = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
+              = link_to url_prefix + comment.attachment.url, class: "btn btn-xs btn-primary" do
                 %span.glyphicon.glyphicon-download-alt
                 Download
                 = comment.attachment.file.filename
@@ -126,7 +126,7 @@
             = simple_format(comment.text)
           - if comment.attachment?
             %p
-              = link_to comment.attachment.url, class: "btn btn-xs btn-primary" do
+              = link_to url_prefix + comment.attachment.url, class: "btn btn-xs btn-primary" do
                 %span.glyphicon.glyphicon-download-alt
                 Download
                 = comment.attachment.file.filename
