@@ -2,7 +2,7 @@ class UploadsController < ApplicationController
   before_action :require_logged_in
 
   def download
-    path = Rails.root.join(params[:path])
+    path = Rails.root.join('public', 'uploads', params[:path])
     
     begin
       child?(Rails.root, path)
