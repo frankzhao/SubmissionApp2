@@ -185,17 +185,17 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     if (@submission.user == current_user) || current_user.is_staff?
       if @submission.assignment.kind == "zip"
-        send_file @submission.zipfile_path, :type=>"application/zip", :x_sendfile=>true
+        send_file @submission.zipfile_path, :type=>"application/octet-stream", :x_sendfile=>true
       else
         send_file @submission.plaintext_path, :type=>"application/plaintext", :x_sendfile=>true
       end
     else
       if @submission.assignment.kind == "zip"
-        send_file @submission.zipfile_path, :type=>"application/zip",
-          :x_sendfile=>true, filename: "Main.txt"
+        send_file @submission.zipfile_path, :type=>"application/octet-stream",
+          :x_sendfile=>true
       else
         send_file @submission.plaintext_path, :type=>"application/plaintext",
-          :x_sendfile=>true, filename: "Main.txt"
+          :x_sendfile=>true
       end
     end
   end
