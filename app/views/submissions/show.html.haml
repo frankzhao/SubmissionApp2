@@ -102,7 +102,7 @@
             - if comment.attachment?
               %span.glyphicon.glyphicon-paperclip
           %p
-            = comment.text
+            = simple_format(CGI::escapeHTML(comment.text))
           - if comment.attachment?
             %p
               = link_to url_prefix + comment.attachment.url, class: "btn btn-xs btn-primary" do
@@ -123,7 +123,7 @@
             - if comment.attachment?
               %span.glyphicon.glyphicon-paperclip
           %p
-            = simple_format(comment.text)
+            = simple_format(CGI::escapeHTML(comment.text))
           - if comment.attachment?
             %p
               = link_to url_prefix + comment.attachment.url, class: "btn btn-xs btn-primary" do
