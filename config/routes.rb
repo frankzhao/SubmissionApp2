@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   post "courses/:id/groups" => "groups#create"
   #post "courses/:id/groups/edit" => "groups#edit"
   
-  get "uploads/*path" => "uploads#download", :constraints => { :path => /[^\/]+/ }
+  get "uploads/*path" => "uploads#download"
 
   
   get "submissions/:assignment_id/new" => "submissions#new"
