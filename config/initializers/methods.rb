@@ -1,3 +1,5 @@
+require 'zip'
+
 def logmsg(str)
   puts "=== " + str + " ==="
 end

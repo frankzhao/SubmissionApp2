@@ -97,7 +97,7 @@ class Submission < ApplicationRecord
     tests = nil
     CompileCustom.run(self, tests)
   end
-  handle_asynchronously :compile_chapel, :run_at => Proc.new { Time.now }
+  handle_asynchronously :compile_custom, :run_at => Proc.new { Time.now }
   
   # PDF and other output formats ---
   

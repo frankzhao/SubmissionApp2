@@ -13,7 +13,7 @@ module CompileCustom
     command = command.gsub("$folder","#{folder}")
     command = command.gsub("$filepath","#{folder}/#{hash}.sub")
     command = command.gsub("$uid", submission.user.uid)
-    
+
     if submission.kind == "plaintext"
       command = command.gsub("$filename","#{hash}.sub")
       # Write file
@@ -26,7 +26,7 @@ module CompileCustom
     # Compile
     timeout = submission.assignment.timeout ? submission.assignment.timeout.to_s : "3"
     result = `timeout #{timeout} bash -c \'#{command} 2>&1\'`
-    
+
     comments += "#{result}"
     
     if result.downcase.include?("all tests passed")

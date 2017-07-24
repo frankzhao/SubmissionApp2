@@ -21,8 +21,11 @@ else
 end
 
 listen 3000
-stdout_path "#{APP_ROOT}/log/unicorn.log"
-stderr_path "#{APP_ROOT}/log/unicorn.log"
+
+if is_prod
+  stdout_path "#{APP_ROOT}/log/unicorn.log"
+  stderr_path "#{APP_ROOT}/log/unicorn.log"
+end
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do
