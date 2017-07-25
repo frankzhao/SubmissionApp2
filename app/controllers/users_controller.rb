@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_logged_in
   before_action :set_user, only: :show
-  before_action :check_user_privelage, only: :show
+  before_action :check_user_privilege, only: :show
 
   def me
     @user = current_user
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    User.find(user_id)
+    @user = User.find(user_id)
   end
 
   def load_user_content
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     @assignments = Assignment.all
   end
 
-  def check_user_privelage
+  def check_user_privilege
     unless current_user.is_staff? or current_user == @user
       flash_message :error, "You don't have permission to access that."
       redirect_to root_path
