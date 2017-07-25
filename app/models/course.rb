@@ -16,7 +16,7 @@ class Course < ApplicationRecord
     for u in course_users
       out_string += u.uid + "\n"
     end
-    return out_string
+    out_string
   end
 
   def students_to_csv

@@ -7,19 +7,15 @@ Rails.application.routes.draw do
   resources :assignment_extensions, only: [:create, :destroy]
 
   get "admin/index"
-  
-  get "users/notifications" => "notifications#list"
-  delete "users/notifications" => "notifications#dismiss"
 
   resources :users, only: :show do
     collection do
       get '/', action: :me
+
+      resources :notifications, only: [:index, :destroy]
     end
   end
 
-
-  # get "users/:id", :to => "users#show", :as => "user"
-  
   get "assignments/new/:course_id" => "assignments#new"
   get "assignments/data/:id" => "assignments#data"
   get "assignments/group_data/:id" => "assignments#group_data"
