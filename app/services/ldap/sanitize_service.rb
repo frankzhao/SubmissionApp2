@@ -1,7 +1,7 @@
 module Ldap
   class SanitizeService < BaseService
     def execute
-      @uid.gsub(/\r/, '').gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+      @uid.gsub(/\r/, '').gsub(/^$\n/, '')
     end
   end
 end

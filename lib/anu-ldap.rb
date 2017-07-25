@@ -42,7 +42,7 @@ module AnuLdap
     if (password.nil?) || (password.empty?)
       return false
     else
-      ldap = get_new_ldap()
+      ldap = get_new_ldap
       ldap.auth "uid=#{uni_id}, ou=people, o=anu.edu.au", password
 
       begin
@@ -60,7 +60,7 @@ module AnuLdap
     filter = Net::LDAP::Filter.eq(key_name, key_value)
     
     begin
-      entries = get_new_ldap().search(:base       => "ou=people,o=anu.edu.au",
+      entries = get_new_ldap.search(:base       => "ou=people,o=anu.edu.au",
                                       :filter     => filter,
                                       :attributes => ["uid", "mail",
                                                       "givenName", "sn", "cn"])
@@ -72,7 +72,7 @@ module AnuLdap
   end
 
   # Get a new connection to the ANU LDAP server.
-  def self.get_new_ldap()
+  def self.get_new_ldap
     Net::LDAP.new(:host       => "ldap.anu.edu.au",
                   :port       => 636,
                   :encryption => :simple_tls)
