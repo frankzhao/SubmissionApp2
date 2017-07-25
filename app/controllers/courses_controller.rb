@@ -4,14 +4,19 @@ class CoursesController < ApplicationController
 
   respond_to :html
 
+  def index
+    if current_user.is_admin?
+      @courses = Course.all
+    else
+      @courses = current_user.courses
+    end
+  end
+
   def new
     @course = Course.new
   end
 
   def create
-    course_code = params[:course_code]
-    course_name = params[:name]
-    description = params[:description]
     students    = sanitize_uids(params[:students])
     tutors      = sanitize_uids(params[:tutors])
     convenors   = sanitize_uids(params[:convenors])
@@ -21,14 +26,11 @@ class CoursesController < ApplicationController
     end
 
     # Create the course
-    c = Course.create(
-      :code => course_code,
-      :name => course_name,
-      :description => description)
+    course = Course.create!(course_params)
 
-    enroll_users(c, students, tutors, convenors)
+    enroll_users(course, students, tutors, convenors)
 
-    for u in c.users
+    for u in course.users
       u.assignments << c.assignments
     end
 
@@ -76,18 +78,6 @@ class CoursesController < ApplicationController
       end
     else
       flash_message :error, "Could not find a course with ID=" + params[:id].to_s
-      redirect_to root_path
-    end
-  end
-
-  def index
-    if current_user
-      if current_user.is_admin?
-        @courses = Course.all
-      else
-        @courses = current_user.courses
-      end
-    else
       redirect_to root_path
     end
   end
@@ -256,6 +246,13 @@ class CoursesController < ApplicationController
   
   def sanitize_uids(str)
     str.gsub(/\r/, '').gsub(/^$\n/, '').split(/\n/).reject(&:empty?)
+  end
+
+  def course_params
+    params.require(:code)
+    params.require(:name)
+    params.require(:description)
+    params.permit(:code, :name, :description)
   end
 
 end
