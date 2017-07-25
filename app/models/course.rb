@@ -9,6 +9,8 @@ class Course < ApplicationRecord
   validates :name, presence: true
   validates :code, presence: true
 
+  scope :latest, -> { order(created_at: :desc) }
+
   def users_to_csv(course_users)
     out_string = ""
     for u in course_users

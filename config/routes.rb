@@ -10,7 +10,15 @@ Rails.application.routes.draw do
   
   get "users/notifications" => "notifications#list"
   delete "users/notifications" => "notifications#dismiss"
-  get "users/:id", :to => "users#show", :as => "user"
+
+  resources :users, only: :show do
+    collection do
+      get '/', action: :me
+    end
+  end
+
+
+  # get "users/:id", :to => "users#show", :as => "user"
   
   get "assignments/new/:course_id" => "assignments#new"
   get "assignments/data/:id" => "assignments#data"
