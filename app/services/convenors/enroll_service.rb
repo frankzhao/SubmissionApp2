@@ -1,4 +1,4 @@
-module Convenor
+module Convenors
   class EnrollService < BaseService
     def execute
       ldap_user = ::Ldap::LookupService.new(@uid).execute
