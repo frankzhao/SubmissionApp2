@@ -96,6 +96,35 @@ class User < ApplicationRecord
     end
   end
 
+  def self.find_or_create_by_uid(uid)
+    user = User.find_by_uid(uid)
+
+    if user
+      user
+    else
+      ldap_user = ::Ldap::LookupService.new(uid).execute
+      User.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+    end
+  end
+
+  def add_to_course_as_student(course)
+    hash = { "#{course.id}" => "Student"}
+    user.update_attributes(role: user.role.to_h.merge(hash))
+    user.courses << c unless user.courses.include?(c)
+  end
+
+  def add_to_course_as_convenor(course)
+    hash = { "#{course.id}" => "Convenor"}
+    user.update_attributes(role: user.role.to_h.merge(hash))
+    user.courses << c unless user.courses.include?(c)
+  end
+
+  def add_to_course_as_tutor(course)
+    hash = { "#{course.id}" => "Tutor"}
+    user.update_attributes(role: user.role.to_h.merge(hash))
+    user.courses << c unless user.courses.include?(c)
+  end
+
   def password_required?
     # override blank password limitation
     false
