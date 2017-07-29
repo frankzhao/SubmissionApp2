@@ -29,11 +29,11 @@ module CompileCustom
 
     comments += "#{result}"
     
-    if result.downcase.include?("all tests passed")
-      comments += "<span class=\"glyphicon glyphicon-star good\"></span><span class=\"good\">All tests passed. Well done!</span>"
-    else
-      comments += "</span><span class=\"warn\">Your submission did not pass all test cases. Please try again.</span>"
-    end
+    # if result.downcase.include?("all tests passed")
+    #   comments += "<span class=\"glyphicon glyphicon-star good\"></span><span class=\"good\">All tests passed. Well done!</span>"
+    # else
+    #   comments += "</span><span class=\"warn\">Your submission did not pass all test cases. Please try again.</span>"
+    # end
     
     testresult = TestResult.create(submission_id: submission.id, result: comments)
     
