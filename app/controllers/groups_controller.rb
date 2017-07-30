@@ -102,14 +102,16 @@ class GroupsController < ApplicationController
             group.users << User.find_by_uid(uid)
 
             # Remove existing groups
-            for g in User.find_by_uid(uid).groups
-              if g.course == c
-                User.find_by_uid(uid).groups.delete(g)
-              end
-            end
+            # for g in User.find_by_uid(uid).groups
+            #   if g.course == c
+            #     User.find_by_uid(uid).groups.delete(g)
+            #   end
+            # end
 
+
+            group.users << User.find_by_uid(uid)
             # Add group to student's groups
-            User.find_by_uid(uid).groups << group
+            #User.find_by_uid(uid).groups << group
             counter += 1
             Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [s])
           end
@@ -121,7 +123,7 @@ class GroupsController < ApplicationController
         if t && !(group.tutor == t)
           group.user = t
           group.save!
-          t.groups << group
+          #t.groups << group
           counter += 1
         elsif t.nil?
           # Look up tutor details
@@ -133,7 +135,6 @@ class GroupsController < ApplicationController
             group.save!
             t.courses << c
             # add to group
-            group.tutor = t
             counter += 1
             Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [t])
           else
