@@ -108,6 +108,8 @@ class GroupsController < ApplicationController
               end
             end
 
+
+            group.users << User.find_by_uid(uid)
             # Add group to student's groups
             #User.find_by_uid(uid).groups << group
             counter += 1
