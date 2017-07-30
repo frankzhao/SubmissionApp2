@@ -3,6 +3,7 @@ class CoursesController < ApplicationController
   before_action :require_logged_in
   before_action :require_convenor_or_admin, :only => [:new, :create, :destroy, :edit]
   before_action :set_course, only: [:edit, :update, :show, :destroy, :groups]
+  before_action :require_part_of_course, only: [:show]
 
   respond_to :html
 
@@ -60,14 +61,6 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @all_students = @course.get_student_roles
-    @population = @all_students.count
-    @all_assignments = @course.assignments
-    @groups = @course.groups
-    if !@course.users.include?(current_user) && !current_user.is_staff?
-      flash_message :error, "You don't have permission to access that."
-      redirect_to root_path
-    end
   end
 
   def destroy
@@ -98,6 +91,13 @@ class CoursesController < ApplicationController
 
   def set_course
     @course = Course.find(course_id)
+  end
+
+  def require_part_of_course
+    unless @course.users.include?(current_user)
+      flash_message :error, "You don't have permission to access that."
+      redirect_to root_path
+    end
   end
 
   def course_params

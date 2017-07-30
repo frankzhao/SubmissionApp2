@@ -9,7 +9,7 @@
     %p= @course.description
     %h3 Assignments
     %table.table.table-hover.table-striped
-      - if @all_assignments.empty?
+      - if @course.assignments.empty?
         %p There are currently no assignments for this course.
         - if current_user.is_admin_or_convenor?
           %a{:href => url_prefix + "/assignments/new/#{@course.id}"} Create assignment
@@ -21,7 +21,7 @@
           / %th Unique Submissions
           %th Total Submissions
         - if current_user.is_staff_for_course?(@course)
-          - @all_assignments.each do |a|
+          - @course.assignments.each do |a|
             %tr
               %td
                 %a{:href => url_prefix + "/assignments/#{a.id.to_s}"}= a.name
@@ -29,11 +29,9 @@
                 %td= a.due_date.strftime("%d/%m/%Y %I:%M%p")
               - else
                 %td No due date
-              /%td= a.finalised_submissions.map(&:user).uniq.length.to_s + " of " + @population.to_s
-              /%td= a.submissions.map(&:user).uniq.count.to_s + " of " + @population.to_s
               %td= a.submissions.count.to_s
         - else
-          - @all_assignments.each do |a|
+          - @course.assignments.each do |a|
             %tr
               %td
                 %a{:href => url_prefix + "/assignments/#{a.id.to_s}"}= a.name
@@ -63,7 +61,7 @@
     - if current_user.is_staff_for_course?(@course)
       %h3#enrolments Enrolments
       %table.table.table-hover.table-striped.dataTable#enrolments-table
-        - if @all_students.nil?
+        - if @course.get_student_roles.nil?
           %p No students are enrolled in this course.
           - if current_user.is_admin_or_convenor?
             = link_to 'Enrol students', edit_course_path(@course.id)
@@ -74,7 +72,7 @@
               %th Name
               %th Group
           %tbody
-            - @all_students.each do |s|
+            - @course.get_student_roles.each do |s|
               %tr
                 %td= link_to s.uid, user_path(s)
                 %td= link_to s.firstname + " " + s.surname, user_path(s)
