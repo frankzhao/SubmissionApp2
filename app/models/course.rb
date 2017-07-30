@@ -20,15 +20,15 @@ class Course < ApplicationRecord
   end
 
   def students_to_csv
-    users_to_csv self.get_student_roles
+    users_to_csv(get_student_roles)
   end
 
   def tutors_to_csv
-    users_to_csv (self.tutors + User.select{|u| u.role["#{self.id}"] == "Tutor" unless u.role.nil?}).uniq
+    users_to_csv(get_tutor_roles)
   end
 
   def convenors_to_csv
-    users_to_csv (self.convenors + User.select{|u| u.role["#{self.id}"] == "Convenor" unless u.role.nil?}).uniq
+    users_to_csv(get_convenor_roles)
   end
   
   def get_student_roles
@@ -37,6 +37,10 @@ class Course < ApplicationRecord
   
   def get_tutor_roles
     (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}).uniq
+  end
+
+  def get_convenor_roles
+    (self.convenors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Convenor"}).uniq
   end
 
 end

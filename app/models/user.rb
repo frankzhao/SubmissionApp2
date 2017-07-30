@@ -16,9 +16,7 @@ class User < ApplicationRecord
 
   validates :uid, :uniqueness => true,
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
-    
-    
-    
+
   include UserAssignmentRelations
 
   def groups
@@ -108,26 +106,41 @@ class User < ApplicationRecord
   end
 
   def add_to_course_as_student(course)
-    hash = { "#{course.id}" => "Student"}
-    user.update_attributes(role: user.role.to_h.merge(hash))
-    user.courses << c unless user.courses.include?(c)
+    add_to_course(course, "Student")
   end
 
   def add_to_course_as_convenor(course)
-    hash = { "#{course.id}" => "Convenor"}
-    user.update_attributes(role: user.role.to_h.merge(hash))
-    user.courses << c unless user.courses.include?(c)
+    add_to_course(course, "Convenor")
   end
 
   def add_to_course_as_tutor(course)
-    hash = { "#{course.id}" => "Tutor"}
-    user.update_attributes(role: user.role.to_h.merge(hash))
-    user.courses << c unless user.courses.include?(c)
+    add_to_course(course, "Tutor")
+  end
+
+  def remove_from_course(course)
+    hash_id = course.id.to_s
+    # Remove from course
+    courses.delete(course)
+    begin
+      course.students.delete(s) # not sure why we are doing it again
+    rescue ActiveRecord::RecordNotFound
+      # ignored
+    end
+
+    s.update_attributes(role: role.to_h.delete(hash_id))
   end
 
   def password_required?
     # override blank password limitation
     false
+  end
+
+  private
+
+  def add_to_course(course, type)
+    hash = { "#{course.id}" => type}
+    update_attributes(role: role.to_h.merge(hash))
+    courses << c unless courses.include?(c)
   end
 
 end

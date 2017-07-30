@@ -21,20 +21,19 @@ class CoursesController < ApplicationController
   def create
     course = Course.create!(course_params)
 
-    service = ::Courses::EnrollService.new(@course,
+    enroll_service = ::Courses::EnrollService.new(@course,
                                            students: student_uids,
                                            tutors: tutor_uids,
                                            convenors: convenor_uids)
 
     if current_user.is_convenor?
-      service.add_convenor(current_user.uid)
+      enroll_service.add_convenor(current_user.uid)
     end
 
-    service.execute
+    enroll_service.execute
+    generate_flash_for_enrollment(enroll_service)
 
-    for u in course.users
-      u.assignments << c.assignments
-    end
+    ::Courses::AssignmentService.new(@course).execute
 
     redirect_to courses_path
   end
@@ -47,16 +46,15 @@ class CoursesController < ApplicationController
   def update
     @course.update_attributes(course_params)
 
-    service = ::Courses::EnrollService.new(@course,
+    enroll_service = ::Courses::EnrollService.new(@course,
                                            students: student_uids,
                                            tutors: tutor_uids,
                                            convenors: convenor_uids)
 
-    service.execute
+    enroll_service.execute
+    generate_flash_for_enrollment(enroll_service)
 
-    for u in @course.users
-      u.assignments << @course.assignments
-    end
+    ::Courses::AssignmentService.new(@course).execute
 
     respond_with @course
   end
@@ -82,6 +80,17 @@ class CoursesController < ApplicationController
   end
   
   private
+
+  def generate_flash_for_enrollment(service)
+    [:convenors, :students, :tutors].each do |type|
+      service.errors[type].each do |id|
+        flash_message :error, "The #{type.to_s.singularize} <#{id}> could not be found on the LDAP server."
+      end
+
+      count = service.success_count[:type]
+      flash_message :success, "Sucessfully enrolled #{count} #{type}." unless count == 0
+    end
+  end
 
   def course_id
     params.require(:id)
