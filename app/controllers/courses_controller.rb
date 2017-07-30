@@ -20,7 +20,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    course = Course.create!(course_params)
+    @course = Course.create!(course_params)
 
     enroll_service = ::Courses::EnrollService.new(@course,
                                            students: student_uids,
