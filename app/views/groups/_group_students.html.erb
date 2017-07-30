@@ -1,5 +1,5 @@
 <%- for group in groups %>
-<%- for s in group.students %>
+<%- for s in group.get_student_roles %>
 <%= "#{s.uid}, #{group.name}" %>
 <% end %>
 <% end %>
