@@ -3,19 +3,19 @@ class NotificationsController < ApplicationController
 
   def index
     @notifications = current_user.notifications
-    render :json => { list: @notifications }
+    render json: { list: @notifications }
   end
 
   def destroy
   	notification = current_user.notifications.find(params[:id])
 
-  	if !notification.nil?
+  	if notification
       current_user.notifications.delete(notification)
       notification.destroy
 
-  		render :json => { link: notification.link }, :status => 200
+  		render json: { link: notification.link }, status: 200
   	else
-  		render :json => { :error => "Unable to find Notification"}, :status => 404
+  		render json: { :error => "Unable to find Notification"}, status: 404
   	end
   end
 end
