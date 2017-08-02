@@ -1,6 +1,7 @@
 class Assignment < ApplicationRecord
   belongs_to :course
   has_many :submissions
+  has_many :comments, through: :submissions
   has_many :assignment_extensions, dependent: :destroy
   has_and_belongs_to_many :users
 
