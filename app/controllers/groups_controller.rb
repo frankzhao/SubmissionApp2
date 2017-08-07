@@ -116,7 +116,7 @@ class GroupsController < ApplicationController
 
             old_user = User.find_by_uid(uid)
 
-            if old_user.groups.respond_to(:<<)
+            if old_user.groups.respond_to?(:<<)
               old_user.groups << group
             end
 
