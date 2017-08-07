@@ -101,17 +101,24 @@ class GroupsController < ApplicationController
           if !group.users.include?(s)
             group.users << User.find_by_uid(uid)
 
-            # Remove existing groups
-            # for g in User.find_by_uid(uid).groups
-            #   if g.course == c
-            #     User.find_by_uid(uid).groups.delete(g)
-            #   end
-            # end
+            Remove existing groups
+            for g in User.find_by_uid(uid).groups
+              if g.course == c && User.find_by_uid(uid).is_a?(Student)
+                User.find_by_uid(uid).groups.delete(g)
+              end
+            end
 
 
             group.users << User.find_by_uid(uid)
             # Add group to student's groups
-            #User.find_by_uid(uid).groups << group
+
+
+            old_user = User.find_by_uid(uid)
+
+            if old_user.groups.respond_to(:<<)
+              old_user.groups << group
+            end
+
             counter += 1
             Notification.create_and_distribute("You have been enrolled as #{type} for #{c.code}: #{group.name}", group_path(group), [s])
           end
