@@ -87,6 +87,7 @@ class GroupsController < ApplicationController
 
     # Check if the group exists
     c = Course.find(c)
+    c.groups.delete_all
     group = c.groups.find_by_name(g)
     if !group
       new_group = Group.create(:name => g, :course => c)
