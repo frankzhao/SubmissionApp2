@@ -102,7 +102,7 @@ class GroupsController < ApplicationController
           if !group.users.include?(s)
             group.users << User.find_by_uid(uid)
 
-            Remove existing groups
+            # Remove existing groups
             for g in User.find_by_uid(uid).groups
               if g.course == c && User.find_by_uid(uid).is_a?(Student)
                 User.find_by_uid(uid).groups.delete(g)
