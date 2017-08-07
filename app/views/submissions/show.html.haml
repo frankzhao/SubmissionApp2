@@ -71,10 +71,10 @@
         - if @submission.test_result
           = simple_format @submission.test_result.result
         - else
-          // :javascript
-          //   setTimeout(function(){
-          //     window.location.reload();
-          //   }, 2000);
+          :javascript
+             setTimeout(function(){
+               window.location.reload();
+             }, 2000);
           %p Compiling...
           .compile-spinner
             .rect1
