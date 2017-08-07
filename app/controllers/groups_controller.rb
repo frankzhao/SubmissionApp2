@@ -103,11 +103,11 @@ class GroupsController < ApplicationController
             group.users << User.find_by_uid(uid)
 
             # Remove existing groups
-            for g in User.find_by_uid(uid).groups
-              if g.course == c && User.find_by_uid(uid).is_a?(Student)
-                User.find_by_uid(uid).groups.delete(g)
-              end
-            end
+            # for g in User.find_by_uid(uid).groups
+            #   if g.course == c && User.find_by_uid(uid).is_a?(Student)
+            #     User.find_by_uid(uid).groups.delete(g)
+            #   end
+            # end
 
 
             group.users << User.find_by_uid(uid)
