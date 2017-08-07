@@ -11,7 +11,10 @@ class GroupsController < ApplicationController
     course = params[:course_id]
     students = sanitize_uids(params[:students])
     tutors = sanitize_uids(params[:tutors])
-    
+
+    c = Course.find(course)
+    c.groups.delete_all
+
     # Clean up empty CSV rows
     out = Array.new
     for s in students
@@ -87,7 +90,6 @@ class GroupsController < ApplicationController
 
     # Check if the group exists
     c = Course.find(c)
-    c.groups.delete_all
     group = c.groups.find_by_name(g)
     if !group
       new_group = Group.create(:name => g, :course => c)
