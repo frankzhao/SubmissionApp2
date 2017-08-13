@@ -48,7 +48,7 @@ class SubmissionsController < ApplicationController
       File.open(file_path, 'wb') do |file|
         file.write(params[:plaintext])
       end
-      
+
       # Run tests
       unless @assignment.disable_compilation
         if @assignment.custom_compilation
@@ -72,6 +72,15 @@ class SubmissionsController < ApplicationController
       
       File.open(zip_path, 'wb') do |file|
         file.write(uploaded_zip.read)
+      end
+
+      zip_check = `file #{zip_path}`.match(/Zip/).present?
+
+      unless zip_check
+        `rm -rf #{zip_path}`
+        @submission.destroy
+        flash_message :error, "Your submission is not a zip archive. Please resubmit it as a zip."
+        return redirect_to assignment_path(@assignment)
       end
       
       if @assignment.custom_compilation
