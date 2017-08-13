@@ -34,7 +34,7 @@
                   = link_to g.name, group_path(g)
                   %br
             %td
-              - c.assignments.each do |a|
+              - c.assignments.order(due_date: :desc).each do |a|
                 = link_to a.name, assignment_path(a)
                 %br
     %h3 Your Groups
