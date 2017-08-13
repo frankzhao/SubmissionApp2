@@ -67,9 +67,6 @@ gem 'pygments.rb', :require => 'pygments'
 # Encoding
 gem 'unidecoder'    # TODO ISO-8859-1 compatibility
 
-# History.js
-gem "nprogress-rails"
-
 # Faster json
 gem "oj"
 gem "oj_mimic_json"

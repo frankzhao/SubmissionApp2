@@ -5,7 +5,12 @@ class UsersController < ApplicationController
 
   def me
     @user = current_user
-    load_admin_content
+
+    if @user.is_admin?
+      load_admin_content
+    else
+      load_user_content
+    end
 
     render 'show'
   end
