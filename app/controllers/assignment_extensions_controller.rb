@@ -25,7 +25,7 @@ class AssignmentExtensionsController < ApplicationController
     )
     
     # Notify
-    Notification.create_and_distribute("You have been granted an extension for #{@assignment.name} until #{due_date.strftime('%d/%m/%Y %I:%M%p')}", assignment_path(assignment), [student])
+    Notification.create_and_distribute("You have been granted an extension for #{@assignment.name} until #{due_date.strftime('%d/%m/%Y %I:%M%p')}", assignment_path(@assignment), [student])
     
     redirect_to assignment_path(@assignment)
   end
