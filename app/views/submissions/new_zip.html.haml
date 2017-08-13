@@ -10,5 +10,5 @@
       %input{name: "assignment_id", type: "hidden", value: @assignment.id}
       %p
         Upload your zip file, then click submit.
-      = f.file_field :zipfile
+      = f.file_field :zipfile, accept: 'application/zip'
       %button{type: "submit", class: "btn btn-primary", style: "float: right; margin-top: 1em;"} Submit
