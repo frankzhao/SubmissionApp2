@@ -144,8 +144,13 @@
               "dom": '<<"top"lf><"top-pagination"p><t>ip>'
             }
 
-            var allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
-            var finalised_table = $('#finalised-table').DataTable(tableoptions);
+            var allsubmissions_table = null;
+            var finalised_table = null;
+
+            document.addEventListener("turbolinks:load", function() {
+              allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
+              finalised_table = $('#finalised-table').DataTable(tableoptions);
+            }
 
             document.addEventListener("turbolinks:before-cache", function() {
               allsubmissions_table.destroy();
