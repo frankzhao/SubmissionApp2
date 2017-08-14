@@ -142,8 +142,13 @@
               "dom": '<<"top"lf><"top-pagination"p><t>ip>'
             }
 
-            $('#allsubmissions-table').DataTable(tableoptions);
-            $('#finalised-table').DataTable(tableoptions);
+            var allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
+            var finalised_table = $('#finalised-table').DataTable(tableoptions);
+
+            document.addEventListener("turbolinks:before-cache", function() {
+              allsubmissions_table.destroy();
+              finalised_table.destroy()
+            });
   = render 'sidebar_show'
 
 -# Chart

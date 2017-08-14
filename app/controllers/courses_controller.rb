@@ -94,7 +94,7 @@ class CoursesController < ApplicationController
   end
 
   def require_part_of_course
-    unless @course.users.include?(current_user)
+    unless @course.users.include?(current_user) || current_user.is_admin?
       flash_message :error, "You don't have permission to access that."
       redirect_to root_path
     end

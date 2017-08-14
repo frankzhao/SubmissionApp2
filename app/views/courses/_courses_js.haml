@@ -7,4 +7,8 @@
     "dom": '<<"top"lf><"top-pagination"p><t>ip>'
   }
 
-  $('#enrolments-table').DataTable(tableoptions);
+  var enrolments_table = $('#enrolments-table').DataTable(tableoptions);
+
+  document.addEventListener("turbolinks:before-cache", function() {
+    enrolments_table.destroy();
+  });

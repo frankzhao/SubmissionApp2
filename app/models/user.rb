@@ -62,11 +62,11 @@ class User < ApplicationRecord
   end
 
   def is_admin_or_convenor?
-    self.type == "Admin" or self.is_convenor?
+    self.type == "Admin" || self.is_convenor?
   end
 
   def is_staff?
-    (self.is_admin_or_convenor? or self.type == "Tutor")  || self.role.to_h.values.include?("Tutor")
+    (self.is_admin_or_convenor? || self.type == "Tutor")  || self.role.to_h.values.include?("Tutor")
   end
   
   def is_staff_for_course?(course)
