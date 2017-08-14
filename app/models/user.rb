@@ -5,7 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :authentication_keys => [:uid]
 
-  has_and_belongs_to_many :courses
+  has_many :course_roles
+  has_many :courses, through: :course_roles
+  
   has_many :submissions
   has_many :comments
   has_many :notifications
