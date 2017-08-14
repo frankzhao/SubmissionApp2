@@ -10,7 +10,9 @@
   var enrolments_table = null;
 
   document.addEventListener("turbolinks:load", function() {
-    enrolments_table = $('#enrolments-table').DataTable(tableoptions);
+    if (enrolments_table !== null) {
+      enrolments_table = $('#enrolments-table').DataTable(tableoptions);
+    }
   });
 
   document.addEventListener("turbolinks:before-cache", function() {
