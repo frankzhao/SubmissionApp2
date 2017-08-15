@@ -30,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def recent_submission_for(a)
-    self.submissions.select { |s| s.user == self and s.assignment == a}.last
+    submissions_for(a).order(created_at: :desc).first
   end
 
   # == Helper methods ==
