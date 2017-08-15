@@ -47,32 +47,37 @@ class User < ApplicationRecord
     read_attribute(:surname).to_s.encode("ISO-8859-1").to_ascii
   end
 
-  def is_admin?
-    self.type == "Admin"
+  def is_convenor_for_course?(course)
+    CourseRole.where(user: self, course: course, role: 'convenor').exists?
   end
-  
-  def is_tutor?(course)
-    self.role.to_h[course.id.to_s] == "Tutor" #|| self.type == "Tutor"
+
+  def is_tutor_for_course?(course)
+    CourseRole.where(user: self, course: course, role: 'tutor').exists?
+  end
+
+  def is_tutor?
+    CourseRole.where(user: self, role: 'tutor').exists?
   end
 
   def is_convenor?
-    self.type == "Convenor" || self.role.to_h.values.include?("Convenor")
+    # remove type with convenor boolean
+    type == "Convenor" || CourseRole.where(user: self, role: 'convenor').exists?
   end
-  
-  def is_convenor_for_course?(course)
-    self.type == "Convenor" || self.role.to_h[course.id.to_s] == "Convenor"
+
+  def is_admin?
+    type == "Admin"
   end
 
   def is_admin_or_convenor?
-    self.type == "Admin" || self.is_convenor?
+    is_admin? || is_convenor?
   end
 
   def is_staff?
-    (self.is_admin_or_convenor? || self.type == "Tutor")  || self.role.to_h.values.include?("Tutor")
+    is_admin_or_convenor? || is_tutor?
   end
   
   def is_staff_for_course?(course)
-    self.is_admin_or_convenor? || self.is_tutor?(course)
+    is_admin? || is_convenor_for_course?(course) || is_tutor_for_course?(course)
   end
   
   def is_owner_or_staff?(resource)
