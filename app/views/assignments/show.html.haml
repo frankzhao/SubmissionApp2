@@ -148,8 +148,10 @@
             var finalised_table = null;
 
             document.addEventListener("turbolinks:load", function() {
-              allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
-              finalised_table = $('#finalised-table').DataTable(tableoptions);
+              if (!allsubmissions_table)
+                allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
+              if (!finalised_table)
+                finalised_table = $('#finalised-table').DataTable(tableoptions);
             });
 
             document.addEventListener("turbolinks:before-cache", function() {
