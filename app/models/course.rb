@@ -10,14 +10,6 @@ class Course < ApplicationRecord
 
   scope :latest, -> { order(created_at: :desc) }
 
-  def users_to_csv(course_users)
-    out_string = ""
-    for u in course_users
-      out_string += u.uid + "\n"
-    end
-    out_string
-  end
-
   def students_to_csv
     users_to_csv(get_student_roles)
   end
@@ -31,15 +23,24 @@ class Course < ApplicationRecord
   end
   
   def get_student_roles
-    (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}).uniq
+    get_roles('student')
   end
   
   def get_tutor_roles
-    (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}).uniq
+    get_roles('tutor')
   end
 
   def get_convenor_roles
-    (self.convenors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Convenor"}).uniq
+    get_roles('convenor')
   end
 
+  private
+
+  def users_to_csv(users)
+    users.pluck(:uid).join("\n")
+  end
+
+  def get_roles(role)
+    User.where(id: CourseRole.where(course: self, role: role).pluck(:user_id))
+  end
 end

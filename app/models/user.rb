@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   has_many :course_roles
   has_many :courses, through: :course_roles
-  
+
   has_many :submissions
   has_many :comments
   has_many :notifications
