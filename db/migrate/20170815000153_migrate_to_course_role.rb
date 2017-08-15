@@ -4,6 +4,8 @@ end
 
 class MigrateToCourseRole < ActiveRecord::Migration[5.0]
   def up
+
+
     # migrate the role field in users
     ActiveRecord::Base.transaction do
       # delete the stupid test user
@@ -38,7 +40,7 @@ class MigrateToCourseRole < ActiveRecord::Migration[5.0]
 
         next if user.role.to_h[course.id.to_s].present?
 
-        is_tutor = Group.where(tutor_id: user.id).exists? || Group.where(user_id: user.id).exists?
+        is_tutor = Group.where(tutor_id: user.id, course: course).exists? || Group.where(user_id: user.id, course: course).exists?
 
         if is_tutor
           CourseRole.create!(user: user, course: course, role: 'tutor')
@@ -54,6 +56,10 @@ class MigrateToCourseRole < ActiveRecord::Migration[5.0]
         next if course.nil?
 
         next if user.role.to_h[course.id.to_s].present?
+
+        # check for repeat
+        repeat = CourseRole.find_by(user: user, course: course)
+        next if repeat && repeat.role == 'student'
 
         CourseRole.create!(user: user, course: course, role: 'student')
       end
