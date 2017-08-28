@@ -47,7 +47,7 @@ module Assignments
 
     def notify_users
       Notification.create_and_distribute("New assignment: " + @assignment.name,
-                                         Rails.application.routes.url_helpers.assignment_path(assignment), c.users)
+                                         Rails.application.routes.url_helpers.assignment_path(assignment), @course.users)
       ::Courses::AssignmentService.new(@course).execute
     end
   end
