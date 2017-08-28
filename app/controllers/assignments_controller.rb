@@ -12,10 +12,11 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    assignment = ::Assignments::CreateService(@course, params: params)
+    assignment = ::Assignments::CreateService.new(@course, params: params)
+    assignment = assignment.execute
 
     unless assignment
-      flash_message :error, "Could not create the course. Please check the input fields."
+      flash_message :error, "Could not create the Assignment. Please check the input fields."
     end
 
     redirect_to course_path(course)

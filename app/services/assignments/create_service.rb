@@ -11,6 +11,7 @@ module Assignments
     def execute
       create_assignment
       notify_users
+      @assignment
     end
 
     private
