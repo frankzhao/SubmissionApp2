@@ -1,21 +1,21 @@
 class NotificationsController < ApplicationController
 	before_action :require_logged_in
 
-	respond_to :js
-
-  def dismiss
-  	notification = Notification.find(params[:id])
-
-  	if !notification.nil?
-      current_user.notifications.delete(notification)
-      notification.destroy
-  		render :json => {link: notification.link}, :status => 200
-  	else
-  		render :json => { :error => "Unable to find Notification"}, :status => 404
-  	end
+  def index
+    @notifications = current_user.notifications
+    render json: { list: @notifications }
   end
 
-  def list
-  	render :json => { "list" => current_user.notifications }
+  def destroy
+  	notification = current_user.notifications.find(params[:id])
+
+  	if notification
+      current_user.notifications.delete(notification)
+      notification.destroy
+
+  		render json: { link: notification.link }, status: 200
+  	else
+  		render json: { :error => "Unable to find Notification"}, status: 404
+  	end
   end
 end

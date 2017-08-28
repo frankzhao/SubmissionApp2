@@ -134,7 +134,6 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
-    nprogress-rails (0.2.0.2)
     oj (2.18.1)
     oj_mimic_json (1.0.1)
     orm_adapter (0.5.0)
@@ -260,7 +259,6 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-rails
   net-ldap
-  nprogress-rails
   oj
   oj_mimic_json
   pg

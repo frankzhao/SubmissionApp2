@@ -1,76 +1,32 @@
 class AssignmentsController < ApplicationController
   before_action :require_logged_in
   before_action :require_convenor_or_admin, :except => [:show, :index, :groups, :data, :download_all_submissions_for_group, :group_data, :download_group_archives, :download_group_archives, :download_all_finals]
-  before_action :require_staff, :only => [:download_all_submissions_for_group, :download_group_archives, :download_all_finals]
+  before_action :require_staff, :only => [:data, :group_data, :download_all_submissions_for_group, :download_group_archives, :download_all_finals, :groups]
+  before_action :set_course, only: [:new, :create]
+  before_action :set_assignment, except: [:new, :create, :index]
 
   require 'zip'
   
   def new
     @assignment = Assignment.new
-    if params[:course_id] && Course.find_by_id(params[:course_id])
-      @course = Course.find_by_id(params[:course_id])
-    else
-      flash_message :error, "The course with ID=" + params[:course_id].to_s + " was not found."
-      redirect_to courses_url
-    end
   end
 
   def create
-    course = params[:course_id]
-    name = params[:assignment_name]
-    date_due = params[:date_due]
-    text = params[:text]
-    tests = params[:tests]
-    peer_review = params[:assignment][:peer_review_enabled]
-    copy_path = params[:assignment][:copy_path]
+    assignment = ::Assignments::CreateService.new(@course, params: params)
+    assignment = assignment.execute
 
-    if course && Course.find(course)
-      c = Course.find(course)
-
-      # Parse due date
-      date_due = Chronic.parse(date_due, :endian_precedence => [:little, :median])
-      assignment = Assignment.create(
-        :name => name,
-        :due_date => date_due,
-        :description => text,
-        :kind => params[:assignment][:kind],
-        :tests => tests,
-        :peer_review_enabled => peer_review,
-        :copy_path => copy_path,
-        :disable_compilation => params[:assignment][:disable_compilation],
-        :lang => params[:assignment][:lang],
-        :custom_compilation => params[:assignment][:custom_compilation],
-        :custom_command => params[:assignment][:custom_command],
-        :pdf_regex => params[:assignment][:pdf_regex],
-        :zip_regex => params[:assignment][:zip_regex],
-        :timeout => params[:assignment][:timeout]
-      )
-      # Add assignment to the course
-      c.assignments << assignment
-      
-      # Distribute and notify assignment to users in the course
-      if assignment
-        notification = Notification.create_and_distribute("New assignment: " + assignment.name, assignment_path(assignment), c.users)
-        for u in c.users
-          u.assignments << assignment
-        end
-      else
-        flash_message :error, "Could not create the course. Please check the input fields."
-      end
-    else
-      flash_message :error, "Could not find course with ID=" + course.to_s
+    unless assignment
+      flash_message :error, "Could not create the Assignment. Please check the input fields."
     end
 
-    redirect_to course_path(course)
+    redirect_to course_path(@course)
   end
 
   def edit
-    @assignment = Assignment.find(params[:id])
     @course = @assignment.course
   end
   
   def update
-    @assignment = Assignment.find(params[:id])
     old_folder = sanitize_str(@assignment.name)
     new_folder = sanitize_str(params[:assignment_name])
 
@@ -117,20 +73,14 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    if params[:id] && Assignment.find_by_id(params[:id])
-      @assignment = Assignment.find_by_id(params[:id])
-      @course = @assignment.course
-      @submissions = current_user.submissions_for(@assignment)
-      if current_user.is_staff_for_course?(@course)
-        @all_submissions = Submission.where(assignment_id: @assignment.id)
-        @submission_hash = @all_submissions.group_by(&:id).to_h
-        @finalised_submissions = @all_submissions.select{|s| s.finalised?}.group_by(&:user_id)
-        @submissions_by_id = @all_submissions.group_by(&:user_id)
-        @comments = @all_submissions.map(&:comments).flatten.group_by(&:submission_id)
-      end
-    else
-      flash_message :error, "Could not find assignment with ID=" + params[:id]
-      redirect_to root_path
+    @course = @assignment.course
+    @submissions = current_user.submissions_for(@assignment)
+    if current_user.is_staff_for_course?(@course)
+      @all_submissions = Submission.where(assignment_id: @assignment.id)
+      @submission_hash = @all_submissions.group_by(&:id).to_h
+      @finalised_submissions = @all_submissions.select{|s| s.finalised?}.group_by(&:user_id)
+      @submissions_by_id = @all_submissions.group_by(&:user_id)
+      @comments = @all_submissions.map(&:comments).flatten.group_by(&:submission_id)
     end
   end
 
@@ -143,20 +93,14 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    @assignment = Assignment.find(params[:id])
     @assignment.destroy
     
     redirect_to root_path
   end
   
   def data
-    if !current_user.is_staff?
-      flash_message :error, "You don't have permission to access that."
-      redirect_to root_path
-    end
-    assignment = Assignment.find(params[:id])
-    course = assignment.course
-    submissions = assignment.submissions
+    course = @assignment.course
+    submissions = @assignment.submissions
     hourly_data = submissions.select('created_at').group("date_trunc('hour', created_at)").count.to_a.last(24*7)
     hourly_data = Hash[*hourly_data.flatten]
     daily_data = submissions.select('created_at').group("date_trunc('day', created_at)").count
@@ -164,10 +108,10 @@ class AssignmentsController < ApplicationController
     unique_submission_users = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq
     finalised = submissions.where(finalised: true)
     finalised_count = finalised.map(&:user).uniq.count
-    submission_count = assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq.count
+    submission_count = @assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq.count
     notfinalised = submission_count - finalised_count
-    nonsubmissions = (assignment.course.get_student_roles.count - unique_submission_users.count)
-    commented_submissions = assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student" && s.comments.present?)}.map(&:user).uniq.count
+    nonsubmissions = (@assignment.course.get_student_roles.count - unique_submission_users.count)
+    commented_submissions = @assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student" && s.comments.present?)}.map(&:user).uniq.count
     uncommented_submissions = (submission_count - commented_submissions)
     
     render :json => {
@@ -182,16 +126,10 @@ class AssignmentsController < ApplicationController
   end
   
   def group_data
-    if !current_user.is_staff?
-      flash_message :error, "You don't have permission to access that."
-      redirect_to root_path
-    end
-    
     data = Hash.new
-    assignment = Assignment.find(params[:id])
-    submissions = assignment.submissions
+    submissions = @assignment.submissions
     finalised = submissions.select{|s| s.finalised?}
-    course = assignment.course
+    course = @assignment.course
     groups = course.groups
     
     groups_hash = Hash.new
@@ -211,7 +149,7 @@ class AssignmentsController < ApplicationController
       group_data["submissions"] = submission_count
       group_data["tutor"] = group.user.present? ? URI::escape(group.user.full_name.to_s) : "None"
       group_data["group_url"] = group_path(group)
-      group_data["group_submissions_url"] = "/assignments/#{assignment.id}/group/#{group.id}"
+      group_data["group_submissions_url"] = "/assignments/#{@assignment.id}/group/#{group.id}"
       
       data[group.name] = group_data
     end
@@ -221,11 +159,6 @@ class AssignmentsController < ApplicationController
   
   # Assignment group views
   def groups
-    if !current_user.is_staff?
-      flash_message :error, "You don't have permission to access that."
-      redirect_to root_path
-    end
-    @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
     @submissions = @assignment.submissions.select{
       |s| @group.users.include?(s.user)
@@ -236,8 +169,6 @@ class AssignmentsController < ApplicationController
   end
   
   def download_all_submissions
-    @assignment = Assignment.find(params[:assignment_id])
-    
     if @assignment.submissions.blank?
       flash_message :error, "Assignment has no submissions for download."
       redirect_to :back
@@ -273,7 +204,6 @@ class AssignmentsController < ApplicationController
   end
   
   def download_all_submissions_for_group
-    @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:group_id])
     group_submissions = Array.new
     for s in @group.users
@@ -316,7 +246,6 @@ class AssignmentsController < ApplicationController
   end
   
   def download_all_finals
-    @assignment = Assignment.find(params[:assignment_id])
     @course = @assignment.course
     final_submissions = []
     for s in @course.get_student_roles
@@ -359,8 +288,7 @@ class AssignmentsController < ApplicationController
   
   def download_group_archives
     @group = Group.find(params[:group_id])
-    @assignment = Assignment.find(params[:assignment_id])
-    
+
     group_submissions = []
     for s in @group.users
       student_submissions = s.submissions_for(@assignment)
@@ -423,27 +351,40 @@ class AssignmentsController < ApplicationController
   end
 
   def show_hidden_comments
-    assignment = Assignment.find(params[:assignment_id])
-    for submission in assignment.submissions
-      for comment in submission.comments
-        if comment.hidden && !comment.visible
-          comment.update_attributes(hidden: false)
-        end
+    @assignment = Assignment.find(params[:assignment_id])
+    for comment in @assignment.comments
+      if comment.hidden && !comment.visible
+        comment.update_attributes(hidden: false)
       end
     end
-    redirect_to assignment_path(assignment)
+    redirect_to assignment_path(@assignment)
   end
 
   def hide_hidden_comments
-    assignment = Assignment.find(params[:assignment_id])
-    for submission in assignment.submissions
-      for comment in submission.comments
-        if !comment.hidden && !comment.visible
-          comment.update_attributes(hidden: true)
-        end
+    @assignment = Assignment.find(params[:assignment_id])
+    for comment in @assignment.comments
+      if !comment.hidden && !comment.visible
+        comment.update_attributes(hidden: true)
       end
     end
-    redirect_to assignment_path(assignment)
+    redirect_to assignment_path(@assignment)
   end
-  
+
+  private
+
+  def set_course
+    if params[:course_id]
+      @course = Course.find_by_id(params[:course_id])
+
+      if @course.nil?
+        flash_message :error, "The course with ID=" + params[:course_id].to_s + " was not found."
+        redirect_to courses_url
+      end
+    end
+  end
+
+  def set_assignment
+    @assignment = Assignment.find(params[:id] || params[:assignment_id])
+  end
+
 end

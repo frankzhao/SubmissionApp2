@@ -7,11 +7,15 @@ Rails.application.routes.draw do
   resources :assignment_extensions, only: [:create, :destroy]
 
   get "admin/index"
-  
-  get "users/notifications" => "notifications#list"
-  delete "users/notifications" => "notifications#dismiss"
-  get "users/:id", :to => "users#show", :as => "user"
-  
+
+  resources :users, only: :show do
+    collection do
+      get '/', action: :me
+
+      resources :notifications, only: [:index, :destroy]
+    end
+  end
+
   get "assignments/new/:course_id" => "assignments#new"
   get "assignments/data/:id" => "assignments#data"
   get "assignments/group_data/:id" => "assignments#group_data"
@@ -47,7 +51,7 @@ Rails.application.routes.draw do
   devise_for :users
   devise_scope :user do
     authenticated :user do
-      root :to => 'users#show'
+      root :to => 'users#me'
     end
     unauthenticated :user do
       root :to => 'devise/sessions#new', as: :unauthenticated_root

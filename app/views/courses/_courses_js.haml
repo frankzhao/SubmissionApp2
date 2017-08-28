@@ -7,4 +7,14 @@
     "dom": '<<"top"lf><"top-pagination"p><t>ip>'
   }
 
-  $('#enrolments-table').DataTable(tableoptions);
+  var enrolments_table = null;
+
+  document.addEventListener("turbolinks:load", function() {
+    if (enrolments_table !== null) {
+      enrolments_table = $('#enrolments-table').DataTable(tableoptions);
+    }
+  });
+
+  document.addEventListener("turbolinks:before-cache", function() {
+    enrolments_table.destroy();
+  });

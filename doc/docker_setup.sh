@@ -29,6 +29,6 @@ sudo apt-get install docker-ce
 echo "Configuring docker"
 sudo groupadd docker
 
-sudo gpasswd -a $USER docker
+sudo gpasswd -a subapp2 docker
 
 echo "Installation complete!"

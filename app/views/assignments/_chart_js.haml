@@ -181,6 +181,17 @@
       $("#chart-spinner").addClass("hidden");
       $(".chart-title").fadeIn();
       $(".charts").height("auto");
+
+      document.addEventListener("turbolinks:before-cache", function() {
+        chart.destroy();
+        daily_chart.destroy();
+        submissions_chart.destroy();
+        comments_chart.destroy();
+        $("#submissions-chart-legend").empty();
+        $("#comments-chart-legend").empty();
+
+        $('#group-data').empty();
+      });
     });
     
     $.get(URL_PREFIX + "/assignments/group_data/"+assignment_id, function(data){

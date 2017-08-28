@@ -46,12 +46,14 @@
         .spinner#groups-spinner
           .double-bounce1
           .double-bounce2
-        %table.table.table-hover.table-striped#group-data
-          %tr
-            %th Group
-            %th Tutor
-            %th Finalised submissions
-            %th Unique submissions
+        %table.table.table-hover.table-striped
+          %thead
+            %tr
+              %th Group
+              %th Tutor
+              %th Finalised submissions
+              %th Unique submissions
+          %tbody#group-data
 
     - if current_user.is_admin_or_convenor?
       %h3 Extensions
@@ -142,8 +144,20 @@
               "dom": '<<"top"lf><"top-pagination"p><t>ip>'
             }
 
-            $('#allsubmissions-table').DataTable(tableoptions);
-            $('#finalised-table').DataTable(tableoptions);
+            var allsubmissions_table = null;
+            var finalised_table = null;
+
+            document.addEventListener("turbolinks:load", function() {
+              if (!allsubmissions_table)
+                allsubmissions_table = $('#allsubmissions-table').DataTable(tableoptions);
+              if (!finalised_table)
+                finalised_table = $('#finalised-table').DataTable(tableoptions);
+            });
+
+            document.addEventListener("turbolinks:before-cache", function() {
+              if (allsubmissions_table) allsubmissions_table.destroy();
+              if (finalised_table) finalised_table.destroy()
+            });
   = render 'sidebar_show'
 
 -# Chart

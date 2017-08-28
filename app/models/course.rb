@@ -1,40 +1,50 @@
 class Course < ApplicationRecord
   has_many :groups, dependent: :destroy
   has_many :assignments, dependent: :destroy
-  has_and_belongs_to_many :students
-  has_and_belongs_to_many :convenors
-  has_and_belongs_to_many :users
-  has_many :tutors
+
+  has_many :course_roles
+  has_many :users, through: :course_roles
 
   validates :name, presence: true
   validates :code, presence: true
 
-  def users_to_csv(course_users)
-    out_string = ""
-    for u in course_users
-      out_string += u.uid + "\n"
-    end
-    return out_string
-  end
+  scope :latest, -> { order(created_at: :desc) }
 
   def students_to_csv
-    users_to_csv self.get_student_roles
+    users_to_csv(get_student_roles)
   end
 
   def tutors_to_csv
-    users_to_csv (self.tutors + User.select{|u| u.role["#{self.id}"] == "Tutor" unless u.role.nil?}).uniq
+    users_to_csv(get_tutor_roles)
   end
 
   def convenors_to_csv
-    users_to_csv (self.convenors + User.select{|u| u.role["#{self.id}"] == "Convenor" unless u.role.nil?}).uniq
+    users_to_csv(get_convenor_roles)
   end
   
   def get_student_roles
-    (self.students + User.all.select{|u| u.role.to_h[self.id.to_s] == "Student"}).uniq
+    get_roles('student')
   end
   
   def get_tutor_roles
-    (self.tutors + User.all.select{|u| u.role.to_h[self.id.to_s] == "Tutor"}).uniq
+    get_roles('tutor')
   end
 
+  def get_convenor_roles
+    get_roles('convenor')
+  end
+
+  alias_method :students, :get_student_roles
+  alias_method  :tutors, :get_tutor_roles
+  alias_method :convenors, :get_convenor_roles
+
+  private
+
+  def users_to_csv(users)
+    users.pluck(:uid).join("\n")
+  end
+
+  def get_roles(role)
+    User.where(id: CourseRole.where(course: self, role: role).pluck(:user_id))
+  end
 end
