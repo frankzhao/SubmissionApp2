@@ -19,7 +19,7 @@ class AssignmentsController < ApplicationController
       flash_message :error, "Could not create the Assignment. Please check the input fields."
     end
 
-    redirect_to course_path(course)
+    redirect_to course_path(@course)
   end
 
   def edit
