@@ -32,24 +32,32 @@
                 = link_to submission_path(user_submission) do
                   = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
             %td
+              .comment-users
+                - user_submission && user_submission.comments.order(created_at: :asc).each do |c|
+                  .bold{ style: "padding: 0px 10px 10px 0px;"}
+                    = c.user.full_name
+                    - if c.visible && c.user.is_staff_for_course?(@assignment.course)
+                      %span.glyphicon.glyphicon-eye-close
+                    - elsif !c.visible && c.user.is_staff_for_course?(@assignment.course)
+                      %span.glyphicon.glyphicon-eye-open
               .comment-form
-              - if user_submission && user_submission.comments_by(current_user).empty?
-                = form_for @comment do |f|
-                  = f.text_field :no_redirect, value: "true", class: "hidden"
-                  = f.text_field :submission_id, value: user_submission.id, class: "hidden"
-                  = f.text_field :user_id, value: current_user.id, class: "hidden"
-                  = f.text_area :text, placeholder: "Comment", class: "form-control"
-                  = f.file_field :attachment
-                  - if current_user.is_staff?
-                    .hide-comment
-                      %label
-                        = f.check_box :hidden, id: "hidden_comment_#{s.uid}"
-                        Hide comment
-                  = f.submit "Add comment", class: "btn btn-xs btn-primary"
-              - elsif user_submission && !user_submission.comments_by(current_user).empty?
-                %span.good
-                  Commented
-              - else
-                %span.warn
-                  No Submission
+                - if user_submission && user_submission.comments_by(current_user).empty?
+                  = form_for @comment do |f|
+                    = f.text_field :no_redirect, value: "true", class: "hidden"
+                    = f.text_field :submission_id, value: user_submission.id, class: "hidden"
+                    = f.text_field :user_id, value: current_user.id, class: "hidden"
+                    = f.text_area :text, placeholder: "Comment", class: "form-control"
+                    = f.file_field :attachment
+                    - if current_user.is_staff?
+                      .hide-comment
+                        %label
+                          = f.check_box :hidden, id: "hidden_comment_#{s.uid}"
+                          Hide comment
+                    = f.submit "Add comment", class: "btn btn-xs btn-primary"
+                - elsif user_submission && !user_submission.comments_by(current_user).empty?
+                  %span.good
+                    Commented
+                - else
+                  %span.warn
+                    No Submission
   = render 'sidebar_show_group'
