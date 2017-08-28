@@ -27,7 +27,7 @@
       - if is_late_with_extension(@submission, @assignment)
         .alert.alert-warning{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
-          Your submission is late, but you have an extension granted until #{@assignment.latest_extension_for(@submission.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+          Your submission is late, but you have an extension granted until #{@assignment.latest_extension_for(@submission.user).due_date.strftime('%Y/%m/%d %H:%M')}
       - elsif is_late(@submission, @assignment) || is_late_without_extension(@submission, @assignment)
         .alert.alert-danger{:style => "font-weight: 600"}
           %span.glyphicon.glyphicon-warning-sign
@@ -35,7 +35,7 @@
     
     .meta
       - if current_user.is_owner_or_staff?(@submission)
-        = "Submitted at: " + @submission.created_at.strftime('%d/%m/%Y %I:%M%p') + " by "
+        = "Submitted at: " + @submission.created_at.strftime('%Y/%m/%d %H:%M') + " by "
         = link_to @submission.user.full_name + " (#{@submission.user.uid})", user_path(@submission.user)
         .actions
           %a{:href => url_prefix + "/submissions/#{@submission.id}/finalise"}

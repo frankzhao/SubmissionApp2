@@ -16,7 +16,7 @@
               %tr
                 %td= link_to a.course.code, course_path(a)
                 %td= link_to a.name, assignment_path(a)
-                %td= a.due_date ? a.due_date.strftime('%d/%m/%Y %I:%M%p') : "None"
+                %td= a.due_date ? a.due_date.strftime('%Y/%m/%d %H:%M') : "None"
       - elsif @assignments.empty?
         %p You don't have any assignments.
       - else
@@ -29,7 +29,7 @@
           %tr
             %td= link_to a.course.code, course_path(a)
             %td= link_to a.name, assignment_path(a)
-            %td= a.due_date.present? ? a.due_date.strftime('%d/%m/%Y %I:%M%p') : "No due date"
+            %td= a.due_date.present? ? a.due_date.strftime('%Y/%m/%d %H:%M') : "No due date"
             %td
               - if current_user.submissions_for(a).empty?
                 %span.glyphicon.glyphicon-warning-sign.warn
@@ -39,6 +39,6 @@
               - else
                 - current_user.submissions_for(a).each do |s|
                   %span.glyphicon.glyphicon-ok.good
-                  = link_to s.created_at.strftime('%d/%m/%Y %I:%M%p'), submission_path(s), class: "good"
+                  = link_to s.created_at.strftime('%Y/%m/%d %H:%M'), submission_path(s), class: "good"
                   %br/
   = render 'sidebar'

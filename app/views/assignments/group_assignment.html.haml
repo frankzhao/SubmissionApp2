@@ -27,10 +27,10 @@
               - if user_submission && user_submission.finalised
                 = link_to submission_path(user_submission), class: "good" do
                   %span.glyphicon.glyphicon-thumbs-up
-                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+                  = user_submission.created_at.strftime('%Y/%m/%d %H:%M')
               - elsif user_submission
                 = link_to submission_path(user_submission) do
-                  = user_submission.created_at.strftime('%d/%m/%Y %I:%M%p')
+                  = user_submission.created_at.strftime('%Y/%m/%d %H:%M')
             %td
               .comment-users
                 - user_submission && user_submission.comments.order(created_at: :asc).each do |c|

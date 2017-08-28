@@ -21,12 +21,12 @@
             %td= link_to s.user.full_name, user_path(s.user)
             %td= link_to s.user.uid, user_path(s.user)
             %td
-              = s.created_at.strftime('%d/%m/%Y %I:%M%p')
+              = s.created_at.strftime('%Y/%m/%d %H:%M')
             %td= link_to "View Submission", submission_path(s)
             %td
               - if is_late_with_extension(s, @assignment)
                 %span.label.label-warning.label-left
-                  Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%d/%m/%Y %I:%M%p')}
+                  Extension until #{@assignment.latest_extension_for(s.user).due_date.strftime('%Y/%m/%d %H:%M')}
               - elsif is_late(s, @assignment) || is_late_without_extension(s, @assignment)
                 %span.label.label-danger.label-left
                   Late
