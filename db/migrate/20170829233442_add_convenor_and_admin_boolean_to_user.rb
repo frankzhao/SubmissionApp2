@@ -1,3 +1,16 @@
+class User < ActiveRecord::Base
+  self.table_name = 'users'
+end
+
+class Admin < User
+
+end
+
+class Convenor < User
+  
+end
+
+
 class AddConvenorAndAdminBooleanToUser < ActiveRecord::Migration[5.0]
   def change
     add_column :users, :convenor, :boolean, default: false, null: false
