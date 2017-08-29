@@ -4,7 +4,7 @@ module Convenors
       ldap_user = ::Ldap::LookupService.new(@uid).execute
 
       if ldap_user
-        ::Convenor.create!(uid: @uid, firstname: ldap_user[:given_name], surname: ldap_user[:surname])
+        ::User.create!(uid: @uid, firstname: ldap_user[:given_name], surname: ldap_user[:surname], convenor: true)
       end
     end
   end
