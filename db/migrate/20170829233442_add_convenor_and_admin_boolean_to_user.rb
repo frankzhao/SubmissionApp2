@@ -7,7 +7,7 @@ class Admin < User
 end
 
 class Convenor < User
-  
+
 end
 
 

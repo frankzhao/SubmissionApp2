@@ -1,6 +1,6 @@
 # Creations
-admin = Admin.create(:firstname => "admin", :password => "admin", :uid => "u0000000")
-convenor = Convenor.create(:firstname => "A", :surname => "Convenor", :password => "pass", :uid => "u0000001")
+admin = User.create(:firstname => "admin", :password => "admin", :uid => "u0000000", admin: true)
+convenor = User.create(:firstname => "A", :surname => "Convenor", :password => "pass", :uid => "u0000001", convenor: true)
 student = Student.create(:firstname => "Thomas", :surname => "Jenkins", :password => "pass", :uid => "u0000002")
 c = Course.create(code: "COMP1100", name: "Introduction to Programming and Algorithms",
              description: "A truly great course")
