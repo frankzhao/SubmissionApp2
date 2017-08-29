@@ -61,11 +61,11 @@ class User < ApplicationRecord
 
   def is_convenor?
     # remove type with convenor boolean
-    type == "Convenor" || CourseRole.where(user: self, role: 'convenor').exists?
+    convenor || CourseRole.where(user: self, role: 'convenor').exists?
   end
 
   def is_admin?
-    type == "Admin"
+    admin
   end
 
   def is_admin_or_convenor?
