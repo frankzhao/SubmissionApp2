@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_action :require_admin
 
   def index
-    @convenors = Convenor.all.includes(:courses)
+    @convenors = User.where(convenor: true).includes(:courses)
     @lines = ::Logs::RetrieveService.new.execute
     respond_to do |format|
       format.html{ render }
