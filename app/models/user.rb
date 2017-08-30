@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :course_roles
   has_many :courses, through: :course_roles
 
+  has_many :group_roles
+  has_many :groups, through: :group_roles
+
   has_many :submissions
   has_many :comments
   has_many :notifications
@@ -20,10 +23,6 @@ class User < ApplicationRecord
     :format => { with: /u\d{7}/, message: "Your uni ID should be in the form uXXXXXXX"}
 
   include UserAssignmentRelations
-
-  def groups
-    Group.where(id: self.group_id)
-  end
 
   def submissions_for(a)
     Submission.where(user_id: self.id, assignment_id: a.id)
