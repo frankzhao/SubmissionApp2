@@ -27,47 +27,8 @@ class AssignmentsController < ApplicationController
   end
   
   def update
-    old_folder = sanitize_str(@assignment.name)
-    new_folder = sanitize_str(params[:assignment_name])
-
-    if old_folder != new_folder
-      # Rename upload directories if assignment is renamed
-      old_path = Rails.root.to_s + "/public/uploads/#{old_folder}"
-      new_path = Rails.root.to_s + "/public/uploads/#{new_folder}"
-      `mv #{old_path} #{new_path}`
-
-      # Rename uploaded submissions
-      for submission in @assignment.submissions
-        old_submission_path = submission.file_path.sub(/#{old_folder}/,"#{new_folder}")
-        new_submission_path = submission.file_path.gsub(/#{old_folder}/,"#{new_folder}")
-        if @assignment.kind == "zip"
-          old_submission_path = old_submission_path + ".zip"
-          new_submission_path = new_submission_path + ".zip"
-        elsif @assignment.kind == "plaintext"
-          old_submission_path = old_submission_path + ".txt"
-          new_submission_path = new_submission_path + ".txt"
-        end
-
-        File.rename(old_submission_path, new_submission_path)
-      end
-    end
-
-    date_due = Chronic.parse(params[:date_due], :endian_precedence => [:little, :median])
-    @assignment.update_attributes(
-      :name => params[:assignment_name],
-      :due_date => date_due,
-      :description => params[:text],
-      :tests => params[:tests],
-      :peer_review_enabled => params[:assignment][:peer_review_enabled],
-      :copy_path => params[:assignment][:copy_path],
-      :disable_compilation => params[:assignment][:disable_compilation],
-      :lang => params[:assignment][:lang],
-      :custom_compilation => params[:assignment][:custom_compilation],
-      :custom_command => params[:assignment][:custom_command],
-      :pdf_regex => params[:assignment][:pdf_regex],
-      :zip_regex => params[:assignment][:zip_regex],
-      :timeout => params[:assignment][:timeout]
-    )
+    service = Assignments::UpdateService.new(@assignment.course, params: params, assignment: @assignment)
+    @assignment = service.execute
     
     redirect_to assignment_path(@assignment)
   end
@@ -105,13 +66,13 @@ class AssignmentsController < ApplicationController
     hourly_data = Hash[*hourly_data.flatten]
     daily_data = submissions.select('created_at').group("date_trunc('day', created_at)").count
     
-    unique_submission_users = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq
+    unique_submission_users = submissions.includes(:user).select{|s| s.user.is_student_for_course?(course) }.map(&:user).uniq
     finalised = submissions.where(finalised: true)
     finalised_count = finalised.map(&:user).uniq.count
-    submission_count = @assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student")}.map(&:user).uniq.count
+    submission_count = @assignment.submissions.select{|s| s.user.is_student_for_course?(course) }.map(&:user).uniq.count
     notfinalised = submission_count - finalised_count
     nonsubmissions = (@assignment.course.get_student_roles.count - unique_submission_users.count)
-    commented_submissions = @assignment.submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student" && s.comments.present?)}.map(&:user).uniq.count
+    commented_submissions = @assignment.submissions.select{|s| (s.user.is_student_for_course?(course) && s.comments.present?)}.map(&:user).uniq.count
     uncommented_submissions = (submission_count - commented_submissions)
     
     render :json => {
@@ -128,26 +89,26 @@ class AssignmentsController < ApplicationController
   def group_data
     data = Hash.new
     submissions = @assignment.submissions
-    finalised = submissions.select{|s| s.finalised?}
+    finalised = submissions.where(finalised: true)
     course = @assignment.course
     groups = course.groups
     
     groups_hash = Hash.new
-    for group in groups
-      groups_hash[group.id] = group.users
+    groups.each do |group|
+      groups_hash[group.id] = group.students
     end
     
-    for group in groups
+    groups.each do |group|
       group_data = Hash.new
-      enrolled = group.users.length
+      enrolled = group.students.length
       finalised_count = finalised.select{|s| groups_hash[group.id].include?(s.user)}.map(&:user).uniq.count
-      submission_count = submissions.select{|s| (s.user.role.to_h[course.id.to_s] == "Student") && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
+      submission_count = submissions.select{|s| (s.user.is_student_for_course?(course)) && groups_hash[group.id].include?(s.user)}.map(&:user).uniq.length
       
       group_data["name"] = group.name.to_s
       group_data["enrolled"] = enrolled.to_i
       group_data["finalised"] = finalised_count
       group_data["submissions"] = submission_count
-      group_data["tutor"] = group.user.present? ? URI::escape(group.user.full_name.to_s) : "None"
+      group_data["tutor"] = group.tutors.any? ? group.tutors.map { |t| URI::escape(t.full_name.to_s) }.join(', ') : "None"
       group_data["group_url"] = group_path(group)
       group_data["group_submissions_url"] = "/assignments/#{@assignment.id}/group/#{group.id}"
       

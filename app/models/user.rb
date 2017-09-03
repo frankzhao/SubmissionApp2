@@ -46,6 +46,10 @@ class User < ApplicationRecord
     read_attribute(:surname).to_s.encode("ISO-8859-1").to_ascii
   end
 
+  def is_student_for_course?(course)
+    CourseRole.where(user: self, course: course, role: 'student').exists?
+  end
+
   def is_convenor_for_course?(course)
     CourseRole.where(user: self, course: course, role: 'convenor').exists?
   end
@@ -59,8 +63,11 @@ class User < ApplicationRecord
   end
 
   def is_convenor?
-    # remove type with convenor boolean
     convenor || CourseRole.where(user: self, role: 'convenor').exists?
+  end
+
+  def is_student?
+    CourseRole.where(user: self, role: 'student').exists?
   end
 
   def is_admin?

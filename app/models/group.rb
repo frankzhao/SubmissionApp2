@@ -16,6 +16,7 @@ class Group < ApplicationRecord
   alias_method  :tutors, :get_tutor_roles
 
   def get_role(role)
-    group_roles.where(course: course, role: role)
+    user_ids = group_roles.where(group: self, role: role).pluck(:user_id)
+    User.where(id: user_ids)
   end
 end
