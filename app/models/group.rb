@@ -5,7 +5,17 @@ class Group < ApplicationRecord
   has_many :users, through: :group_roles
 
   def get_student_roles
-    course_id = self.course.id.to_s
-    (self.students + User.all.select{|u| u.role.to_h[course_id] == "Student" && u.group_id == self.id }).uniq
+    get_role('student')
+  end
+
+  def get_tutor_roles
+    get_role('tutor')
+  end
+
+  alias_method :students, :get_student_roles
+  alias_method  :tutors, :get_tutor_roles
+
+  def get_role(role)
+    group_roles.where(course: course, role: role)
   end
 end
