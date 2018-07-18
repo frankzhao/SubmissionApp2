@@ -131,15 +131,15 @@ class User < ApplicationRecord
 
   def remove_from_course(course)
     hash_id = course.id.to_s
+    role = self.role.to_h
+    role.delete(hash_id)
     # Remove from course
-    courses.delete(course)
+    update_attributes(role: role)
     begin
-      course.students.delete(s) # not sure why we are doing it again
+      CourseRole.where(course: course, user: self).delete_all
     rescue ActiveRecord::RecordNotFound
       # ignored
     end
-
-    s.update_attributes(role: role.to_h.delete(hash_id))
   end
 
   def password_required?
@@ -150,9 +150,14 @@ class User < ApplicationRecord
   private
 
   def add_to_course(course, type)
-    hash = { "#{course.id}" => type}
+    hash = { "#{course.id}" => type }
     update_attributes(role: role.to_h.merge(hash))
-    courses << course unless courses.include?(course)
+    
+    unless courses.include?(course)
+      CourseRole.create!(course: course, user: self, role: type.downcase)
+    end
+
+    courses
   end
 
 end

@@ -22,6 +22,7 @@ module Courses
     def execute
       enroll_students
       enroll_tutors
+      enroll_convenors
     end
 
     def add_convenor(user)
@@ -101,7 +102,7 @@ module Courses
         # Remove spaces
         c = clean_input(c)
 
-        user = User.find_or_create_by_uid(t)
+        user = User.find_or_create_by_uid(c)
         if user
           user.add_to_course_as_convenor(@course)
           @success_count[:convenors] += 1
