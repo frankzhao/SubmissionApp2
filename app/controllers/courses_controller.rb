@@ -103,19 +103,18 @@ class CoursesController < ApplicationController
   def course_params
     params.require(:code)
     params.require(:name)
-    params.require(:description)
     params.permit(:code, :name, :description)
   end
 
   def student_uids
-    params.require(:students)
+    params[:students]
   end
 
   def convenor_uids
-    params.require(:convenors)
+    params[:convenors]
   end
 
   def tutor_uids
-    params.require(:tutors)
+    params[:tutors]
   end
 end

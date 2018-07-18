@@ -4,9 +4,9 @@ module Courses
 
     def initialize(course, opts)
       super(course, opts)
-      @convenors = @opts[:convenors] || []
-      @students = @opts[:students] || []
-      @tutors = @opts[:tutors] || []
+      @convenors = @opts[:convenors]&.split("\n") || []
+      @students = @opts[:students]&.split("\n") || []
+      @tutors = @opts[:tutors]&.split("\n") || []
       @success_count = {
           students: 0,
           convenors: 0,
@@ -46,7 +46,7 @@ module Courses
         s = clean_input(s)
         student_list << s
 
-        user = User.find_or_create_by_uid(uid)
+        user = User.find_or_create_by_uid(s)
 
         if user
           user.add_to_course_as_student(@course)
@@ -72,7 +72,6 @@ module Courses
     end
 
     def enroll_tutors
-      @course.tutors = []
       old_tutors = @course.get_tutor_roles
       old_tutors.each do |tutor|
         tutor.remove_from_course(@course)
@@ -93,7 +92,6 @@ module Courses
     end
 
     def enroll_convenors
-      @course.convenors = []
       old_convenors = @course.get_convenor_roles
       old_convenors.each do |convenor|
         convenor.remove_from_course(@course)
