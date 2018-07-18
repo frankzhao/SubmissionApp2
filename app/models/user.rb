@@ -112,7 +112,7 @@ class User < ApplicationRecord
       if ldap_user == []
         return nil
       else
-        ldpa_user = ldap_user.first
+        ldap_user = ldap_user.first
       end
 
       User.create(:uid => uid, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
