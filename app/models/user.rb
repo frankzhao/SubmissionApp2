@@ -108,7 +108,7 @@ class User < ApplicationRecord
       user
     else
       ldap_user = ::Ldap::LookupService.new(uid).execute
-      User.create(:uid => s, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
+      User.create(:uid => uid, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
     end
   end
 
