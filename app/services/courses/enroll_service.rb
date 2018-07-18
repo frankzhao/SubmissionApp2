@@ -26,7 +26,7 @@ module Courses
     end
 
     def add_convenor(user)
-      @convenors << user.uid
+      @convenors << user
     end
 
     private
