@@ -108,6 +108,11 @@ class User < ApplicationRecord
       user
     else
       ldap_user = ::Ldap::LookupService.new(uid).execute
+
+      if ldap_user == []
+        return nil
+      end
+
       User.create(:uid => uid, :firstname => ldap_user[:given_name].force_encoding('ISO-8859-1'), :surname => ldap_user[:surname].force_encoding('ISO-8859-1'))
     end
   end
@@ -147,7 +152,7 @@ class User < ApplicationRecord
   def add_to_course(course, type)
     hash = { "#{course.id}" => type}
     update_attributes(role: role.to_h.merge(hash))
-    courses << c unless courses.include?(c)
+    courses << course unless courses.include?(course)
   end
 
 end
