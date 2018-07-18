@@ -9,9 +9,9 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.is_admin?
-      @courses = Course.all
+      @courses = Course.order(created_at: :desc).all
     else
-      @courses = current_user.courses
+      @courses = current_user.courses.order(created_at: :desc)
     end
   end
 
