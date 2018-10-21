@@ -35,7 +35,7 @@ class Course < ApplicationRecord
   end
 
   alias_method :students, :get_student_roles
-  alias_method  :tutors, :get_tutor_roles
+  alias_method :tutors, :get_tutor_roles
   alias_method :convenors, :get_convenor_roles
 
   private

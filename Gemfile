@@ -26,6 +26,7 @@ gem 'spring',        group: :development
 # use unicorn server
 gem 'unicorn'
 gem 'unicorn-rails'
+
 # Haml templates
 gem 'haml-rails'
 
@@ -36,7 +37,7 @@ gem 'devise'
 gem 'rack-ssl'
 
 # LDAP
-gem 'net-ldap'
+gem 'net-ldap', '0.16.0'
 
 # Memory session store
 gem 'activerecord-session_store'

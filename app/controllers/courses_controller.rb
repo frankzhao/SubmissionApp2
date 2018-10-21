@@ -9,9 +9,9 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.is_admin?
-      @courses = Course.all
+      @courses = Course.order(created_at: :desc).all
     else
-      @courses = current_user.courses
+      @courses = current_user.courses.order(created_at: :desc)
     end
   end
 
@@ -103,19 +103,18 @@ class CoursesController < ApplicationController
   def course_params
     params.require(:code)
     params.require(:name)
-    params.require(:description)
     params.permit(:code, :name, :description)
   end
 
   def student_uids
-    params.require(:students)
+    params[:students]
   end
 
   def convenor_uids
-    params.require(:convenors)
+    params[:convenors]
   end
 
   def tutor_uids
-    params.require(:tutors)
+    params[:tutors]
   end
 end
